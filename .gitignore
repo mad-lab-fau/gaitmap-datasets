@@ -233,6 +233,3 @@ $RECYCLE.BIN/
 
 # PyCharm
 .idea
-
-# Do not need ot commit lock file, because we are a package
-poetry.lock
