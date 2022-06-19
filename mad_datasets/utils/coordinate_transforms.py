@@ -21,6 +21,7 @@ def _rotate_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: bo
 
 def rotate_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Rotation]]) -> pd.DataFrame:
     """Apply a rotation to acc and gyro data of a dataset.
+
     Parameters
     ----------
     dataset
@@ -30,10 +31,12 @@ def rotate_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Ro
         If a dictionary of rotations is applied, the respective rotations will be matched to the sensors based on the
         dict keys.
         If no rotation is provided for a sensor, it will not be modified.
+
     Returns
     -------
     rotated dataset
         This will always be a copy. The original dataframe will not be modified.
+
     """
     rotation_dict = rotation
     if not isinstance(rotation_dict, dict):

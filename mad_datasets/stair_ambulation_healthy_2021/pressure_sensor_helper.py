@@ -6,6 +6,7 @@ import pandas as pd
 
 
 def _fsr_calibration_path(base_dir: Path) -> Path:
+    """Get the relative path to the fsr-calibration data."""
     return base_dir / "fsr_calibrations"
 
 
@@ -36,22 +37,22 @@ def load_fsr_calibration_data_from_path(path: Path):
 
 def load_fsr_calibration_data_from_id(fsr_id: int, base_dir: Path):
     """Load fsr-calibration data from fsr-id and sort / average it in 0.5kg bins."""
-    return load_fsr_calibration_data_from_path(_fsr_calibration_path(base_dir).joinpath("fsr_%d.csv" % fsr_id))
+    return load_fsr_calibration_data_from_path(_fsr_calibration_path(base_dir).joinpath(f"fsr_{fsr_id}.csv"))
 
 
 def non_inverting_opamp(r_fsr: float, r_ref: float, v_ref: float):
-    """This methods simulates the characteristic of an ideal non-inverting opamp amplifier."""
+    """Simulate the characteristic of an ideal non-inverting opamp amplifier."""
     return v_ref * (1 + (r_ref / r_fsr))
 
 
 def generate_conversion_function(fsr_calib_df: pd.DataFrame, r_ref: int, v_ref: float):
     """Generate a calibration function by fitting a 6-order polynom to the calibration measurement.
 
-    IMPORTANT:
+    .. warning::
         r_ref and v_ref must correspond to the actual configuration of the FSR extension board during data
         recording!
-    """
 
+    """
     # simulate opamp circuit
     data = [
         non_inverting_opamp(float(r_fsr), float(r_ref), float(v_ref)) for r_fsr in fsr_calib_df["res_ohm"].to_numpy()
@@ -61,7 +62,7 @@ def generate_conversion_function(fsr_calib_df: pd.DataFrame, r_ref: int, v_ref: 
 
 
 def factory_calibrate_analog_data(analog_data: np.ndarray):
-    """Apply ADC to Voltage conversion for NilsPod analog channels (valid for versions >= 0.18.0"""
+    """Apply ADC to Voltage conversion for NilsPod analog channels (valid for versions >= 0.18.0)."""
     return np.asarray(analog_data) * (2.4 / 16384)
 
 

@@ -11,6 +11,8 @@ from mad_datasets.stair_ambulation_healthy_2021.helper import get_all_participan
 
 
 class StairAmbulationHealthy2021(Dataset):
+    """Dataset class representing the Stair Ambulation dataset."""
+
     def __init__(
         self,
         data_folder: Optional[Union[str, Path]] = None,
@@ -23,14 +25,14 @@ class StairAmbulationHealthy2021(Dataset):
 
     @property
     def sampling_rate_hz(self) -> float:
-        """The sampling rate of the IMUs."""
+        """Get the sampling rate of the IMUs."""
         return 204.8
 
     # def _get_base_df(self, participant: str, test: str) -> pd.DataFrame:
 
     def create_index(self) -> pd.DataFrame:
         base_dir = Path(self.data_folder)
-        all_tests = get_all_participants_and_tests(base_dir)
+        all_tests = get_all_participants_and_tests(base_dir=base_dir)
         if len(all_tests) == 0:
             raise ValueError(
                 "No data found in the data folder! Please check that you selected the correct folder.\n"

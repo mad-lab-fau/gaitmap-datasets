@@ -25,6 +25,7 @@ pydocstyle:
     - D102  # Missing docstring in public method, handled by pylint
     - D103  # Missing docstring in public function, handled by pylint
     - D104  # Missing docstring in public package, handled by pylint
+    - D107  # Missing docstrings in __init__, we don't have them by convention
     - D203  # Blank line required before class docstring
     - D213  # Docstring Summary should start in second line
 

@@ -27,26 +27,30 @@ COORDINATE_SYSTEM_TRANSFORMATION = {  # stair_ambulation_instep_nilspodv2
 
 
 def _participant_subfolder(base_dir: Path) -> Path:
+    """Return the relative path to the participant subfolder."""
     return base_dir / "healthy"
 
 
 def _calibration_folder(base_dir: Path) -> Path:
+    """Return the relative path to the imu-calibration subfolder."""
     return base_dir / "calibrations"
 
 
 def get_all_participants(*, base_dir: Optional[Path] = None) -> List[str]:
+    """Get the folder names of all participants."""
     # TODO: Rename healthy folder
     return [f.name for f in _participant_subfolder(base_dir).glob("subject_*")]
 
 
 @lru_cache(maxsize=1)
 def get_all_participants_and_tests(*, base_dir: Optional[Path] = None) -> Dict[str, Dict[str, Dict[str, float]]]:
+    """Get a dictionary containing all test information for all participants."""
     all_test_list = _participant_subfolder(base_dir).rglob("test_list.json")
     all_test_per_participant = {}
 
     for test_list in all_test_list:
         participant = test_list.parent.parent.name
-        with open(test_list, "r") as f:
+        with open(test_list, "r", encoding="utf8") as f:
             test_data = json.load(f)
         test_data.pop("full_session", None)
         test_data.pop("part_1_transition", None)
@@ -62,7 +66,8 @@ def get_all_participants_and_tests(*, base_dir: Optional[Path] = None) -> Dict[s
 
 
 def get_participant_metadata(participant_folder_name: str, *, base_dir: Optional[Path] = None) -> Dict[str, Any]:
-    with open((_participant_subfolder(base_dir) / participant_folder_name / "metadata.json")) as f:
+    """Get the metadata of a participant."""
+    with open((_participant_subfolder(base_dir) / participant_folder_name / "metadata.json"), encoding="utf8") as f:
         metadata = json.load(f)
     return metadata
 
@@ -74,13 +79,13 @@ def get_all_data_for_participant(
     *,
     base_dir: Optional[Path] = None,
 ) -> pd.DataFrame:
-
+    """Get all the recorded data (imu + baro + pressure) for one of the two sessions of a participant."""
     data_dir = _participant_subfolder(base_dir) / participant_folder_name / f"part_{part}" / "imu"
     session = SyncedSession.from_folder_path(data_dir, legacy_support="resolve")
     try:
         session = session.align_to_syncregion()
     except ValueError as e:
-        print("Sync Warning: {e}" % e, file=sys.stderr)
+        print(f"Sync Warning: {e}", file=sys.stderr)
         session = session.cut(stop=-10)
         session = session.align_to_syncregion()
     # apply ferraris calibration on imu data
