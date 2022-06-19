@@ -1,0 +1,73 @@
+[tool.poetry]
+name = "mad-datasets"
+version = "0.1.0"
+description = "Helper to access to open-source gait datasets of the MaD-Lab"
+authors = ["Arne Küderle <arne.kuederle@fau.de>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.11"
+tpcp = "^0.6.3"
+pandas = "^1.4.2"
+joblib = "^1.1.0"
+imucal = "^2.2.1"
+nilspodlib = "^3.2.2"
+scipy = "^1.8.1"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+poethepoet = "^0.14.0"
+pytest = "^7.1.2"
+pytest-cov = "^3.0.0"
+prospector = "^1.7.7"
+ipykernel = "^6.15.0"
+numpydoc = "^1.4.0"
+Sphinx = "^5.0.2"
+sphinx-gallery = "^0.10.1"
+recommonmark = "^0.7.1"
+memory-profiler = "^0.60.0"
+matplotlib = "^3.5.2"
+toml = "^0.10.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | docs
+    | build
+    | dist
+    | \.virtual_documents
+  )/
+)
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 120
+skip_gitignore = true
+
+
+[tool.poe.tasks]
+_format_black = "black ."
+_format_isort = "isort ."
+format = { sequence = ["_format_black", "_format_isort"], help = "Format all files." }
+lint = { cmd = "prospector", help = "Lint all files with Prospector." }
+_check_black = "black . --check"
+_check_isort = "isort . --check"
+check = { sequence = ["_check_black", "_check_isort", "lint"], help = "Check all potential format and linting issues." }
+test = { cmd = "pytest --cov=mad-datasets --cov-report=term-missing --cov-report=xml", help = "Run Pytest with coverage." }
+version = { script = "_tasks:task_update_version()" }
