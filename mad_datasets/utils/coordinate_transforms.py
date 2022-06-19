@@ -1,3 +1,5 @@
+"""Helper to rotate sensor data."""
+
 from typing import Dict, Optional, Union
 
 import pandas as pd

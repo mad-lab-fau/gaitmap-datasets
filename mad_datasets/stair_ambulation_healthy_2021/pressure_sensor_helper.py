@@ -1,3 +1,4 @@
+"""Helpers to load and calibrate the pressure insoles."""
 from pathlib import Path
 
 import numpy as np

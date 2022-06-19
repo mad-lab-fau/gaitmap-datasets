@@ -1,3 +1,4 @@
+"""The core tpcp Dataset class for the Stair Ambulation dataset."""
 from pathlib import Path
 from typing import List, Optional, Union
 
