@@ -165,3 +165,12 @@ def get_segmented_stride_list(
         sensor: manual_annotation.loc[sensor].dropna()[["start", "end", "type", "z_level"]]
         for sensor in ["left_sensor", "right_sensor"]
     }
+
+
+def get_pressure_insole_events(
+    participant_folder_name: str, part: Literal["part_1", "part_2"], *, base_dir: Optional[Path] = None
+) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    """Get the pressure insole events for a participant."""
+    path = _participant_subfolder(base_dir) / participant_folder_name / part / "pressure_events.csv"
+    events = pd.read_csv(path, index_col=[0, 1], header=0)
+    return {sensor: events.loc[sensor] for sensor in ["left_sensor", "right_sensor"]}

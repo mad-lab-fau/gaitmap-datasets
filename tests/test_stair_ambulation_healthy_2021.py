@@ -10,6 +10,7 @@ from mad_datasets.stair_ambulation_healthy_2021.helper import (
     get_all_participants,
     get_all_participants_and_tests,
     get_participant_metadata,
+    get_pressure_insole_events,
     get_segmented_stride_list,
 )
 
@@ -83,6 +84,16 @@ def test_load_data_exclude_columns(include_pressure_data, include_baro_data, inc
         assert "hip_sensor" in data.columns.get_level_values(0)
     else:
         assert "hip_sensor" not in data.columns.get_level_values(0)
+
+
+def test_get_pressure_insole_events():
+    pressure_events = get_pressure_insole_events(participant_folder_name="subject_01", part="part_1", base_dir=base_dir)
+
+    assert len(pressure_events) == 2
+    assert list(pressure_events.keys()) == ["left_sensor", "right_sensor"]
+    for v in pressure_events.values():
+        assert v.columns.tolist() == ["start", "end", "ic", "tc", "min_vel", "pre_ic"]
+        assert v.index.name == "s_id"
 
 
 class TestDatasetCommon:
@@ -255,6 +266,26 @@ class TestStairAmbulationHealthy2021PerTest:
                 # We can not really test much here, as we substract the start of the test from the stride borders.
                 assert (stride_borders + test["start"] <= test["end"]).all().all()
 
+                assert (stride_borders["end"] > stride_borders["start"]).all()
+
+    def test_cut_test_pressure_insole_event_list(self):
+        dataset = StairAmbulationHealthy2021PerTest(base_dir, memory=Memory(".cache"))
+        dataset.memory.clear(warn=False)
+        dataset = dataset.get_subset(participant="subject_03")
+
+        for subset in dataset:
+            participant, test = subset.index.iloc[0]
+            test = get_all_participants_and_tests(base_dir=base_dir)[participant][test]
+            for stride_borders in subset.pressure_insole_event_list_.values():
+                # We can not really test much here, as we substract the start of the test from the stride borders.
+                assert (stride_borders.fillna(0) + test["start"] <= test["end"]).all().all()
+
+                assert (stride_borders["end"] > stride_borders["tc"]).all()
+                assert (stride_borders["tc"] > stride_borders["start"]).all()
+                assert (stride_borders["ic"] > stride_borders["tc"]).all()
+                assert (stride_borders["pre_ic"].fillna(-1) < stride_borders["start"]).all()
+                assert (stride_borders["start"] == stride_borders["min_vel"]).all()
+
 
 class TestStairAmbulationHealthy2021Full:
     def test_index_shape(self):
@@ -331,3 +362,27 @@ class TestStairAmbulationHealthy2021Full:
             full_session = get_all_participants_and_tests(base_dir=base_dir)[participant][f"full_session_{part}"]
             for stride_borders in subset.segmented_stride_list_.values():
                 assert (stride_borders + full_session["start"] <= full_session["end"]).all().all()
+        dataset.memory.clear(warn=False)
+
+    def test_pressure_insole_event_list_cut_to_seesion(self):
+        dataset = StairAmbulationHealthy2021Full(
+            base_dir,
+            memory=Memory(".cache"),
+            ignore_manual_session_markers=False,
+        )
+        dataset.memory.clear(warn=False)
+
+        for participant in [1, 2, 4, 22, 24]:
+            subset = dataset.get_subset(index=dataset.index.iloc[participant : participant + 1])
+            participant, part = subset.index.iloc[0]
+            full_session = get_all_participants_and_tests(base_dir=base_dir)[participant][f"full_session_{part}"]
+            for stride_borders in subset.pressure_insole_event_list_.values():
+                # We can not really test much here, as we substract the start of the test from the stride borders.
+                assert (stride_borders.fillna(0) + full_session["start"] <= full_session["end"]).all().all()
+
+                assert (stride_borders["end"] > stride_borders["tc"]).all()
+                assert (stride_borders["tc"] > stride_borders["start"]).all()
+                assert (stride_borders["ic"] > stride_borders["tc"]).all()
+                assert (stride_borders["pre_ic"].fillna(-1) < stride_borders["start"]).all()
+                assert (stride_borders["start"] == stride_borders["min_vel"]).all()
+        dataset.memory.clear(warn=False)

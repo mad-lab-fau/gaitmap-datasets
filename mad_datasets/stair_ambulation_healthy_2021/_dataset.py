@@ -13,6 +13,7 @@ from mad_datasets.stair_ambulation_healthy_2021.helper import (
     get_all_participants,
     get_all_participants_and_tests,
     get_participant_metadata,
+    get_pressure_insole_events,
     get_segmented_stride_list,
 )
 from mad_datasets.utils.consts import SF_COLS
@@ -52,7 +53,7 @@ class _StairAmbulationHealthy2021(Dataset):
         """Cut the data to the region of interest."""
         raise NotImplementedError
 
-    def _cut_events_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: List[str]) -> pd.DataFrame:
         """Cut the events to the region of interest."""
         raise NotImplementedError
 
@@ -138,7 +139,7 @@ class _StairAmbulationHealthy2021(Dataset):
         stride_borders = get_segmented_stride_list(participant, part, base_dir=self._data_folder_path)
         final_stride_borders = {}
         for k, v in stride_borders.items():
-            per_sensor = self._cut_events_to_region(v)
+            per_sensor = self._cut_events_to_region(v, numeric_cols=["start", "end"])
             if stride_type is not None:
                 per_sensor = per_sensor.loc[per_sensor["type"].isin(stride_type)]
             if return_z_level is False:
@@ -154,6 +155,29 @@ class _StairAmbulationHealthy2021(Dataset):
         If you need more control, use `get_segmented_stride_list_with_type` directly.
         """
         return self.get_segmented_stride_list_with_type(return_z_level=False)
+
+    @property
+    def pressure_insole_event_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+        """Get the event list based on the pressure insole (and the IMU).
+
+        This returns all events from the pressure-insoles as a min-vel event list.
+        This means that each stride starts and ends in a midstance.
+        This midstance (min_vel) was detected based on the gyro energy and not the pressure insole.
+        The pressure insole was used to find the IC and TC in each stride.
+
+        If a stride has a `pre_ic` of NaN, it indicates that this is the first strid eof a gait sequence, i.e. there is
+        no other stride directly before this one.
+
+        The s_id of these strides are consistent with the `segmented_stride_list_`.
+        The s_id is derived based on which min_vel - stride contains the `start` event of the segmented stride.
+        """
+        participant, part = self._get_participant_and_part("min_vel_event_list")
+        events = get_pressure_insole_events(participant, part, base_dir=self._data_folder_path)
+        final_events = {}
+        for k, v in events.items():
+            per_sensor = self._cut_events_to_region(v, numeric_cols=["start", "end", "ic", "tc", "min_vel", "pre_ic"])
+            final_events[k] = per_sensor
+        return final_events
 
 
 class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
@@ -194,12 +218,12 @@ class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
         df = df.iloc[test["start"] : test["end"]]
         return df.reset_index(drop=True)
 
-    def _cut_events_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: List[str]) -> pd.DataFrame:
         # We assume that the df we get is from the correct participant and part
         participant, test = self.index.iloc[0]
         test = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]
         df = df.loc[(df["start"] >= test["start"]) & (df["end"] <= test["end"])].copy()
-        df.loc[:, ["start", "end"]] -= test["start"]
+        df.loc[:, numeric_cols] -= test["start"]
         return df
 
     def create_index(self) -> pd.DataFrame:
@@ -292,12 +316,12 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
             df = df.iloc[slice(*self._get_full_session_start_end(participant, part))]
         return df.reset_index(drop=True)
 
-    def _cut_events_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: List[str]) -> pd.DataFrame:
         participant, part = self._get_participant_and_part("_cut_events_to_region")
         if self.ignore_manual_session_markers is False:
             session_start, session_end = self._get_full_session_start_end(participant, part)
             df = df.loc[(df["start"] >= session_start) & (df["end"] <= session_end)].copy()
-            df.loc[:, ["start", "end"]] -= session_start
+            df.loc[:, numeric_cols] -= session_start
         return df
 
     def create_index(self) -> pd.DataFrame:
