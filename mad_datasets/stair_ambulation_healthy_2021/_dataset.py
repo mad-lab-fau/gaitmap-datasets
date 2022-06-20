@@ -324,6 +324,16 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
             df.loc[:, numeric_cols] -= session_start
         return df
 
+    @property
+    def test_list(self) -> pd.DataFrame:
+        participant, part = self._get_participant_and_part("test_list")
+        tests = pd.DataFrame(get_all_participants_and_tests(base_dir=self._data_folder_path)[participant]).T
+        tests = tests[tests["part"] == part]
+        tests = tests.drop(f"full_session_{part}").drop(columns=["part"])
+        tests.index.name = "roi_id"
+        tests = self._cut_events_to_region(tests, ["start", "end"])
+        return tests
+
     def create_index(self) -> pd.DataFrame:
         # There are two parts per participant. We use parts as the second index column.
         all_participants = get_all_participants(base_dir=self._data_folder_path)

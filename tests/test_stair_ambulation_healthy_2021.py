@@ -350,9 +350,7 @@ class TestStairAmbulationHealthy2021Full:
 
     def test_stride_borders_cut_to_session(self):
         dataset = StairAmbulationHealthy2021Full(
-            base_dir,
-            memory=Memory(".cache"),
-            ignore_manual_session_markers=False,
+            base_dir, memory=Memory(".cache"), ignore_manual_session_markers=False,
         )
         dataset.memory.clear(warn=False)
 
@@ -366,9 +364,7 @@ class TestStairAmbulationHealthy2021Full:
 
     def test_pressure_insole_event_list_cut_to_seesion(self):
         dataset = StairAmbulationHealthy2021Full(
-            base_dir,
-            memory=Memory(".cache"),
-            ignore_manual_session_markers=False,
+            base_dir, memory=Memory(".cache"), ignore_manual_session_markers=False,
         )
         dataset.memory.clear(warn=False)
 
@@ -386,3 +382,12 @@ class TestStairAmbulationHealthy2021Full:
                 assert (stride_borders["pre_ic"].fillna(-1) < stride_borders["start"]).all()
                 assert (stride_borders["start"] == stride_borders["min_vel"]).all()
         dataset.memory.clear(warn=False)
+
+    def test_test_list(self):
+        dataset = StairAmbulationHealthy2021Full(base_dir, ignore_manual_session_markers=False,)
+        dataset = dataset.get_subset(index=dataset.index.iloc[1:2])
+
+        test_list = dataset.test_list
+        assert test_list.index.name == "roi_id"
+        assert test_list.columns.to_list() == ["start", "end"]
+        assert test_list.shape == (19, 2)
