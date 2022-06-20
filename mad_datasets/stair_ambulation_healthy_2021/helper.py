@@ -89,8 +89,10 @@ def get_all_data_for_participant(
     session = SyncedSession.from_folder_path(data_dir, legacy_support="resolve")
     try:
         session = session.align_to_syncregion()
-    except ValueError as e:
-        print(f"Sync Warning: {e}", file=sys.stderr)
+    except ValueError:
+        # This is a NilsPod bug that happens sometimes.
+        # In this case the index of the last couple of values is broken.
+        # Therefore, we simply remove them.
         session = session.cut(stop=-10)
         session = session.align_to_syncregion()
     # apply ferraris calibration on imu data
