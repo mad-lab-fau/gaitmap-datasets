@@ -144,5 +144,17 @@ def get_segmented_stride_list(
     """Get the manual stride borders for a participant."""
     path = _participant_subfolder(base_dir) / participant_folder_name / part / "manual_annotations_z_level.csv"
     manual_annotation = pd.read_csv(path, delimiter=";", index_col=0, header=[0, 1])
-    manual_annotation.index.name = "s_id"
-    return {sensor: manual_annotation.loc[:, sensor].dropna() for sensor in ["left_sensor", "right_sensor"]}
+    # We concat the two feet along the other axis to get a unique stride id via the index
+    manual_annotation = (
+        manual_annotation.stack(level=0)
+        .reset_index(level=0, drop=True)
+        .sort_values("start")
+        .reset_index()
+        .set_index("index", append=True)
+        .swaplevel()
+    )
+    manual_annotation.index.names = ["sensor", "s_id"]
+    return {
+        sensor: manual_annotation.loc[sensor].dropna()[["start", "end", "type", "z_level"]]
+        for sensor in ["left_sensor", "right_sensor"]
+    }
