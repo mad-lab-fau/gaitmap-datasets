@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Type, Union
 
 import pytest
+from joblib import Memory
 
 from mad_datasets.stair_ambulation_healthy_2021 import StairAmbulationHealthy2021Full, StairAmbulationHealthy2021PerTest
 from mad_datasets.stair_ambulation_healthy_2021.helper import (
@@ -152,8 +153,64 @@ class TestStairAmbulationHealthy2021PerTest:
         dataset = StairAmbulationHealthy2021PerTest(base_dir)
         assert dataset.index.shape == (20 * 26, 2)
 
+    def test_cut_test(self):
+        dataset = StairAmbulationHealthy2021PerTest(
+            base_dir, memory=Memory(".cache"), include_pressure_data=True, include_baro_data=True
+        )
+        dataset.memory.clear(warn=False)
+        dataset = dataset.get_subset(participant="subject_03")
+
+        for subset in dataset:
+            participant, test = subset.index.iloc[0]
+            test = get_all_participants_and_tests(base_dir=base_dir)[participant][test]
+            test_len = test["end"] - test["start"]
+            assert subset.data.shape[0] == subset.pressure_data.shape[0] == subset.baro_data.shape[0] == test_len
+            assert subset.data.index[0] == subset.pressure_data.index[0] == subset.baro_data.index[0] == test["start"]
+            assert (
+                subset.data.index[-1] == subset.pressure_data.index[-1] == subset.baro_data.index[-1] == test["end"] - 1
+            )
+
+        dataset.memory.clear(warn=False)
+
 
 class TestStairAmbulationHealthy2021Full:
     def test_index_shape(self):
         dataset = StairAmbulationHealthy2021Full(base_dir)
         assert dataset.index.shape == (20 * 2, 2)
+
+    @pytest.mark.parametrize("ignore_manual_session_markers", [True, False])
+    def test_ignore_session(self, ignore_manual_session_markers):
+        dataset = StairAmbulationHealthy2021Full(
+            base_dir,
+            ignore_manual_session_markers=ignore_manual_session_markers,
+            include_pressure_data=True,
+            include_baro_data=True,
+        )
+
+        # For these participants, the session we know that the session data was cut
+        for participant in [4, 22, 24]:
+            subset = dataset.get_subset(index=dataset.index.iloc[participant : participant + 1])
+            participant, part = subset.index.iloc[0]
+            full_session = get_all_participants_and_tests(base_dir=base_dir)[participant][f"full_session_{part}"]
+            full_session_length = full_session["end"] - full_session["start"]
+
+            assert subset.data.shape[0] == subset.pressure_data.shape[0] == subset.baro_data.shape[0]
+
+            if ignore_manual_session_markers:
+                assert subset.data.shape[0] >= full_session_length
+            else:
+                assert subset.data.shape[0] == full_session_length
+
+        # for these participants cutting should not make a difference (just a subset of the data)
+        for participant in [1, 2]:
+            subset = dataset.get_subset(index=dataset.index.iloc[participant : participant + 1])
+            participant, part = subset.index.iloc[0]
+            full_session = get_all_participants_and_tests(base_dir=base_dir)[participant][f"full_session_{part}"]
+            full_session_length = full_session["end"] - full_session["start"]
+
+            assert (
+                subset.data.shape[0]
+                == subset.pressure_data.shape[0]
+                == subset.baro_data.shape[0]
+                == full_session_length
+            )

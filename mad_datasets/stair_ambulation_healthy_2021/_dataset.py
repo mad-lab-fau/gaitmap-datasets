@@ -150,6 +150,7 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
     ignore_manual_session_markers
         Some datasets had some issues either at the start or end of the recording.
         Therefore, we decided to cut these regions by default.
+        Anyway, this will only affect the recordings of three participants.
         If you want to keep these regions, set this to False.
     include_pressure_data
         Whether to load the raw pressure data recorded by the insole sensors.
