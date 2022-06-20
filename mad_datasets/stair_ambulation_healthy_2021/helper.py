@@ -7,7 +7,7 @@ import json
 import sys
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
 
 import pandas as pd
 from nilspodlib import SyncedSession
@@ -43,7 +43,9 @@ def get_all_participants(*, base_dir: Optional[Path] = None) -> List[str]:
 
 
 @lru_cache(maxsize=1)
-def get_all_participants_and_tests(*, base_dir: Optional[Path] = None) -> Dict[str, Dict[str, Dict[str, float]]]:
+def get_all_participants_and_tests(
+    *, base_dir: Optional[Path] = None
+) -> Dict[str, Dict[str, Dict[str, Union[int, Literal["part_1", "part_2"]]]]]:
     """Get a dictionary containing all test information for all participants."""
     all_test_list = _participant_subfolder(base_dir).rglob("test_list.json")
     all_test_per_participant = {}
@@ -53,10 +55,12 @@ def get_all_participants_and_tests(*, base_dir: Optional[Path] = None) -> Dict[s
         with open(test_list, "r", encoding="utf8") as f:
             test_data = json.load(f)
         test_data.pop("part_1_transition", None)
+        part = test_list.parent.name
+        # Avoid name clash of the "full_session" test
+        test_data[f"full_session_{part}"] = test_data.pop("full_session")
         # Add the part the test belongs to the test_data
-        part = int(test_list.parent.name.split("_")[-1])
         for test_info in test_data.values():
-            test_info["part"] = int(part)
+            test_info["part"] = part
 
         tmp = all_test_per_participant.setdefault(participant, {})
         tmp.update(test_data)
@@ -73,13 +77,15 @@ def get_participant_metadata(participant_folder_name: str, *, base_dir: Optional
 
 def get_all_data_for_participant(
     participant_folder_name: str,
-    part: Literal[1, 2],
-    return_pressure_data: bool = True,
+    part: Literal["part_1", "part_2"],
     *,
+    return_pressure_data: bool = True,
+    return_baro_data: bool = True,
+    return_hip_sensor: bool = True,
     base_dir: Optional[Path] = None,
 ) -> pd.DataFrame:
     """Get all the recorded data (imu + baro + pressure) for one of the two sessions of a participant."""
-    data_dir = _participant_subfolder(base_dir) / participant_folder_name / f"part_{part}" / "imu"
+    data_dir = _participant_subfolder(base_dir) / participant_folder_name / part / "imu"
     session = SyncedSession.from_folder_path(data_dir, legacy_support="resolve")
     try:
         session = session.align_to_syncregion()
@@ -103,22 +109,27 @@ def get_all_data_for_participant(
         session_df, {k: Rotation.from_matrix(v) for k, v in COORDINATE_SYSTEM_TRANSFORMATION.items()}
     )
 
-    if return_pressure_data is False:
-        session_df = session_df.drop(columns=["analog_0", "analog_1", "analog_2"], level=1)
-        return session_df
-    # calibrate analog sensors
-    all_calibrated_pressure_data = {}
-    for s in ["left_sensor", "right_sensor"]:
-        calibrated_data = calibrate_analog_data(
-            session_df[s][["analog_0", "analog_1", "analog_2"]].to_numpy(), metadata["fsr_ids"][s], base_dir=base_dir
-        )
-        calibrated_data = pd.DataFrame(
-            calibrated_data, columns=[f"{p}_force" for p in metadata["fsr_ids"][s].keys()]
-        ).assign(total_force=lambda df_: df_.sum(axis=1))
-        all_calibrated_pressure_data[s] = calibrated_data
+    if return_pressure_data is True:
+        # calibrate analog sensors
+        all_calibrated_pressure_data = {}
+        for s in ["left_sensor", "right_sensor"]:
+            calibrated_data = calibrate_analog_data(
+                session_df[s][["analog_0", "analog_1", "analog_2"]].to_numpy(),
+                metadata["fsr_ids"][s],
+                base_dir=base_dir,
+            )
+            calibrated_data = pd.DataFrame(
+                calibrated_data, columns=[f"{p}_force" for p in metadata["fsr_ids"][s].keys()]
+            ).assign(total_force=lambda df_: df_.sum(axis=1))
+            all_calibrated_pressure_data[s] = calibrated_data
 
-    all_calibrated_pressure_data = pd.concat(all_calibrated_pressure_data, axis=1)
-    session_df = session_df.join(all_calibrated_pressure_data)
+        all_calibrated_pressure_data = pd.concat(all_calibrated_pressure_data, axis=1)
+        session_df = session_df.join(all_calibrated_pressure_data)
 
     session_df = session_df.drop(columns=["analog_0", "analog_1", "analog_2"], level=1)
+    if return_baro_data is False:
+        session_df = session_df.drop(columns=["baro", "baro"], level=1)
+    if return_hip_sensor is False:
+        session_df = session_df.drop(columns="hip_sensor", level=0)
+
     return session_df
