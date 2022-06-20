@@ -4,12 +4,15 @@ These are the logic behind the dataset implementation, but can also be used inde
 """
 
 import json
+import warnings
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
 import pandas as pd
+from imucal.management import CalibrationWarning
 from nilspodlib import SyncedSession
+from nilspodlib.exceptions import SynchronisationWarning
 from scipy.spatial.transform import Rotation
 
 from mad_datasets.stair_ambulation_healthy_2021.pressure_sensor_helper import calibrate_analog_data
@@ -88,14 +91,18 @@ def get_all_data_for_participant(
     """Get all the recorded data (imu + baro + pressure) for one of the two sessions of a participant."""
     data_dir = _participant_subfolder(base_dir) / participant_folder_name / part / "imu"
     session = SyncedSession.from_folder_path(data_dir, legacy_support="resolve")
-    try:
-        session = session.align_to_syncregion()
-    except ValueError:
-        # This is a NilsPod bug that happens sometimes.
-        # In this case the index of the last couple of values is broken.
-        # Therefore, we simply remove them.
-        session = session.cut(stop=-10)
-        session = session.align_to_syncregion()
+    # Ignore the nilspodlib warnings about syncpackages and calibration dates
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=CalibrationWarning)
+        warnings.filterwarnings("ignore", category=SynchronisationWarning)
+        try:
+            session = session.align_to_syncregion()
+        except ValueError:
+            # This is a NilsPod bug that happens sometimes.
+            # In this case the index of the last couple of values is broken.
+            # Therefore, we simply remove them.
+            session = session.cut(stop=-10)
+            session = session.align_to_syncregion()
     # apply ferraris calibration on imu data
     session.calibrate_imu(
         session.find_closest_calibration(folder=_calibration_folder(base_dir), filter_cal_type="ferraris"), inplace=True
@@ -143,7 +150,7 @@ def get_segmented_stride_list(
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the manual stride borders for a participant."""
     path = _participant_subfolder(base_dir) / participant_folder_name / part / "manual_annotations_z_level.csv"
-    manual_annotation = pd.read_csv(path, delimiter=";", index_col=0, header=[0, 1])
+    manual_annotation = pd.read_csv(path, delimiter=";", index_col=0, header=[0, 1])[["left_sensor", "right_sensor"]]
     # We concat the two feet along the other axis to get a unique stride id via the index
     manual_annotation = (
         manual_annotation.stack(level=0)
