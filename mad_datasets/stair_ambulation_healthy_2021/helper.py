@@ -25,6 +25,8 @@ COORDINATE_SYSTEM_TRANSFORMATION = {  # stair_ambulation_instep_nilspodv2
     "hip_sensor": [[0, 0, -1], [1, 0, 0], [0, -1, 0]],
 }
 
+StrideTypes = Literal["level", "ascending", "descending", "slope_ascending", "slope_descending"]
+
 
 def _participant_subfolder(base_dir: Path) -> Path:
     """Return the relative path to the participant subfolder."""
@@ -135,3 +137,13 @@ def get_all_data_for_participant(
         session_df = session_df.drop(columns="hip_sensor", level=0)
 
     return session_df
+
+
+def get_segmented_stride_list(
+    participant_folder_name: str, part: Literal["part_1", "part_2"], *, base_dir: Optional[Path] = None
+) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    """Get the manual stride borders for a participant."""
+    path = _participant_subfolder(base_dir) / participant_folder_name / part / "manual_annotations_z_level.csv"
+    manual_annotation = pd.read_csv(path, delimiter=";", index_col=0, header=[0, 1])
+    manual_annotation.index.name = "s_id"
+    return {sensor: manual_annotation.loc[:, sensor].dropna() for sensor in ["left_sensor", "right_sensor"]}

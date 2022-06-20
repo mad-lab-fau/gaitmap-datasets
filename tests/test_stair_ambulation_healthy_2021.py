@@ -10,6 +10,7 @@ from mad_datasets.stair_ambulation_healthy_2021.helper import (
     get_all_participants,
     get_all_participants_and_tests,
     get_participant_metadata,
+    get_segmented_stride_list,
 )
 
 base_dir = Path("/home/arne/Documents/repos/work/datasets/stair-ambulation-data-ba-liv")
@@ -33,6 +34,16 @@ def test_get_all_tests():
     assert all(p.startswith("subject_") for p in all_tests)
     assert all([len(t) == 28 for t in all_tests.values()])
     assert all([list(t.keys()) == ["start", "end", "part"] for tests in all_tests.values() for t in tests.values()])
+
+
+def test_get_segmented_stride_list():
+    segmented_stride_list = get_segmented_stride_list(
+        base_dir=base_dir, participant_folder_name="subject_01", part="part_1"
+    )
+    assert len(segmented_stride_list) == 2
+    assert list(segmented_stride_list.keys()) == ["left_sensor", "right_sensor"]
+    for k, v in segmented_stride_list.items():
+        assert v.columns.tolist() == ["start", "end", "type", "z_level"]
 
 
 @pytest.mark.parametrize("pressure", [True, False])
@@ -147,6 +158,56 @@ class TestDatasetCommon:
         with pytest.raises(ValueError):
             _ = dataset.baro_data
 
+    @pytest.mark.parametrize("include_z_level", [True, False])
+    def test_include_stride_border_columns(self, include_z_level):
+        dataset = self.dataset_class(data_folder=base_dir)
+        dataset = dataset.get_subset(index=dataset.index.iloc[:1])
+
+        stride_borders = dataset.get_segmented_stride_list_with_type(return_z_level=include_z_level)
+        for borders in stride_borders.values():
+            if include_z_level:
+                assert borders.columns.to_list() == ["start", "end", "type", "z_level"]
+            else:
+                assert borders.columns.to_list() == ["start", "end"]
+
+    @pytest.mark.parametrize(
+        "filter",
+        [None, ["level"], ["level", "ascending"], ["level", "descending"], ["level", "ascending", "descending"]],
+    )
+    def test_filter_stride_list(self, filter):
+        dataset = self.dataset_class(data_folder=base_dir)
+        dataset = dataset.get_subset(index=dataset.index.iloc[1:2])
+        stride_borders = dataset.get_segmented_stride_list_with_type(stride_type=filter, return_z_level=True)
+
+        all_stride_types = ["level", "ascending", "descending", "slope_ascending", "slope_descending"]
+
+        if filter is None:
+            expected_types = all_stride_types
+            other_types = []
+        else:
+            expected_types = filter
+            other_types = list(set(all_stride_types) - set(filter))
+
+        for v in stride_borders.values():
+            types = v["type"].to_list()
+            if isinstance(dataset, StairAmbulationHealthy2021Full):
+                # For the "perTest" dataset, we can not ensure that all stride types exist in a single test
+                for t in expected_types:
+                    assert t in types
+            for t in other_types:
+                assert t not in types
+
+    def test_segmented_stride_list_property(self):
+        dataset = self.dataset_class(data_folder=base_dir)
+        dataset = dataset.get_subset(index=dataset.index.iloc[:1])
+
+        stride_borders_1 = dataset.get_segmented_stride_list_with_type(return_z_level=False)
+        stride_borders_2 = dataset.segmented_stride_list_
+        assert stride_borders_1.keys() == stride_borders_2.keys()
+
+        for k, val in stride_borders_1.items():
+            assert val.equals(stride_borders_2[k])
+
 
 class TestStairAmbulationHealthy2021PerTest:
     def test_index_shape(self):
@@ -165,12 +226,27 @@ class TestStairAmbulationHealthy2021PerTest:
             test = get_all_participants_and_tests(base_dir=base_dir)[participant][test]
             test_len = test["end"] - test["start"]
             assert subset.data.shape[0] == subset.pressure_data.shape[0] == subset.baro_data.shape[0] == test_len
-            assert subset.data.index[0] == subset.pressure_data.index[0] == subset.baro_data.index[0] == test["start"]
+            assert subset.data.index[0] == subset.pressure_data.index[0] == subset.baro_data.index[0] == 0
             assert (
-                subset.data.index[-1] == subset.pressure_data.index[-1] == subset.baro_data.index[-1] == test["end"] - 1
+                subset.data.index[-1]
+                == subset.pressure_data.index[-1]
+                == subset.baro_data.index[-1]
+                == (test_len - 1) / subset.sampling_rate_hz
             )
 
         dataset.memory.clear(warn=False)
+
+    def test_cut_test_segmented_stride_list(self):
+        dataset = StairAmbulationHealthy2021PerTest(base_dir, memory=Memory(".cache"))
+        dataset.memory.clear(warn=False)
+        dataset = dataset.get_subset(participant="subject_03")
+
+        for subset in dataset:
+            participant, test = subset.index.iloc[0]
+            test = get_all_participants_and_tests(base_dir=base_dir)[participant][test]
+            for stride_borders in subset.segmented_stride_list_.values():
+                # We can not really test much here, as we substract the start of the test from the stride borders.
+                assert (stride_borders + test["start"] <= test["end"]).all().all()
 
 
 class TestStairAmbulationHealthy2021Full:
@@ -182,10 +258,12 @@ class TestStairAmbulationHealthy2021Full:
     def test_ignore_session(self, ignore_manual_session_markers):
         dataset = StairAmbulationHealthy2021Full(
             base_dir,
+            memory=Memory(".cache"),
             ignore_manual_session_markers=ignore_manual_session_markers,
             include_pressure_data=True,
             include_baro_data=True,
         )
+        dataset.memory.clear(warn=False)
 
         # For these participants, the session we know that the session data was cut
         for participant in [4, 22, 24]:
@@ -201,6 +279,14 @@ class TestStairAmbulationHealthy2021Full:
             else:
                 assert subset.data.shape[0] == full_session_length
 
+            assert subset.data.index[0] == subset.pressure_data.index[0] == subset.baro_data.index[0] == 0
+            assert (
+                subset.data.index[-1]
+                == subset.pressure_data.index[-1]
+                == subset.baro_data.index[-1]
+                == (subset.data.shape[0] - 1) / subset.sampling_rate_hz
+            )
+
         # for these participants cutting should not make a difference (just a subset of the data)
         for participant in [1, 2]:
             subset = dataset.get_subset(index=dataset.index.iloc[participant : participant + 1])
@@ -214,3 +300,25 @@ class TestStairAmbulationHealthy2021Full:
                 == subset.baro_data.shape[0]
                 == full_session_length
             )
+            assert subset.data.index[0] == subset.pressure_data.index[0] == subset.baro_data.index[0] == 0
+            assert (
+                subset.data.index[-1]
+                == subset.pressure_data.index[-1]
+                == subset.baro_data.index[-1]
+                == (full_session_length - 1) / subset.sampling_rate_hz
+            )
+
+        dataset.memory.clear(warn=False)
+
+    def test_stride_borders_cut_to_session(self):
+        dataset = StairAmbulationHealthy2021Full(
+            base_dir, memory=Memory(".cache"), ignore_manual_session_markers=False,
+        )
+        dataset.memory.clear(warn=False)
+
+        for participant in [1, 2, 4, 22, 24]:
+            subset = dataset.get_subset(index=dataset.index.iloc[participant : participant + 1])
+            participant, part = subset.index.iloc[0]
+            full_session = get_all_participants_and_tests(base_dir=base_dir)[participant][f"full_session_{part}"]
+            for stride_borders in subset.segmented_stride_list_.values():
+                assert (stride_borders + full_session["start"] <= full_session["end"]).all().all()

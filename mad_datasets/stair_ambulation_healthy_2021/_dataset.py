@@ -1,7 +1,7 @@
 """The core tpcp Dataset class for the Stair Ambulation dataset."""
 from itertools import product
 from pathlib import Path
-from typing import List, Literal, Optional, Tuple, Union
+from typing import List, Literal, Optional, Tuple, Union, Dict
 
 import pandas as pd
 from joblib import Memory
@@ -11,6 +11,7 @@ from mad_datasets.stair_ambulation_healthy_2021.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_all_participants_and_tests,
+    get_segmented_stride_list, StrideTypes,
 )
 from mad_datasets.utils.consts import SF_COLS
 
@@ -45,8 +46,12 @@ class _StairAmbulationHealthy2021(Dataset):
         """Get the participant and part of the dataset."""
         raise NotImplementedError
 
-    def _cut_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _cut_data_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
         """Cut the data to the region of interest."""
+        raise NotImplementedError
+
+    def _cut_events_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Cut the events to the region of interest."""
         raise NotImplementedError
 
     def _get_base_df(self, participant: str, part: Literal["part_1", "part_2"]) -> pd.DataFrame:
@@ -73,7 +78,10 @@ class _StairAmbulationHealthy2021(Dataset):
             columns=["baro", *self._PRESSURE_COLUMNS], level=1, errors="ignore"
         )
 
-        return self._cut_to_region(df)
+        df = self._cut_data_to_region(df)
+        df.index /= self.sampling_rate_hz
+        df.index.name = "time [s]"
+        return df
 
     @property
     def baro_data(self) -> pd.DataFrame:
@@ -84,7 +92,10 @@ class _StairAmbulationHealthy2021(Dataset):
         df = self._get_base_df(participant, part).drop(
             columns=[*SF_COLS, *self._PRESSURE_COLUMNS], level=1, errors="ignore"
         )
-        return self._cut_to_region(df)
+        df = self._cut_data_to_region(df)
+        df.index /= self.sampling_rate_hz
+        df.index.name = "time [s]"
+        return df
 
     @property
     def pressure_data(self) -> pd.DataFrame:
@@ -93,11 +104,74 @@ class _StairAmbulationHealthy2021(Dataset):
             raise ValueError("The pressure data is not loaded. Please set `include_pressure_data` to True.")
         participant, part = self._get_participant_and_part("pressure_data")
         df = self._get_base_df(participant, part).drop(columns=["baro", *SF_COLS], level=1, errors="ignore")
-        return self._cut_to_region(df)
+        df = self._cut_data_to_region(df)
+        df.index /= self.sampling_rate_hz
+        df.index.name = "time [s]"
+        return df
+
+    def get_segmented_stride_list_with_type(
+        self,
+        stride_type: Optional[List[StrideTypes]] = None,
+        return_z_level: bool = True,
+    ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+        """Get the manual stride borders of the dataset filtered by stride type.
+
+        Parameters
+        ----------
+        stride_type : List[Literal["level", "ascending", "descending"]], optional
+            A list of stride types to be included in the output.
+            If None all strides are included.
+        return_z_level
+            If True, the z-level (i.e. the height change of the stride based on the stair geometry) and the stride
+            type are included as additional columns in the output.
+
+        """
+        participant, part = self._get_participant_and_part("segmented_stride_list")
+        stride_borders = get_segmented_stride_list(participant, part, base_dir=self._data_folder_path)
+        final_stride_borders = {}
+        for k, v in stride_borders.items():
+            per_sensor = self._cut_events_to_region(v)
+            if stride_type is not None:
+                per_sensor = per_sensor.loc[per_sensor["type"].isin(stride_type)]
+            if return_z_level is False:
+                per_sensor = per_sensor.drop(columns=["type", "z_level"])
+            final_stride_borders[k] = per_sensor
+        return final_stride_borders
+
+    @property
+    def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+        """Get the manual stride borders of the dataset.
+
+        This is equivalent to calling `get_segmented_stride_list_with_type(None, return_z_level=False)`.
+        If you need more control, use `get_segmented_stride_list_with_type` directly.
+        """
+        return self.get_segmented_stride_list_with_type(return_z_level=False)
 
 
 class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
-    """Dataset class representing the Stair Ambulation dataset."""
+    """Dataset class representing the Stair Ambulation dataset.
+
+    This version of the dataset contains the data split into individual tests.
+    For more information about the dataset, see the `README.md` file of the dataset that is included in the dataset
+    download.
+
+    Parameters
+    ----------
+    data_folder
+        The path to the data folder.
+    memory
+        The joblib memory object to cache the data loading.
+    include_pressure_data
+        Whether to load the raw pressure data recorded by the insole sensors.
+        This will increase the load time and RAM requirements.
+        Usually this is not needed unless you want to calculate your own gait events based on the pressure data.
+        The precalculated gait events will still be available independent of this setting.
+    include_hip_sensor
+        Whether to load the raw data recorded by the hip sensor.
+    include_baro_data
+        Whether to load the raw data recorded by the barometer.
+
+    """
 
     def _get_participant_and_part(self, error_name: str) -> Tuple[str, Literal["part_1", "part_2"]]:
         self.assert_is_single(None, error_name)
@@ -105,11 +179,19 @@ class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
         part = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]["part"]
         return participant, part
 
-    def _cut_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _cut_data_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
         # We assume that the df we get is from the correct participant and part
         participant, test = self.index.iloc[0]
         test = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]
         df = df.iloc[test["start"] : test["end"]]
+        return df.reset_index(drop=True)
+
+    def _cut_events_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
+        # We assume that the df we get is from the correct participant and part
+        participant, test = self.index.iloc[0]
+        test = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]
+        df = df.loc[(df["start"] >= test["start"]) & (df["end"] <= test["end"])]
+        df[["start", "end"]] -= test["start"]
         return df
 
     def create_index(self) -> pd.DataFrame:
@@ -196,10 +278,18 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
         participant, part = self.index.iloc[0]
         return participant, part
 
-    def _cut_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _cut_data_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
         participant, part = self._get_participant_and_part("_cut_to_region")
         if self.ignore_manual_session_markers is False:
             df = df.iloc[slice(*self._get_full_session_start_end(participant, part))]
+        return df.reset_index(drop=True)
+
+    def _cut_events_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
+        participant, part = self._get_participant_and_part("_cut_events_to_region")
+        if self.ignore_manual_session_markers is False:
+            session_start, session_end = self._get_full_session_start_end(participant, part)
+            df = df.loc[(df["start"] >= session_start) & (df["end"] <= session_end)]
+            df[["start", "end"]] -= session_start
         return df
 
     def create_index(self) -> pd.DataFrame:
