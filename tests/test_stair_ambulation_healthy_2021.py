@@ -312,7 +312,9 @@ class TestStairAmbulationHealthy2021Full:
 
     def test_stride_borders_cut_to_session(self):
         dataset = StairAmbulationHealthy2021Full(
-            base_dir, memory=Memory(".cache"), ignore_manual_session_markers=False,
+            base_dir,
+            memory=Memory(".cache"),
+            ignore_manual_session_markers=False,
         )
         dataset.memory.clear(warn=False)
 

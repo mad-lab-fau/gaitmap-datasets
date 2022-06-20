@@ -1,17 +1,18 @@
 """The core tpcp Dataset class for the Stair Ambulation dataset."""
 from itertools import product
 from pathlib import Path
-from typing import List, Literal, Optional, Tuple, Union, Dict
+from typing import Dict, List, Literal, Optional, Tuple, Union
 
 import pandas as pd
 from joblib import Memory
 from tpcp import Dataset
 
 from mad_datasets.stair_ambulation_healthy_2021.helper import (
+    StrideTypes,
     get_all_data_for_participant,
     get_all_participants,
     get_all_participants_and_tests,
-    get_segmented_stride_list, StrideTypes,
+    get_segmented_stride_list,
 )
 from mad_datasets.utils.consts import SF_COLS
 
