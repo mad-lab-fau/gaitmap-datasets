@@ -198,8 +198,8 @@ class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
         # We assume that the df we get is from the correct participant and part
         participant, test = self.index.iloc[0]
         test = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]
-        df = df.loc[(df["start"] >= test["start"]) & (df["end"] <= test["end"])]
-        df[["start", "end"]] -= test["start"]
+        df = df.loc[(df["start"] >= test["start"]) & (df["end"] <= test["end"])].copy()
+        df.loc[:, ["start", "end"]] -= test["start"]
         return df
 
     def create_index(self) -> pd.DataFrame:
@@ -296,8 +296,8 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
         participant, part = self._get_participant_and_part("_cut_events_to_region")
         if self.ignore_manual_session_markers is False:
             session_start, session_end = self._get_full_session_start_end(participant, part)
-            df = df.loc[(df["start"] >= session_start) & (df["end"] <= session_end)]
-            df[["start", "end"]] -= session_start
+            df = df.loc[(df["start"] >= session_start) & (df["end"] <= session_end)].copy()
+            df.loc[:, ["start", "end"]] -= session_start
         return df
 
     def create_index(self) -> pd.DataFrame:
