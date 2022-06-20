@@ -111,7 +111,7 @@ class TestDatasetCommon:
             assert pressure_data.shape[1] == 2 * len(StairAmbulationHealthy2021Full._PRESSURE_COLUMNS)
         else:
             with pytest.raises(ValueError):
-                dataset.pressure_data
+                _ = dataset.pressure_data
 
         if include_baro_data:
             baro_data = dataset.baro_data
@@ -122,7 +122,7 @@ class TestDatasetCommon:
             assert baro_data.shape[1] == len(sensors)
         else:
             with pytest.raises(ValueError):
-                dataset.baro_data
+                _ = dataset.baro_data
 
     def test_all_data_same_length(self):
         dataset = self.dataset_class(
@@ -138,13 +138,13 @@ class TestDatasetCommon:
         )
 
         with pytest.raises(ValueError):
-            dataset.data
+            _ = dataset.data
 
         with pytest.raises(ValueError):
-            dataset.pressure_data
+            _ = dataset.pressure_data
 
         with pytest.raises(ValueError):
-            dataset.baro_data
+            _ = dataset.baro_data
 
 
 class TestStairAmbulationHealthy2021PerTest:

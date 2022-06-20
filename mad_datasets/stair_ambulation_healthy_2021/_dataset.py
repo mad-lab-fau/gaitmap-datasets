@@ -57,8 +57,13 @@ class _StairAmbulationHealthy2021(Dataset):
             return_pressure_data=self.include_pressure_data,
             return_baro_data=self.include_baro_data,
             return_hip_sensor=self.include_hip_sensor,
-            base_dir=self.data_folder,
+            base_dir=self._data_folder_path,
         )
+
+    @property
+    def _data_folder_path(self) -> Path:
+        """Get the path to the data folder as Path object."""
+        return Path(self.data_folder)
 
     @property
     def data(self) -> pd.DataFrame:
@@ -97,19 +102,19 @@ class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
     def _get_participant_and_part(self, error_name: str) -> Tuple[str, Literal["part_1", "part_2"]]:
         self.assert_is_single(None, error_name)
         participant, test = self.index.iloc[0]
-        part = get_all_participants_and_tests(base_dir=self.data_folder)[participant][test]["part"]
+        part = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]["part"]
         return participant, part
 
     def _cut_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
         # We assume that the df we get is from the correct participant and part
         participant, test = self.index.iloc[0]
-        test = get_all_participants_and_tests(base_dir=self.data_folder)[participant][test]
+        test = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]
         df = df.iloc[test["start"] : test["end"]]
         return df
 
     def create_index(self) -> pd.DataFrame:
-        base_dir = Path(self.data_folder)
-        all_tests = get_all_participants_and_tests(base_dir=self.data_folder)
+        base_dir = Path(self._data_folder_path)
+        all_tests = get_all_participants_and_tests(base_dir=self._data_folder_path)
         if len(all_tests) == 0:
             raise ValueError(
                 "No data found in the data folder! Please check that you selected the correct folder.\n"
@@ -182,7 +187,7 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
         )
 
     def _get_full_session_start_end(self, participant: str, part: Literal["part_1", "part_2"]) -> Tuple[int, int]:
-        session = get_all_participants_and_tests(base_dir=Path(self.data_folder))[participant][f"full_session_{part}"]
+        session = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][f"full_session_{part}"]
         return int(session["start"]), int(session["end"])
 
     def _get_participant_and_part(self, error_name: str) -> Tuple[str, Literal["part_1", "part_2"]]:
@@ -197,13 +202,12 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
         return df
 
     def create_index(self) -> pd.DataFrame:
-        base_dir = Path(self.data_folder)
         # There are two parts per participant. We use parts as the second index column.
-        all_participants = get_all_participants(base_dir=base_dir)
+        all_participants = get_all_participants(base_dir=self._data_folder_path)
         if len(all_participants) == 0:
             raise ValueError(
                 "No data found in the data folder! Please check that you selected the correct folder.\n"
-                f"Currently selected folder: {base_dir.resolve()}"
+                f"Currently selected folder: {self._data_folder_path.resolve()}"
             )
         return (
             pd.DataFrame(list(product(all_participants, ("part_1", "part_2"))), columns=["participant", "part"])
