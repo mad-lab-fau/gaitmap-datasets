@@ -2,7 +2,10 @@ from pathlib import Path
 
 import pytest
 
-from mad_datasets.stair_ambulation_healthy_2021._dataset import StairAmbulationHealthy2021
+from mad_datasets.stair_ambulation_healthy_2021._dataset import (
+    StairAmbulationHealthy2021PerTest,
+    StairAmbulationHealthy2021Full,
+)
 from mad_datasets.stair_ambulation_healthy_2021.helper import (
     get_all_data_for_participant,
     get_all_participants,
@@ -29,7 +32,7 @@ def test_get_all_tests():
 
     assert len(all_tests) == 20
     assert all(p.startswith("subject_") for p in all_tests)
-    assert all([len(t) == 26 for t in all_tests.values()])
+    assert all([len(t) == 27 for t in all_tests.values()])
     assert all([list(t.keys()) == ["start", "end", "part"] for tests in all_tests.values() for t in tests.values()])
 
 
@@ -43,6 +46,13 @@ def test_load_data(snapshot, pressure):
         snapshot.assert_match(data[sensor].describe(), name=f"{sensor}_summary")
 
 
-def test_dataset():
-    dataset = StairAmbulationHealthy2021(base_dir)
-    assert dataset.index.shape == (20 * 26, 2)
+class TestStairAmbulationHealthy2021PerTest:
+    def test_per_test_shape(self):
+        dataset = StairAmbulationHealthy2021PerTest(base_dir)
+        assert dataset.index.shape == (20 * 26, 2)
+
+
+class TestStairAmbulationHealthy2021Full:
+    def test_per_test_shape(self):
+        dataset = StairAmbulationHealthy2021Full(base_dir)
+        assert dataset.index.shape == (20 * 2, 2)

@@ -52,7 +52,6 @@ def get_all_participants_and_tests(*, base_dir: Optional[Path] = None) -> Dict[s
         participant = test_list.parent.parent.name
         with open(test_list, "r", encoding="utf8") as f:
             test_data = json.load(f)
-        test_data.pop("full_session", None)
         test_data.pop("part_1_transition", None)
         # Add the part the test belongs to the test_data
         part = int(test_list.parent.name.split("_")[-1])
