@@ -326,6 +326,7 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
 
     @property
     def test_list(self) -> pd.DataFrame:
+        """Get the list of all tests contained in the recording."""
         participant, part = self._get_participant_and_part("test_list")
         tests = pd.DataFrame(get_all_participants_and_tests(base_dir=self._data_folder_path)[participant]).T
         tests = tests[tests["part"] == part]

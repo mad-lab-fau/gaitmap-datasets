@@ -16,14 +16,16 @@ In the following we will show the usage of both classes and the data that is con
 from pathlib import Path
 
 dataset_path = Path("/home/arne/Documents/repos/work/datasets/stair-ambulation-data-ba-liv")
+
 # %%
 # StairAmbulationHealthy2021PerTest
 # =================================
 # First we can simple create an instance of the dataset class and directly see the contained data points.
 # Note, that we will enable the loading of all available data.
 # You might want to disable that, to reduce the RAM usage and speed up the data loading.
-from mad_datasets.stair_ambulation_healthy_2021 import StairAmbulationHealthy2021PerTest
 from joblib import Memory
+
+from mad_datasets.stair_ambulation_healthy_2021 import StairAmbulationHealthy2021PerTest
 
 dataset = StairAmbulationHealthy2021PerTest(
     data_folder=dataset_path,
@@ -208,8 +210,6 @@ axs[2].set_ylabel("Air Pressure [mbar]")
 axs[2].set_xlabel("Time [s]")
 
 plt.show()
-
-
 
 # %%
 foot = "right_sensor"
