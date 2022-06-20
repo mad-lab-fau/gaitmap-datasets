@@ -208,6 +208,13 @@ class TestDatasetCommon:
         for k, val in stride_borders_1.items():
             assert val.equals(stride_borders_2[k])
 
+    def test_metadata_property(self):
+        dataset = self.dataset_class(data_folder=base_dir)
+        dataset = dataset.get_subset(index=dataset.index.iloc[:1])
+
+        metadata = dataset.metadata
+        assert metadata["subject_id"] == "001"
+
 
 class TestStairAmbulationHealthy2021PerTest:
     def test_index_shape(self):

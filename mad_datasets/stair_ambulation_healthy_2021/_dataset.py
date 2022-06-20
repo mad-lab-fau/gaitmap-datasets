@@ -1,7 +1,7 @@
 """The core tpcp Dataset class for the Stair Ambulation dataset."""
 from itertools import product
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 import pandas as pd
 from joblib import Memory
@@ -12,6 +12,7 @@ from mad_datasets.stair_ambulation_healthy_2021.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_all_participants_and_tests,
+    get_participant_metadata,
     get_segmented_stride_list,
 )
 from mad_datasets.utils.consts import SF_COLS
@@ -65,6 +66,12 @@ class _StairAmbulationHealthy2021(Dataset):
             return_hip_sensor=self.include_hip_sensor,
             base_dir=self._data_folder_path,
         )
+
+    @property
+    def metadata(self) -> Dict[str, Any]:
+        """Get the metadata for a participant."""
+        self.assert_is_single(["participant"], "metadata")
+        return get_participant_metadata(self.index.iloc[0]["participant"], base_dir=self._data_folder_path)
 
     @property
     def _data_folder_path(self) -> Path:
