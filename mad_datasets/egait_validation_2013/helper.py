@@ -1,12 +1,15 @@
-import copy
+import re
 from pathlib import Path
-from typing import Dict, Literal
+from typing import Optional, List, Literal, Dict
 
-import numpy as np
 import pandas as pd
-from imucal import FerrarisCalibrationInfo
 
-from mad_datasets.utils.data_loading import load_bin_file
+from mad_datasets.egait_validation_2013.egait_loading_helper import load_shimmer2_data
+
+CALIBRATION_FILE_NAMES = {
+    "left_sensor": "A917.csv",
+    "right_sensor": "A6DF.csv",
+}
 
 COORDINATE_SYSTEM_TRANSFORMATION = (  # egait_lateral_shimmer2r
     {
@@ -17,98 +20,68 @@ COORDINATE_SYSTEM_TRANSFORMATION = (  # egait_lateral_shimmer2r
     },
 )
 
-SHIMMER2_DATA_LAYOUT = {
-    "acc_x": np.uint16,
-    "acc_y": np.uint16,
-    "acc_z": np.uint16,
-    "gyr_x": np.uint16,
-    "gyr_y": np.uint16,
-    "gyr_z": np.uint16,
-}
 
-CALIBRATION_FILE_NAMES = {
-    "left_sensor": "A917.csv",
-    "right_sensor": "A6DF.csv",
-}
+def _raw_data_folder(base_dir: Path) -> Path:
+    """Return the relative path to the participant subfolder."""
+    return base_dir / "ValidationRawData"
 
 
-def transform_shimmer2_axes(
-    dataset: Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]
+def _reference_stride_borders_folder(base_dir: Path) -> Path:
+    """Return the relative path to the reference stride borders subfolder."""
+    return base_dir / "GoldStandard_StrideBorders"
+
+
+def _reference_stride_parameters_folder(base_dir: Path) -> Path:
+    """Return the relative path to the reference stride parameters subfolder."""
+    return base_dir / "GoldStandard_GaitRite"
+
+
+def _calibration_folder(base_dir: Path) -> Path:
+    """Return the relative path to the imu-calibration subfolder."""
+    return base_dir
+
+
+def get_all_participants(*, base_dir: Optional[Path] = None) -> List[str]:
+    """Get the folder names of all participants."""
+    return [f.name.split("_")[0] for f in _raw_data_folder(base_dir).glob("*_left.dat")]
+
+
+def get_all_data_for_participant(
+    participant_id: str, *, base_dir: Optional[Path] = None
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-    """Transform shimmer2 axes to align acc and gyroscope.
+    """Get all data for a participant."""
+    left_data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_left.dat"
+    right_data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_right.dat"
 
-    Parameters
-    ----------
-    dataset
-        A "raw" shimmer 2 dataset.
-
-    Returns
-    -------
-    dataset
-        Dataset with renamed and transformed axis.
-
-    """
-    # we need to handle the gyro-coordinate system separately because it is left-handed and rotated against the
-    # acc-coordinate system
-    for sensor in ["left_sensor", "right_sensor"]:
-        # Ensure that we have a proper dtype and not uint from loading
-        dataset[sensor] = dataset[sensor].astype(float)
-        gyr_x_original = copy.deepcopy(dataset[sensor]["gyr_x"])
-        gyr_y_original = copy.deepcopy(dataset[sensor]["gyr_y"])
-        gyr_z_original = copy.deepcopy(dataset[sensor]["gyr_z"])
-
-        dataset[sensor]["gyr_x"] = gyr_y_original
-        dataset[sensor]["gyr_y"] = gyr_x_original
-        dataset[sensor]["gyr_z"] = -gyr_z_original
-
-    return dataset
+    return load_shimmer2_data(left_data_path, right_data_path, _calibration_folder(base_dir), CALIBRATION_FILE_NAMES)
 
 
-def calibrate_shimmer2_data(
-    data: Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame],
-    calibration_base_path: Path,
-    calibration_mapping: Dict[Literal["left_sensor", "right_sensor"], str],
+def get_segmented_stride_list(
+    participant_id: str, *, base_dir: Optional[Path] = None
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-    """Calibrate shimmer2 data.
-    """
-    for sensor in ["left_sensor", "right_sensor"]:
-        cal_path = calibration_base_path / calibration_mapping[sensor]
-        cal_matrix = load_compact_cal_matrix(cal_path)
-        data[sensor] = cal_matrix.calibrate_df(data[sensor], "a.u.", "a.u.")
-
-    return data
-
-
-def load_shimmer2_data(
-    left_sensor_path: Path,
-    right_sensor_path: Path,
-    calibration_base_path: Path,
-    calibration_mapping: Dict[Literal["left_sensor", "right_sensor"], str],
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-    """Load shimmer2 data from a file."""
-
-    data = {
-        "left_sensor": load_bin_file(left_sensor_path, SHIMMER2_DATA_LAYOUT),
-        "right_sensor": load_bin_file(right_sensor_path, SHIMMER2_DATA_LAYOUT),
-    }
-    data = calibrate_shimmer2_data(data, calibration_base_path, calibration_mapping)
-    data = transform_shimmer2_axes(data)
-    return data
+    """Get the list of all strides for a participant."""
+    stride_borders = {}
+    for foot in ["left", "right"]:
+        stride_borders[f"{foot}_sensor"] = (
+            pd.read_csv(
+                _reference_stride_borders_folder(base_dir) / f"{participant_id}_E4_{foot}.txt", skiprows=8, header=0
+            )
+            .rename(columns={"Sart": "start", "Start": "start", "End": "end"})
+            .rename_axis(index="s_id")
+        )
+    return stride_borders
 
 
-def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:
-    """Load a compact calibration matrix from a file."""
-    cal_matrix = np.genfromtxt(path, delimiter=",")
-    plus_g = cal_matrix[0]
-    minus_g = cal_matrix[1]
-    b_a = (plus_g + minus_g) / 2
-    K_a = np.eye(3) * (plus_g - minus_g) / 2
-    R_a = np.eye(3)
-    b_g = cal_matrix[2]
-    K_g = np.eye(3) * 2.731
-    R_g = np.eye(3)
-    K_ga = np.zeros((3, 3))
-
-    return FerrarisCalibrationInfo(
-        b_a=b_a, K_a=K_a, R_a=R_a, b_g=b_g, K_g=K_g, R_g=R_g, K_ga=K_ga, from_acc_unit="a.u.", from_gyr_unit="a.u."
-    )
+def get_gaitrite_parameters(participant_id: str, *, base_dir: Optional[Path] = None) -> pd.DataFrame:
+    """Get the gaitrite parameters for a participant."""
+    parameters = {}
+    for foot in ["left", "right"]:
+        parameters[f"{foot}_sensor"] = (
+            pd.read_csv(
+                _reference_stride_parameters_folder(base_dir) / f"{participant_id}_E4_{foot}.txt", skiprows=8, header=0
+            )
+            .rename(columns=lambda name: re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower())
+            .rename_axis(index="s_id")
+            .assign(stride_length=lambda df_: df_["stride_length"] / 100.0)  # Convert stride length to meters
+        )
+    return parameters
