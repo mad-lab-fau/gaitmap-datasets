@@ -36,6 +36,7 @@ def test_calibration():
     calibrated_data = cal_matrix.calibrate_df(data, "a.u.", "a.u.")
     # Reference data produced by the matlab import script
     reference_data = pd.read_csv("./egait_validation_2013_test_data/P115_E4_left_calibrated.csv", header=0)
+    reference_data[SF_ACC] *= 9.81
     assert_frame_equal(calibrated_data, reference_data.drop(columns=["n_samples"]))
 
 
@@ -64,7 +65,7 @@ def test_data_loading_with_transformation():
         assert_series_equal(data[sensor]["gyr_x"], reference_data[sensor]["gyr_y"], check_names=False)
         assert_series_equal(data[sensor]["gyr_y"], reference_data[sensor]["gyr_x"], check_names=False)
         assert_series_equal(data[sensor]["gyr_z"], -reference_data[sensor]["gyr_z"], check_names=False)
-        assert_frame_equal(data[sensor][SF_ACC], reference_data[sensor][SF_ACC])
+        assert_frame_equal(data[sensor][SF_ACC], reference_data[sensor][SF_ACC] * 9.81)
 
 
 def test_get_all_participants():
@@ -90,9 +91,9 @@ def test_get_all_data_for_participant():
         # The loaded data is transformed to the common sensor frame definition
         # We test a couple of columns, but in general we trust that the transformation is correct
         if sensor == "left_sensor":
-            assert_series_equal(data[sensor]["acc_x"], -reference_data[sensor]["acc_y"], check_names=False)
+            assert_series_equal(data[sensor]["acc_x"], -reference_data[sensor]["acc_y"] * 9.81, check_names=False)
         else:
-            assert_series_equal(data[sensor]["acc_x"], reference_data[sensor]["acc_y"], check_names=False)
+            assert_series_equal(data[sensor]["acc_x"], reference_data[sensor]["acc_y"] * 9.81, check_names=False)
 
 
 def test_get_stride_borders():
