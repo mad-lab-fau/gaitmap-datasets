@@ -1,3 +1,4 @@
+"""General Helpers to load binary data."""
 from pathlib import Path
 from typing import Dict
 
@@ -37,10 +38,6 @@ def load_bin_file(path: Path, dtype_dict: Dict[str, np.dtype]) -> pd.DataFrame:
     >>> data = load_bin_file(path, data_type_dict)
 
     """
-    # TODO: add a consistency check if the given number of bytes in data_type_dict actually fits within the length of
-    #  the binary input data
-
     dtype_list = list(dtype_dict.items())
     data = np.fromfile(path, dtype=np.dtype(dtype_list))
-    # TODO: Why the pandas conversion?
     return pd.DataFrame(data)

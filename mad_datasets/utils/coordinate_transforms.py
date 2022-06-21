@@ -15,7 +15,7 @@ from mad_datasets.utils.consts import (
 )
 
 
-def _rotate_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: bool = False) -> pd.DataFrame:
+def rotate_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: bool = False) -> pd.DataFrame:
     """Rotate the data of a single sensor with acc and gyro."""
     if inplace is False:
         data = data.copy()
@@ -53,7 +53,7 @@ def rotate_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Ro
     original_cols = dataset.columns
 
     for key in rotation_dict.keys():
-        test = _rotate_sensor(dataset[key], rotation_dict[key], inplace=False)
+        test = rotate_sensor(dataset[key], rotation_dict[key], inplace=False)
         rotated_dataset[key] = test
 
     # Restore original order

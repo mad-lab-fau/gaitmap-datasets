@@ -1,15 +1,15 @@
 from pathlib import Path
-from typing import Optional, Union, List, Literal, Dict
+from typing import Dict, List, Literal, Optional, Union
 
 import pandas as pd
 from joblib import Memory
 from tpcp import Dataset
 
 from mad_datasets.egait_validation_2013.helper import (
-    get_all_participants,
     get_all_data_for_participant,
-    get_segmented_stride_list,
+    get_all_participants,
     get_gaitrite_parameters,
+    get_segmented_stride_list,
 )
 
 

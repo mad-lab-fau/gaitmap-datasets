@@ -1,3 +1,4 @@
+"""Helper to load data of the egait system (specifically the shimmer 2R system)."""
 import copy
 from pathlib import Path
 from typing import Dict, Literal
@@ -71,7 +72,6 @@ def load_shimmer2_data(
     calibration_mapping: Dict[Literal["left_sensor", "right_sensor"], str],
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Load shimmer2 data from a file."""
-
     data = {
         "left_sensor": load_bin_file(left_sensor_path, SHIMMER2_DATA_LAYOUT),
         "right_sensor": load_bin_file(right_sensor_path, SHIMMER2_DATA_LAYOUT),
@@ -86,13 +86,13 @@ def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:
     cal_matrix = np.genfromtxt(path, delimiter=",")
     plus_g = cal_matrix[0]
     minus_g = cal_matrix[1]
-    b_a = (plus_g + minus_g) / 2
-    K_a = np.eye(3) * (plus_g - minus_g) / 2
-    R_a = np.eye(3)
-    b_g = cal_matrix[2]
-    K_g = np.eye(3) * 2.731
-    R_g = np.eye(3)
-    K_ga = np.zeros((3, 3))
+    b_a = (plus_g + minus_g) / 2  # noqa: N806, invalid-name
+    K_a = np.eye(3) * (plus_g - minus_g) / 2  # noqa: N806, invalid-name
+    R_a = np.eye(3)  # noqa: N806, invalid-name
+    b_g = cal_matrix[2]  # noqa: N806, invalid-name
+    K_g = np.eye(3) * 2.731  # noqa: N806, invalid-name
+    R_g = np.eye(3)  # noqa: N806, invalid-name
+    K_ga = np.zeros((3, 3))  # noqa: N806, invalid-name
 
     # TODO: Convert to m/s^2
 

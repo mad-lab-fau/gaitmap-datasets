@@ -1,24 +1,29 @@
+"""General helper to load and manage the dataset.
+
+These are the logic behind the dataset implementation, but can also be used independently.
+"""
+
 import re
 from pathlib import Path
-from typing import Optional, List, Literal, Dict
+from typing import Dict, List, Literal, Optional
 
 import pandas as pd
+from scipy.spatial.transform import Rotation
 
 from mad_datasets.egait_validation_2013.egait_loading_helper import load_shimmer2_data
+from mad_datasets.utils.coordinate_transforms import rotate_dataset, rotate_sensor
 
 CALIBRATION_FILE_NAMES = {
     "left_sensor": "A917.csv",
     "right_sensor": "A6DF.csv",
 }
 
-COORDINATE_SYSTEM_TRANSFORMATION = (  # egait_lateral_shimmer2r
-    {
-        # [[-y -> +x], [+z -> +y], [-x -> +z]]
-        "left_sensor": [[0, -1, 0], [0, 0, 1], [-1, 0, 0]],
-        # [[+y -> +x], [-z -> +y], [-x -> +z]]
-        "right_sensor": [[0, 1, 0], [0, 0, -1], [-1, 0, 0]],
-    },
-)
+COORDINATE_SYSTEM_TRANSFORMATION = {  # egait_lateral_shimmer2r
+    # [[-y -> +x], [+z -> +y], [-x -> +z]]
+    "left_sensor": [[0, -1, 0], [0, 0, 1], [-1, 0, 0]],
+    # [[+y -> +x], [-z -> +y], [-x -> +z]]
+    "right_sensor": [[0, 1, 0], [0, 0, -1], [-1, 0, 0]],
+}
 
 
 def _raw_data_folder(base_dir: Path) -> Path:
@@ -53,7 +58,9 @@ def get_all_data_for_participant(
     left_data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_left.dat"
     right_data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_right.dat"
 
-    return load_shimmer2_data(left_data_path, right_data_path, _calibration_folder(base_dir), CALIBRATION_FILE_NAMES)
+    data = load_shimmer2_data(left_data_path, right_data_path, _calibration_folder(base_dir), CALIBRATION_FILE_NAMES)
+    data = {k: rotate_sensor(v, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION[k])) for k, v in data.items()}
+    return data
 
 
 def get_segmented_stride_list(

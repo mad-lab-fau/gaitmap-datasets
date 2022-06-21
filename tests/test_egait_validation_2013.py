@@ -12,10 +12,10 @@ from mad_datasets.egait_validation_2013.egait_loading_helper import (
 )
 from mad_datasets.egait_validation_2013.helper import (
     CALIBRATION_FILE_NAMES,
-    get_all_participants,
     get_all_data_for_participant,
-    get_segmented_stride_list,
+    get_all_participants,
     get_gaitrite_parameters,
+    get_segmented_stride_list,
 )
 from mad_datasets.utils.consts import SF_ACC
 from mad_datasets.utils.data_loading import load_bin_file
@@ -85,10 +85,14 @@ def test_get_all_data_for_participant():
 
     assert list(data.keys()) == ["left_sensor", "right_sensor"]
 
-    # We only test the shape and the acc data. We verified the rest in a previous test
     for sensor in ["left_sensor", "right_sensor"]:
         assert data[sensor].shape == reference_data[sensor].shape
-        assert_frame_equal(data[sensor][SF_ACC], reference_data[sensor][SF_ACC])
+        # The loaded data is transformed to the common sensor frame definition
+        # We test a couple of columns, but in general we trust that the transformation is correct
+        if sensor == "left_sensor":
+            assert_series_equal(data[sensor]["acc_x"], -reference_data[sensor]["acc_y"], check_names=False)
+        else:
+            assert_series_equal(data[sensor]["acc_x"], reference_data[sensor]["acc_y"], check_names=False)
 
 
 def test_get_stride_borders():
