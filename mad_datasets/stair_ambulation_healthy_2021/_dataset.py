@@ -255,6 +255,11 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
     Note, that the entire recording is still split into two parts.
     These are represented in the index of the dataset.
 
+    Within each part of the recording, a number of tests were performed.
+    You can extract the test list using `self.test_list`.
+    Note, that between the tests participants were instructed to jump up and down three times to mark the start and
+    end of each test.
+
     Parameters
     ----------
     data_folder

@@ -165,7 +165,7 @@ plt.show()
 # The StairAmbulationHealthy2021Full dataset is contains the complete recordings of all 20 participants, not cut into
 # individual tests.
 # Note, that there are still two recordings per participant.
-# Because of the length of the data recording we decided to split the sessions to reduce the chance of data loss.
+# This is because data was collected at two different locations and hence, the data is split into two sections.
 #
 # The StairAmbulationHealthy2021Full dataclass can be used equivalently to the StairAmbulationHealthyPerTest dataset.
 # The only difference is that instead of the individual tests, we can see the two parts in the index for the dataset.
@@ -181,7 +181,7 @@ dataset = StairAmbulationHealthy2021Full(
 dataset
 
 # %%
-subset = next(iter(dataset))
+subset = dataset.get_subset(participant="subject_01", part="part_2")
 subset
 
 # %%
@@ -193,25 +193,15 @@ subset
 subset.test_list
 
 # %%
-# When plotting the data in the entire `part_1` recording, we can see that it spans multiple tests including multiple
+# When plotting the data in the entire `part_2` recording, we can see that it spans multiple tests including multiple
 # walks up and down various stairs.
+#
+# If you would zoom in, you can see that between each test, the participants were instructed to jump up and down 3
+# times.
+# These jump events were used as marker to cut the individual tests.
 imu_data = subset.data
 baro_data = subset.baro_data
 
-foot = "right_sensor"
-_, axs = plt.subplots(nrows=3, figsize=(10, 10), sharex=True)
-imu_data[foot].filter(like="gyr").plot(ax=axs[0])
-imu_data[foot].filter(like="acc").plot(ax=axs[1])
-baro_data[foot].plot(ax=axs[2])
-
-axs[0].set_ylabel("Rate of rotation [deg/s]")
-axs[1].set_ylabel("Acceleration [m/s^2]")
-axs[2].set_ylabel("Air Pressure [mbar]")
-axs[2].set_xlabel("Time [s]")
-
-plt.show()
-
-# %%
 foot = "right_sensor"
 _, axs = plt.subplots(nrows=3, figsize=(10, 10), sharex=True)
 imu_data[foot].filter(like="gyr").plot(ax=axs[0])
@@ -228,6 +218,7 @@ axs[1].set_ylabel("Acceleration [m/s^2]")
 axs[2].set_ylabel("Air Pressure [mbar]")
 axs[2].set_xlabel("Time [s]")
 
+plt.xlim(550, 650)
 plt.show()
 
 # %%
