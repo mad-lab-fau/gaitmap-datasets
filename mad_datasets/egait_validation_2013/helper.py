@@ -72,7 +72,9 @@ def get_segmented_stride_list(
     return stride_borders
 
 
-def get_gaitrite_parameters(participant_id: str, *, base_dir: Optional[Path] = None) -> pd.DataFrame:
+def get_gaitrite_parameters(
+    participant_id: str, *, base_dir: Optional[Path] = None
+) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the gaitrite parameters for a participant."""
     parameters = {}
     for foot in ["left", "right"]:
