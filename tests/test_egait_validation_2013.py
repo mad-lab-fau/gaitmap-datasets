@@ -4,8 +4,8 @@ import pandas as pd
 import pytest
 from pandas._testing import assert_frame_equal, assert_series_equal
 
-from mad_datasets.egait_validation_2013 import EgaitValidation2013
-from mad_datasets.egait_validation_2013.helper import (
+from mad_datasets.egait_parameter_validation_2013 import EgaitParameterValidation2013
+from mad_datasets.egait_parameter_validation_2013.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_gaitrite_parameters,
@@ -73,17 +73,17 @@ def test_get_gaitrite_parameters():
     assert len(data["right_sensor"]) == 7
 
 
-class TestEgaitValidation2013Dataset:
+class TestEgaitParameterValidation2013Dataset:
     def test_index(self):
-        dataset = EgaitValidation2013(data_folder=base_dir)
+        dataset = EgaitParameterValidation2013(data_folder=base_dir)
         assert len(dataset) == 101
 
     def test_sampling_rate(self):
-        dataset = EgaitValidation2013(data_folder=base_dir)
+        dataset = EgaitParameterValidation2013(data_folder=base_dir)
         assert dataset.sampling_rate_hz == 102.4
 
     def test_imu_data(self):
-        dataset = EgaitValidation2013(data_folder=base_dir)
+        dataset = EgaitParameterValidation2013(data_folder=base_dir)
         imu_data = dataset.get_subset(participant="P115").data
 
         reference_data = get_all_data_for_participant("P115", base_dir=base_dir)
@@ -98,7 +98,7 @@ class TestEgaitValidation2013Dataset:
             assert imu_data[sensor].index.name == "time [s]"
 
     def test_stride_borders(self):
-        dataset = EgaitValidation2013(data_folder=base_dir)
+        dataset = EgaitParameterValidation2013(data_folder=base_dir)
         stride_list = dataset.get_subset(participant="P115").segmented_stride_list_
 
         reference_data = get_segmented_stride_list("P115", base_dir=base_dir)
@@ -107,7 +107,7 @@ class TestEgaitValidation2013Dataset:
             assert_frame_equal(stride_list[sensor], reference_data[sensor])
 
     def test_gait_parameters(self):
-        dataset = EgaitValidation2013(data_folder=base_dir)
+        dataset = EgaitParameterValidation2013(data_folder=base_dir)
         parameters = dataset.get_subset(participant="P115").gaitrite_parameters_
 
         reference_data = get_gaitrite_parameters("P115", base_dir=base_dir)
@@ -117,6 +117,6 @@ class TestEgaitValidation2013Dataset:
 
     @pytest.mark.parametrize("attribute", ["data", "segmented_stride_list_", "gaitrite_parameters_"])
     def test_raises_error_if_not_single(self, attribute):
-        dataset = EgaitValidation2013(data_folder=base_dir)
+        dataset = EgaitParameterValidation2013(data_folder=base_dir)
         with pytest.raises(ValueError):
             getattr(dataset, attribute)

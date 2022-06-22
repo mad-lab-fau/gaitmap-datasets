@@ -1,4 +1,4 @@
-"""The core tpcp Dataset class for the Egait Validation Dataset."""
+"""The core tpcp Dataset class for the Egait Parameter Validation Dataset."""
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Union
 
@@ -6,7 +6,7 @@ import pandas as pd
 from joblib import Memory
 from tpcp import Dataset
 
-from mad_datasets.egait_validation_2013.helper import (
+from mad_datasets.egait_parameter_validation_2013.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_gaitrite_parameters,
@@ -14,8 +14,8 @@ from mad_datasets.egait_validation_2013.helper import (
 )
 
 
-class EgaitValidation2013(Dataset):
-    """Egait validation 2013 dataset."""
+class EgaitParameterValidation2013(Dataset):
+    """Egait parameter validation 2013 dataset."""
 
     def __init__(
         self,

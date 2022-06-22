@@ -1,6 +1,7 @@
-"""Example showing how to interact with the EgaitValidation2013 dataset.
+"""Example showing how to interact with the EgaitParameterValidation2013 dataset.
 
-The EgaitValidation2013 dataset allows access to the parameter validation dataset recorded for the EGait system.
+The EgaitParameterValidation2013 dataset allows access to the parameter validation dataset recorded for the EGait
+system.
 It contains multiple short walks recorded by two foot worn IMU sensors and a GaitRite carpet as reference.
 Unfortunately, the Gaitrite and the IMU sensors are not synchronized.
 To solve this, the IMU-data was cut to the strides that are expected to be on the GaitRite carpet by counting the number
@@ -16,7 +17,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from mad_datasets.egait_validation_2013 import EgaitValidation2013
+from mad_datasets.egait_parameter_validation_2013 import EgaitParameterValidation2013
 
 dataset_path = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database/")
 
@@ -24,7 +25,7 @@ dataset_path = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database/")
 # First we will create a simple instance of the dataset class.
 # We can see that it contains a single recording per participant for 101 participants.
 
-dataset = EgaitValidation2013(data_folder=dataset_path)
+dataset = EgaitParameterValidation2013(data_folder=dataset_path)
 dataset
 
 # %%
