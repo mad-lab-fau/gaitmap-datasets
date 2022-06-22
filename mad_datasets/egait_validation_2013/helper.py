@@ -11,7 +11,7 @@ import pandas as pd
 from scipy.spatial.transform import Rotation
 
 from mad_datasets.egait_validation_2013.egait_loading_helper import load_shimmer2_data
-from mad_datasets.utils.coordinate_transforms import rotate_dataset, rotate_sensor
+from mad_datasets.utils.coordinate_transforms import rotate_sensor
 
 CALIBRATION_FILE_NAMES = {
     "left_sensor": "A917.csv",

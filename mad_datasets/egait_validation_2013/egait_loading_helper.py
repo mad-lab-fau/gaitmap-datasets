@@ -87,8 +87,8 @@ def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:
     plus_g = cal_matrix[0]
     minus_g = cal_matrix[1]
     b_a = (plus_g + minus_g) / 2  # noqa: N806, invalid-name
-    K_a = np.eye(3) * (plus_g - minus_g) / 2 # noqa: N806, invalid-name
-    K_a /= 9.81  # convert to m/s^2
+    K_a = np.eye(3) * (plus_g - minus_g) / 2  # noqa: N806, invalid-name
+    K_a /= 9.81  # convert to m/s^2  # noqa: N806, invalid-name
     R_a = np.eye(3)  # noqa: N806, invalid-name
     b_g = cal_matrix[2]  # noqa: N806, invalid-name
     K_g = np.eye(3) * 2.731  # noqa: N806, invalid-name

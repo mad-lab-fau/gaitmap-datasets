@@ -1,3 +1,4 @@
+"""The core tpcp Dataset class for the Egait Validation Dataset."""
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Union
 
