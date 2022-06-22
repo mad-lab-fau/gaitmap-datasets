@@ -42,9 +42,15 @@ class EgaitValidation2013(Dataset):
     def data(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the imu data."""
         self.assert_is_single(None, "data")
-        return self.memory.cache(get_all_data_for_participant)(
+        data = self.memory.cache(get_all_data_for_participant)(
             self.index.participant.iloc[0], base_dir=self._data_folder_path
         )
+        final_data = {}
+        for k, v in data.items():
+            v.index /= self.sampling_rate_hz
+            v.index.name = "time [s]"
+            final_data[k] = v
+        return final_data
 
     @property
     def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:

@@ -22,38 +22,40 @@ from mad_datasets.utils.data_loading import load_bin_file
 
 base_dir = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database")
 
+HERE = Path(__file__).parent
+
 
 def test_basic_data_loading():
-    data = load_bin_file(Path("./egait_validation_2013_test_data/P115_E4_left.dat"), SHIMMER2_DATA_LAYOUT)
+    data = load_bin_file(HERE / "egait_validation_2013_test_data/P115_E4_left.dat", SHIMMER2_DATA_LAYOUT)
     # Reference data produced by the matlab import script
-    reference_data = pd.read_csv("./egait_validation_2013_test_data/P115_E4_left.csv", header=0)
+    reference_data = pd.read_csv(HERE / "egait_validation_2013_test_data/P115_E4_left.csv", header=0)
     assert_frame_equal(data.astype(int), reference_data.drop(columns=["n_samples"]))
 
 
 def test_calibration():
-    data = load_bin_file(Path("./egait_validation_2013_test_data/P115_E4_left.dat"), SHIMMER2_DATA_LAYOUT).astype(float)
-    cal_matrix = load_compact_cal_matrix(Path("./egait_validation_2013_test_data/A917.csv"))
+    data = load_bin_file(HERE / "egait_validation_2013_test_data/P115_E4_left.dat", SHIMMER2_DATA_LAYOUT).astype(float)
+    cal_matrix = load_compact_cal_matrix(HERE / "egait_validation_2013_test_data/A917.csv")
     calibrated_data = cal_matrix.calibrate_df(data, "a.u.", "a.u.")
     # Reference data produced by the matlab import script
-    reference_data = pd.read_csv("./egait_validation_2013_test_data/P115_E4_left_calibrated.csv", header=0)
+    reference_data = pd.read_csv(HERE / "egait_validation_2013_test_data/P115_E4_left_calibrated.csv", header=0)
     reference_data[SF_ACC] *= 9.81
     assert_frame_equal(calibrated_data, reference_data.drop(columns=["n_samples"]))
 
 
 def test_data_loading_with_transformation():
     data = load_shimmer2_data(
-        Path("./egait_validation_2013_test_data/P115_E4_left.dat"),
-        Path("./egait_validation_2013_test_data/P115_E4_right.dat"),
-        Path("./egait_validation_2013_test_data"),
+        HERE / "egait_validation_2013_test_data/P115_E4_left.dat",
+        HERE / "egait_validation_2013_test_data/P115_E4_right.dat",
+        HERE / "egait_validation_2013_test_data",
         CALIBRATION_FILE_NAMES,
     )
     reference_data = {
-        "left_sensor": pd.read_csv("./egait_validation_2013_test_data/P115_E4_left_calibrated.csv", header=0).drop(
+        "left_sensor": pd.read_csv(HERE / "egait_validation_2013_test_data/P115_E4_left_calibrated.csv", header=0).drop(
             columns=["n_samples"]
         ),
-        "right_sensor": pd.read_csv("./egait_validation_2013_test_data/P115_E4_right_calibrated.csv", header=0).drop(
-            columns=["n_samples"]
-        ),
+        "right_sensor": pd.read_csv(
+            HERE / "egait_validation_2013_test_data/P115_E4_right_calibrated.csv", header=0
+        ).drop(columns=["n_samples"]),
     }
 
     for sensor in ["left_sensor", "right_sensor"]:
@@ -76,12 +78,12 @@ def test_get_all_data_for_participant():
     data = get_all_data_for_participant("P115", base_dir=base_dir)
 
     reference_data = {
-        "left_sensor": pd.read_csv("./egait_validation_2013_test_data/P115_E4_left_calibrated.csv", header=0).drop(
+        "left_sensor": pd.read_csv(HERE / "egait_validation_2013_test_data/P115_E4_left_calibrated.csv", header=0).drop(
             columns=["n_samples"]
         ),
-        "right_sensor": pd.read_csv("./egait_validation_2013_test_data/P115_E4_right_calibrated.csv", header=0).drop(
-            columns=["n_samples"]
-        ),
+        "right_sensor": pd.read_csv(
+            HERE / "egait_validation_2013_test_data/P115_E4_right_calibrated.csv", header=0
+        ).drop(columns=["n_samples"]),
     }
 
     assert list(data.keys()) == ["left_sensor", "right_sensor"]
@@ -140,7 +142,13 @@ class TestEgaitValidation2013Dataset:
         reference_data = get_all_data_for_participant("P115", base_dir=base_dir)
 
         for sensor in ["left_sensor", "right_sensor"]:
-            assert_frame_equal(imu_data[sensor], reference_data[sensor])
+            assert_frame_equal(imu_data[sensor].reset_index(drop=True), reference_data[sensor])
+            assert_series_equal(
+                pd.Series(imu_data[sensor].index),
+                pd.Series(reference_data[sensor].index / dataset.sampling_rate_hz),
+                check_names=False,
+            )
+            assert imu_data[sensor].index.name == "time [s]"
 
     def test_stride_borders(self):
         dataset = EgaitValidation2013(data_folder=base_dir)
