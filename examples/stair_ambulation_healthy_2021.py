@@ -49,9 +49,8 @@ subset
 
 # %%
 # Once we have the selection of data we want to work with, we can iterate the dataset object to access the data of
-# individual datapoints.
-# Here we will just use the `next` function to get the first datapoint from the dataset
-datapoint = next(iter(subset))
+# individual datapoints or just index it as below.
+datapoint = subset[0]
 datapoint
 
 # %%

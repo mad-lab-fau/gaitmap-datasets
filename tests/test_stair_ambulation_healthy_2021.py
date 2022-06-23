@@ -113,7 +113,7 @@ class TestDatasetCommon:
             include_baro_data=include_baro_data,
             include_pressure_data=include_pressure_data,
         )
-        dataset = dataset.get_subset(index=dataset.index.iloc[:1])
+        dataset = dataset[0]
 
         imu_data = dataset.data
         assert all(c in imu_data.columns.get_level_values(0) for c in ["left_sensor", "right_sensor"])
@@ -151,7 +151,7 @@ class TestDatasetCommon:
         dataset = self.dataset_class(
             data_folder=base_dir, include_baro_data=True, include_pressure_data=True, include_hip_sensor=True
         )
-        dataset = dataset.get_subset(index=dataset.index.iloc[:1])
+        dataset = dataset[0]
 
         assert dataset.data.shape[0] == dataset.pressure_data.shape[0] == dataset.baro_data.shape[0]
 
@@ -172,7 +172,7 @@ class TestDatasetCommon:
     @pytest.mark.parametrize("include_z_level", [True, False])
     def test_include_stride_border_columns(self, include_z_level):
         dataset = self.dataset_class(data_folder=base_dir)
-        dataset = dataset.get_subset(index=dataset.index.iloc[:1])
+        dataset = dataset[0]
 
         stride_borders = dataset.get_segmented_stride_list_with_type(return_z_level=include_z_level)
         for borders in stride_borders.values():
@@ -187,7 +187,7 @@ class TestDatasetCommon:
     )
     def test_filter_stride_list(self, filter):
         dataset = self.dataset_class(data_folder=base_dir)
-        dataset = dataset.get_subset(index=dataset.index.iloc[1:2])
+        dataset = dataset[1]
         stride_borders = dataset.get_segmented_stride_list_with_type(stride_type=filter, return_z_level=True)
 
         all_stride_types = ["level", "ascending", "descending", "slope_ascending", "slope_descending"]
@@ -210,7 +210,7 @@ class TestDatasetCommon:
 
     def test_segmented_stride_list_property(self):
         dataset = self.dataset_class(data_folder=base_dir)
-        dataset = dataset.get_subset(index=dataset.index.iloc[:1])
+        dataset = dataset[0]
 
         stride_borders_1 = dataset.get_segmented_stride_list_with_type(return_z_level=False)
         stride_borders_2 = dataset.segmented_stride_list_
@@ -221,7 +221,7 @@ class TestDatasetCommon:
 
     def test_metadata_property(self):
         dataset = self.dataset_class(data_folder=base_dir)
-        dataset = dataset.get_subset(index=dataset.index.iloc[:1])
+        dataset = dataset[0]
 
         metadata = dataset.metadata
         assert metadata["subject_id"] == "001"
@@ -392,7 +392,7 @@ class TestStairAmbulationHealthy2021Full:
             base_dir,
             ignore_manual_session_markers=False,
         )
-        dataset = dataset.get_subset(index=dataset.index.iloc[1:2])
+        dataset = dataset[1]
 
         test_list = dataset.test_list
         assert test_list.index.name == "roi_id"

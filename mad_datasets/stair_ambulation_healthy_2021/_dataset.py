@@ -72,7 +72,7 @@ class _StairAmbulationHealthy2021(Dataset):
     def metadata(self) -> Dict[str, Any]:
         """Get the metadata for a participant."""
         self.assert_is_single(["participant"], "metadata")
-        return get_participant_metadata(self.index.iloc[0]["participant"], base_dir=self._data_folder_path)
+        return get_participant_metadata(self.group.participant, base_dir=self._data_folder_path)
 
     @property
     def _data_folder_path(self) -> Path:
@@ -207,20 +207,20 @@ class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
 
     def _get_participant_and_part(self, error_name: str) -> Tuple[str, Literal["part_1", "part_2"]]:
         self.assert_is_single(None, error_name)
-        participant, test = self.index.iloc[0]
+        participant, test = self.group
         part = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]["part"]
         return participant, part
 
     def _cut_data_to_region(self, df: pd.DataFrame) -> pd.DataFrame:
         # We assume that the df we get is from the correct participant and part
-        participant, test = self.index.iloc[0]
+        participant, test = self.group
         test = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]
         df = df.iloc[test["start"] : test["end"]]
         return df.reset_index(drop=True)
 
     def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: List[str]) -> pd.DataFrame:
         # We assume that the df we get is from the correct participant and part
-        participant, test = self.index.iloc[0]
+        participant, test = self.group
         test = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]
         df = df.loc[(df["start"] >= test["start"]) & (df["end"] <= test["end"])].copy()
         df.loc[:, numeric_cols] -= test["start"]
@@ -312,7 +312,7 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
 
     def _get_participant_and_part(self, error_name: str) -> Tuple[str, Literal["part_1", "part_2"]]:
         self.assert_is_single(None, error_name)
-        participant, part = self.index.iloc[0]
+        participant, part = self.group
         return participant, part
 
     def _cut_data_to_region(self, df: pd.DataFrame) -> pd.DataFrame:

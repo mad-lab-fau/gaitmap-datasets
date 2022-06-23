@@ -57,13 +57,13 @@ class EgaitParameterValidation2013(Dataset):
     def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the segmented stride list."""
         self.assert_is_single(None, "segmented_stride_list_")
-        return get_segmented_stride_list(self.index.participant.iloc[0], base_dir=self._data_folder_path)
+        return get_segmented_stride_list(self.group, base_dir=self._data_folder_path)
 
     @property
     def gaitrite_parameters_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the gaitrite parameters."""
         self.assert_is_single(None, "gaitrite_parameters_")
-        return get_gaitrite_parameters(self.index.participant.iloc[0], base_dir=self._data_folder_path)
+        return get_gaitrite_parameters(self.group, base_dir=self._data_folder_path)
 
     def create_index(self) -> pd.DataFrame:
         """Create index."""

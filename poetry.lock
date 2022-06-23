@@ -1346,7 +1346,7 @@ python-versions = ">= 3.5"
 
 [[package]]
 name = "tpcp"
-version = "0.6.3"
+version = "0.7.0"
 description = "Pipeline and Dataset helpers for complex algorithm evaluation."
 category = "main"
 optional = false
@@ -1444,7 +1444,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "2d5b82ecbebb6443f0dfe6d2ed64166e9ee12cc062c1d07a2722a6ef0418fc20"
+content-hash = "1c29ef8a1992e62c81cefc88cb01a1a908c7a4880582191f28d07c62708e3575"
 
 [metadata.files]
 alabaster = [
@@ -2437,8 +2437,8 @@ tornado = [
     {file = "tornado-6.1.tar.gz", hash = "sha256:33c6e81d7bd55b468d2e793517c909b139960b6c790a60b7991b9b6b76fb9791"},
 ]
 tpcp = [
-    {file = "tpcp-0.6.3-py3-none-any.whl", hash = "sha256:5cb2e862e64d96b275c5d0f385534c66b1217bb24ca7dca8c44e5882910a9568"},
-    {file = "tpcp-0.6.3.tar.gz", hash = "sha256:07e725fbb88294cb2fe1d2d457bd27273845e57664b3b0b1989e9a39de9084ee"},
+    {file = "tpcp-0.7.0-py3-none-any.whl", hash = "sha256:2d02b52dd248168941044b3c3721bb2a850170adb42f247b52e0b22c5b09c25b"},
+    {file = "tpcp-0.7.0.tar.gz", hash = "sha256:ce0ffaaaa7f5914dabac44dadce728fa00ecfd5823034aefde49abc309d2f075"},
 ]
 tqdm = [
     {file = "tqdm-4.64.0-py2.py3-none-any.whl", hash = "sha256:74a2cdefe14d11442cedf3ba4e21a3b84ff9a2dbdc6cfae2c34addb2a14a5ea6"},
