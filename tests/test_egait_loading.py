@@ -29,12 +29,6 @@ def test_calibration():
 
 
 def test_data_loading_with_transformation():
-    data = load_shimmer2_data(
-        HERE / "egait_validation_2013_test_data/P115_E4_left.dat",
-        HERE / "egait_validation_2013_test_data/P115_E4_right.dat",
-        HERE / "egait_validation_2013_test_data",
-        CALIBRATION_FILE_NAMES,
-    )
     reference_data = {
         "left_sensor": pd.read_csv(HERE / "egait_validation_2013_test_data/P115_E4_left_calibrated.csv", header=0).drop(
             columns=["n_samples"]
@@ -44,13 +38,17 @@ def test_data_loading_with_transformation():
         ).drop(columns=["n_samples"]),
     }
 
+    data_path = {"left_sensor": HERE / "egait_validation_2013_test_data/P115_E4_left.dat", "right_sensor": HERE / "egait_validation_2013_test_data/P115_E4_right.dat"}
+
     for sensor in ["left_sensor", "right_sensor"]:
-        # Ensure that we have a proper dtype and not uint from loading
-        data[sensor] = data[sensor].astype(float)
+        data = load_shimmer2_data(
+            data_path[sensor],
+            HERE / "egait_validation_2013_test_data" / CALIBRATION_FILE_NAMES[sensor],
+        )
         reference_data[sensor] = reference_data[sensor].astype(float)
 
-        assert data[sensor].shape == reference_data[sensor].shape
-        assert_series_equal(data[sensor]["gyr_x"], reference_data[sensor]["gyr_y"], check_names=False)
-        assert_series_equal(data[sensor]["gyr_y"], reference_data[sensor]["gyr_x"], check_names=False)
-        assert_series_equal(data[sensor]["gyr_z"], -reference_data[sensor]["gyr_z"], check_names=False)
-        assert_frame_equal(data[sensor][SF_ACC], reference_data[sensor][SF_ACC] * 9.81)
+        assert data.shape == reference_data[sensor].shape
+        assert_series_equal(data["gyr_x"], reference_data[sensor]["gyr_y"], check_names=False)
+        assert_series_equal(data["gyr_y"], reference_data[sensor]["gyr_x"], check_names=False)
+        assert_series_equal(data["gyr_z"], -reference_data[sensor]["gyr_z"], check_names=False)
+        assert_frame_equal(data[SF_ACC], reference_data[sensor][SF_ACC] * 9.81)
