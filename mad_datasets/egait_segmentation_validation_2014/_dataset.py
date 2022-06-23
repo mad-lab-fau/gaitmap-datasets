@@ -6,7 +6,7 @@ import pandas as pd
 from joblib import Memory
 from tpcp import Dataset
 
-from mad_datasets.egait_segmentation_validation_2013.helper import (
+from mad_datasets.egait_segmentation_validation_2014.helper import (
     get_segmented_stride_list,
     get_all_data_for_participant,
     get_all_participants,
@@ -14,7 +14,7 @@ from mad_datasets.egait_segmentation_validation_2013.helper import (
 
 # TODO: Handle the missing datafile
 
-class EgaitSegmentationValidation2013(Dataset):
+class EgaitSegmentationValidation2014(Dataset):
     """Egait stride segmentation validation 2013 dataset."""
 
     def __init__(

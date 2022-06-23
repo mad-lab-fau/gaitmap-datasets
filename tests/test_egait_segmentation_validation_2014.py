@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from mad_datasets.egait_segmentation_validation_2013.helper import (
+from mad_datasets.egait_segmentation_validation_2014.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_segmented_stride_list,
