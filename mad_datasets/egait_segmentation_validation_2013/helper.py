@@ -58,7 +58,7 @@ def _extract_participant_id(file_name: str, test: Tests) -> str:
     raise ValueError("Invalid file format")
 
 
-def find_files_for_participant(
+def _find_files_for_participant(
     directory: Path, participant_id: str
 ) -> Dict[Literal["left_sensor", "right_sensor"], Optional[Path]]:
     """Find the file for a participant."""
@@ -95,7 +95,7 @@ def get_all_data_for_participant(
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the data for a participant."""
     raw_data_folder = _raw_data_folder(base_dir, cohort, test)
-    files = find_files_for_participant(raw_data_folder, participant_id)
+    files = _find_files_for_participant(raw_data_folder, participant_id)
     # We need to load the stride segmentation data as well, because it contains the information about the calibration
     # files.
     stride_segmentation_folder = _reference_stride_borders_folder(base_dir, cohort, test)
@@ -111,3 +111,26 @@ def get_all_data_for_participant(
         data = rotate_sensor(data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION[sensor]))
         all_data[sensor] = data
     return all_data
+
+
+def get_segmented_stride_list(
+    participant_id: str, cohort: Cohorts, test: Tests, *, base_dir: Optional[Path] = None
+) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    """Get the list of all strides for a participant."""
+    stride_borders = {}
+    stride_segmentation_folder = _reference_stride_borders_folder(base_dir, cohort, test)
+    segmentation_files = _find_files_for_participant(stride_segmentation_folder, participant_id)
+    for sensor, file_path in segmentation_files.items():
+        if file_path is None:
+            stride_borders[sensor] = None
+            continue
+        stride_borders[sensor] = (
+            pd.read_csv(
+                file_path,
+                skiprows=8,
+                header=0,
+            )
+            .rename(columns={"Start": "start", "End": "end"})
+            .rename_axis(index="s_id")
+        )
+    return stride_borders
