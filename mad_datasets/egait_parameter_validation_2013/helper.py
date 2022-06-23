@@ -55,12 +55,15 @@ def get_all_data_for_participant(
     participant_id: str, *, base_dir: Optional[Path] = None
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get all data for a participant."""
-    left_data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_left.dat"
-    right_data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_right.dat"
-
-    data = load_shimmer2_data(left_data_path, right_data_path, _calibration_folder(base_dir), CALIBRATION_FILE_NAMES)
-    data = {k: rotate_sensor(v, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION[k])) for k, v in data.items()}
-    return data
+    all_data = {}
+    for foot in ["left", "right"]:
+        sensor = foot + "_sensor"
+        data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_{foot}.dat"
+        calibration_path = _calibration_folder(base_dir) / CALIBRATION_FILE_NAMES[sensor]
+        data = load_shimmer2_data(data_path, calibration_path)
+        data = rotate_sensor(data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION[sensor]))
+        all_data[sensor] = data
+    return all_data
 
 
 def get_segmented_stride_list(

@@ -19,9 +19,7 @@ SHIMMER2_DATA_LAYOUT = {
 }
 
 
-def transform_shimmer2_axes(
-    dataset: Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+def transform_shimmer2_axes(dataset: pd.DataFrame) -> pd.DataFrame:
     """Transform shimmer2 axes to align acc and gyroscope.
 
     Parameters
@@ -37,46 +35,31 @@ def transform_shimmer2_axes(
     """
     # we need to handle the gyro-coordinate system separately because it is left-handed and rotated against the
     # acc-coordinate system
-    for sensor in ["left_sensor", "right_sensor"]:
-        # Ensure that we have a proper dtype and not uint from loading
-        dataset[sensor] = dataset[sensor].astype(float)
-        gyr_x_original = copy.deepcopy(dataset[sensor]["gyr_x"])
-        gyr_y_original = copy.deepcopy(dataset[sensor]["gyr_y"])
-        gyr_z_original = copy.deepcopy(dataset[sensor]["gyr_z"])
+    # Ensure that we have a proper dtype and not uint from loading
+    dataset = dataset.astype(float)
+    gyr_x_original = copy.deepcopy(dataset["gyr_x"])
+    gyr_y_original = copy.deepcopy(dataset["gyr_y"])
+    gyr_z_original = copy.deepcopy(dataset["gyr_z"])
 
-        dataset[sensor]["gyr_x"] = gyr_y_original
-        dataset[sensor]["gyr_y"] = gyr_x_original
-        dataset[sensor]["gyr_z"] = -gyr_z_original
+    dataset["gyr_x"] = gyr_y_original
+    dataset["gyr_y"] = gyr_x_original
+    dataset["gyr_z"] = -gyr_z_original
 
     return dataset
 
 
-def calibrate_shimmer2_data(
-    data: Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame],
-    calibration_base_path: Path,
-    calibration_mapping: Dict[Literal["left_sensor", "right_sensor"], str],
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+def calibrate_shimmer2_data(data: pd.DataFrame, calibration_file_path: Path,) -> pd.DataFrame:
     """Calibrate shimmer2 data."""
-    for sensor in ["left_sensor", "right_sensor"]:
-        cal_path = calibration_base_path / calibration_mapping[sensor]
-        cal_matrix = load_compact_cal_matrix(cal_path)
-        data[sensor] = cal_matrix.calibrate_df(data[sensor], "a.u.", "a.u.")
+    cal_matrix = load_compact_cal_matrix(calibration_file_path)
+    data = cal_matrix.calibrate_df(data, "a.u.", "a.u.")
 
     return data
 
 
-def load_shimmer2_data(
-    left_sensor_path: Path,
-    right_sensor_path: Path,
-    calibration_base_path: Path,
-    calibration_mapping: Dict[Literal["left_sensor", "right_sensor"], str],
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+def load_shimmer2_data(data_path: Path, calibration_file_path: Path,) -> pd.DataFrame:
     """Load shimmer2 data from a file."""
-    data = {
-        "left_sensor": load_bin_file(left_sensor_path, SHIMMER2_DATA_LAYOUT),
-        "right_sensor": load_bin_file(right_sensor_path, SHIMMER2_DATA_LAYOUT),
-    }
-    data = calibrate_shimmer2_data(data, calibration_base_path, calibration_mapping)
+    data = load_bin_file(data_path, SHIMMER2_DATA_LAYOUT)
+    data = calibrate_shimmer2_data(data, calibration_file_path)
     data = transform_shimmer2_axes(data)
     return data
 
