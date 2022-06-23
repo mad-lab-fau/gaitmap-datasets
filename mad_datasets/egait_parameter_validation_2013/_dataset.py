@@ -44,7 +44,7 @@ class EgaitParameterValidation2013(Dataset):
         """Get the imu data."""
         self.assert_is_single(None, "data")
         data = self.memory.cache(get_all_data_for_participant)(
-            self.index.participant.iloc[0], base_dir=self._data_folder_path
+            self.group, base_dir=self._data_folder_path
         )
         final_data = {}
         for k, v in data.items():
