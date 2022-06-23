@@ -3,7 +3,7 @@
 These are the logic behind the dataset implementation, but can also be used independently.
 """
 from pathlib import Path
-from typing import Literal, Optional, List, Tuple, Dict
+from typing import Dict, List, Literal, Optional, Tuple
 
 import pandas as pd
 from scipy.spatial.transform import Rotation
@@ -51,11 +51,11 @@ def _extract_participant_id(file_name: str, test: Tests) -> str:
     """Extract the participant id from the file name."""
     if test == "4x10m":
         return file_name.split("_")[0].upper()
-    elif test == "free_walk":
+    if test == "free_walk":
         for foot in ["left", "right"]:
             if f"{foot}foot" in file_name.lower():
                 return file_name.lower().split(f"{foot}foot")[0].upper()
-    raise ValueError("Invalid file format")
+    raise ValueError("Invalid file format or test name")
 
 
 def _find_files_for_participant(

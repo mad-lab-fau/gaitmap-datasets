@@ -1,7 +1,10 @@
 from pathlib import Path
 
-from mad_datasets.egait_segmentation_validation_2013.helper import get_all_participants, get_all_data_for_participant, \
-    get_segmented_stride_list
+from mad_datasets.egait_segmentation_validation_2013.helper import (
+    get_all_data_for_participant,
+    get_all_participants,
+    get_segmented_stride_list,
+)
 from mad_datasets.utils.consts import SF_COLS
 
 base_dir = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database_segmentation")

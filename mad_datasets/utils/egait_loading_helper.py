@@ -1,7 +1,6 @@
 """Helper to load data of the egait system (specifically the shimmer 2R system)."""
 import copy
 from pathlib import Path
-from typing import Dict, Literal
 
 import numpy as np
 import pandas as pd
@@ -48,7 +47,10 @@ def transform_shimmer2_axes(dataset: pd.DataFrame) -> pd.DataFrame:
     return dataset
 
 
-def calibrate_shimmer2_data(data: pd.DataFrame, calibration_file_path: Path,) -> pd.DataFrame:
+def calibrate_shimmer2_data(
+    data: pd.DataFrame,
+    calibration_file_path: Path,
+) -> pd.DataFrame:
     """Calibrate shimmer2 data."""
     cal_matrix = load_compact_cal_matrix(calibration_file_path)
     data = cal_matrix.calibrate_df(data, "a.u.", "a.u.")
@@ -56,7 +58,10 @@ def calibrate_shimmer2_data(data: pd.DataFrame, calibration_file_path: Path,) ->
     return data
 
 
-def load_shimmer2_data(data_path: Path, calibration_file_path: Path,) -> pd.DataFrame:
+def load_shimmer2_data(
+    data_path: Path,
+    calibration_file_path: Path,
+) -> pd.DataFrame:
     """Load shimmer2 data from a file."""
     data = load_bin_file(data_path, SHIMMER2_DATA_LAYOUT)
     data = calibrate_shimmer2_data(data, calibration_file_path)
