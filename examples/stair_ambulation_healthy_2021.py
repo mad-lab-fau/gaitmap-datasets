@@ -31,7 +31,7 @@ dataset_path = Path("/home/arne/Documents/repos/work/datasets/stair-ambulation-d
 # You might want to disable that, to reduce the RAM usage and speed up the data loading.
 from joblib import Memory
 
-from mad_datasets.stair_ambulation_healthy_2021 import StairAmbulationHealthy2021PerTest
+from mad_datasets import StairAmbulationHealthy2021PerTest
 
 dataset = StairAmbulationHealthy2021PerTest(
     data_folder=dataset_path,
@@ -174,7 +174,7 @@ plt.show()
 #
 # The StairAmbulationHealthy2021Full dataclass can be used equivalently to the StairAmbulationHealthyPerTest dataset.
 # The only difference is that instead of the individual tests, we can see the two parts in the index for the dataset.
-from mad_datasets.stair_ambulation_healthy_2021 import StairAmbulationHealthy2021Full
+from mad_datasets import StairAmbulationHealthy2021Full
 
 dataset = StairAmbulationHealthy2021Full(
     data_folder=dataset_path,

@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
 """Methods to access the open source gait datasets of the MaD-Lab."""
+from mad_datasets.egait_segmentation_validation_2014 import EgaitSegmentationValidation2014
+from mad_datasets.egait_parameter_validation_2013 import EgaitParameterValidation2013
+from mad_datasets.stair_ambulation_healthy_2021 import StairAmbulationHealthy2021PerTest, StairAmbulationHealthy2021Full
 
+__all__ = [
+    "EgaitSegmentationValidation2014",
+    "EgaitParameterValidation2013",
+    "StairAmbulationHealthy2021PerTest",
+    "StairAmbulationHealthy2021Full",
+]
 __version__ = "0.1.0"

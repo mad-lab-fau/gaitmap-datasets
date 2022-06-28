@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from mad_datasets.egait_segmentation_validation_2014 import EgaitSegmentationValidation2014
+from mad_datasets import EgaitSegmentationValidation2014
 
 dataset_path = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database_segmentation/")
 

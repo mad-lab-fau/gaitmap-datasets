@@ -20,7 +20,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from mad_datasets.egait_parameter_validation_2013 import EgaitParameterValidation2013
+from mad_datasets import EgaitParameterValidation2013
 
 dataset_path = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database/")
 

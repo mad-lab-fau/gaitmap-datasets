@@ -62,7 +62,7 @@ extensions = [
     "sphinx.ext.linkcode",
     "sphinx.ext.doctest",
     "sphinx.ext.intersphinx",
-    # "sphinx.ext.imgconverter",
+    "sphinx.ext.githubpages",
     "sphinx_gallery.gen_gallery",
     "recommonmark",
 ]
@@ -145,10 +145,10 @@ intersphinx_mapping = {
 sphinx_gallery_conf = {
     "examples_dirs": ["../examples"],
     "gallery_dirs": ["./auto_examples"],
-    "reference_url": {"mad-datasets": None, **{k: v[0] for k, v in intersphinx_module_mapping.items()}},
+    "reference_url": {"mad_datasets": None, **{k: v[0] for k, v in intersphinx_module_mapping.items()}},
     # 'default_thumb_file': 'fig/logo.png',
     "backreferences_dir": "modules/generated/backreferences",
-    "doc_module": ("mad-datasets",),
+    "doc_module": ("mad_datasets",),
     "filename_pattern": re.escape(os.sep),
     "remove_config_comments": True,
     "show_memory": True,
@@ -158,7 +158,7 @@ sphinx_gallery_conf = {
 from sphinxext.githublink import make_linkcode_resolve
 
 linkcode_resolve = make_linkcode_resolve(
-    "mad-datasets",
+    "mad_datasets",
     "https://github.com/mad-lab-fau/mad-datasets/blob/{revision}/{package}/{path}#L{lineno}",
 )
 
