@@ -5,8 +5,40 @@
 
 # mad-datasets
 
-Helper to access to open-source gait datasets of the MaD-Lab
+Helper to access to open-source gait datasets of the MaD-Lab (and maybe externals in the future).
 
+The aim of this package is to ensure that all datasets can be loaded in a similar fashion and all data (and annotations)
+are in the same format (i.e. the same sensor orientations, units, etc.).
+This should allow to easily run the same algorithm accross multiple datasets.
+
+All datasets APIs are built using the 
+[`tpcp.Dataset`](https://tpcp.readthedocs.io/en/latest/modules/generated/dataset/tpcp.Dataset.html#tpcp.Dataset)
+interface.
+For available datasets see the table below.
+
+## Usage
+
+Install the package from Pip
+
+```
+pip install mad-datasets
+```
+
+Then download/obtain the dataset that you are planning to use (see below).
+The best way to get started is to then check the example for the respective dataset on the 
+[documentation page](https://mad-lab-fau.github.io/mad-datasets/auto_examples/index.html).
+
+## Datasets
+
+| Dataset                         | Info Link                                                       | Download                            |
+|---------------------------------|-----------------------------------------------------------------|-------------------------------------|
+| EgaitSegmentationValidation2014 | https://www.mad.tf.fau.de/research/activitynet/digital-biobank/ | Email to data owner (see info link) |
+| EgaitParameterValidation2013    | https://www.mad.tf.fau.de/research/activitynet/digital-biobank/ | Email to data owner (see info link) |
+| StairAmbulationHealthy2021      | TODO                                                            | TODO                                |
+
+Note: The `sensor_position_comparison` dataset recorded in 2019 is not part of the mad-datasets package, but can be 
+obtained in a similar format using the
+[`sensor_position_dataset_helper`](https://github.com/mad-lab-fau/sensor_position_dataset_helper) python package.
 
 ## Testing
 
