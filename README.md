@@ -34,3 +34,6 @@ We will always just update a single commit on the gh-pages branch to keep the ef
 **WARNING: ** Don't delete the `docs/_build` folder manually or by running the sphinx make file!
 This will delete the submodule and might cause issues.
 The `poe` task is configured to clean all relevant files in the `docs/_build` folder before each run.
+
+After a update of the documentation, you will see that you also need to make a commit in the main repo, as the commit 
+hash of the docs submodule has changed.
