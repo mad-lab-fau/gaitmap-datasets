@@ -1,5 +1,8 @@
+[![PyPI](https://img.shields.io/pypi/v/mad-datasets)](https://pypi.org/project/mad-datasets/)
 [![Documentation status](https://img.shields.io/badge/docs-online-green)](https://mad-lab-fau.github.io/mad-datasets)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/mad-datasets)
+
 # mad-datasets
 
 Helper to access to open-source gait datasets of the MaD-Lab
