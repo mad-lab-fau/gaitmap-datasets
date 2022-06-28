@@ -9,6 +9,8 @@ authors = [
 ]
 license = "MIT"
 readme = "README.md"
+homepage = "https://github.com/mad-lab-fau/mad-datasets"
+repository = "https://github.com/mad-lab-fau/mad-datasets"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
