@@ -78,4 +78,5 @@ test = { cmd = "pytest --cov=mad_datasets --cov-report=term-missing --cov-report
 version = { script = "_tasks:task_update_version()" }
 docs = { script = "_tasks:task_docs()" }
 upload_docs = { script = "_tasks:task_upload_docs()" }
+prepare_release = { script = "_tasks:task_prepare_release()" }
 
