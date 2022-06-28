@@ -38,7 +38,10 @@ def test_data_loading_with_transformation():
         ).drop(columns=["n_samples"]),
     }
 
-    data_path = {"left_sensor": HERE / "egait_validation_2013_test_data/P115_E4_left.dat", "right_sensor": HERE / "egait_validation_2013_test_data/P115_E4_right.dat"}
+    data_path = {
+        "left_sensor": HERE / "egait_validation_2013_test_data/P115_E4_left.dat",
+        "right_sensor": HERE / "egait_validation_2013_test_data/P115_E4_right.dat",
+    }
 
     for sensor in ["left_sensor", "right_sensor"]:
         data = load_shimmer2_data(

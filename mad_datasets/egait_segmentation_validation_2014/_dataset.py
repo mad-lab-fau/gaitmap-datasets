@@ -1,20 +1,20 @@
 """The core tpcp Dataset class for the Egait Stride Segementation Validation Dataset."""
 from pathlib import Path
-from typing import List, Optional, Union, Dict, Literal
+from typing import Dict, List, Literal, Optional, Union
 
 import pandas as pd
 from joblib import Memory
 from tpcp import Dataset
 
 from mad_datasets.egait_segmentation_validation_2014.helper import (
-    get_segmented_stride_list,
     get_all_data_for_participant,
     get_all_participants,
+    get_segmented_stride_list,
 )
 
 
 class EgaitSegmentationValidation2014(Dataset):
-    """Egait stride segmentation validation 2013 dataset."""
+    """Egait stride segmentation validation 2014 dataset."""
 
     def __init__(
         self,
@@ -63,7 +63,11 @@ class EgaitSegmentationValidation2014(Dataset):
     def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the segmented stride list."""
         self.assert_is_single(None, "segmented_stride_list_")
-        cohort, test, participant, = self.group
+        (
+            cohort,
+            test,
+            participant,
+        ) = self.group
         stride_list = get_segmented_stride_list(participant, cohort, test, base_dir=self._data_folder_path)
         # For one participant the data from one sensor is missing.
         # For the output, we ignore it and not include it in the output.

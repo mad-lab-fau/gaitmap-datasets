@@ -43,9 +43,7 @@ class EgaitParameterValidation2013(Dataset):
     def data(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the imu data."""
         self.assert_is_single(None, "data")
-        data = self.memory.cache(get_all_data_for_participant)(
-            self.group, base_dir=self._data_folder_path
-        )
+        data = self.memory.cache(get_all_data_for_participant)(self.group, base_dir=self._data_folder_path)
         final_data = {}
         for k, v in data.items():
             v.index /= self.sampling_rate_hz
