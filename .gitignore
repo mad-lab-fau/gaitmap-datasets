@@ -233,3 +233,8 @@ $RECYCLE.BIN/
 
 # PyCharm
 .idea
+
+# Include the HTML build folder
+!docs/_build
+docs/_build/*
+!docs/_build/html/
