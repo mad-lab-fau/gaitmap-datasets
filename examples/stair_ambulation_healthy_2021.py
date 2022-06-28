@@ -1,8 +1,14 @@
-"""Example showing how to interact with the StairAmbulationHealthy2021 dataset.
+r"""
+
+StairAmbulationHealthy2021 - A Stride Segmentation and Event Detection dataset with focus on stairs
+===================================================================================================
 
 The dataset can be downloaded from here:
 
+.. note:: The dataset only contains the healthy participants of the full dataset presentent in the paper!
+
 We provide two `tpcp.Dataset` classes to access the data:
+
 1. :class:`mad_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021PerTest`: This class allows to access
    all data and events for each of the performed gait tests individually.
 2. :class:`mad_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021Full`: This class allows to access the
@@ -11,8 +17,8 @@ We provide two `tpcp.Dataset` classes to access the data:
 In the following we will show the usage of both classes and the data that is contained within.
 """
 # %%
-# ..warning:: For this example to work, you need to modify the dataset path in the following line to point to the
-#             location of the data on your machine.
+# .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
+#              location of the data on your machine.
 from pathlib import Path
 
 dataset_path = Path("/home/arne/Documents/repos/work/datasets/stair-ambulation-data-ba-liv")
@@ -160,7 +166,7 @@ plt.show()
 
 # %%
 # StairAmbulationHealthy2021Full
-# ============================
+# ==============================
 # The StairAmbulationHealthy2021Full dataset is contains the complete recordings of all 20 participants, not cut into
 # individual tests.
 # Note, that there are still two recordings per participant.

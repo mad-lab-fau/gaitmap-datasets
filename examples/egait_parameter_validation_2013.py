@@ -1,4 +1,7 @@
-"""Example showing how to interact with the EgaitParameterValidation2013 dataset.
+r"""
+
+EgaitParameterValidation2013 - A Stride Parameter validation dataset
+====================================================================
 
 The EgaitParameterValidation2013 dataset allows access to the parameter validation dataset recorded for the EGait
 system.
@@ -11,7 +14,7 @@ In the following we will show how to interact with the dataset and how to make s
 """
 
 # %%
-# ..warning:: For this example to work, you need to modify the dataset path in the following line to point to the
+# .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
 #             location of the data on your machine.
 from pathlib import Path
 

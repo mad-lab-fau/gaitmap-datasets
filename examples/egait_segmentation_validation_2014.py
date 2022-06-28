@@ -1,4 +1,7 @@
-"""Example showing how to interact with the EgaitSegmentationValidation2014 dataset.
+r"""
+
+EgaitSegmentationValidation2014 - A Stride Segmentation validation dataset
+==========================================================================
 
 The EgaitSegmentationValidation2014 dataset allows access to the stride segmentation validation dataset recorded for
 the EGait system.
@@ -7,7 +10,7 @@ The indivudal strides were labeled manually by multiple gait experts.
 """
 
 # %%
-# ..warning:: For this example to work, you need to modify the dataset path in the following line to point to the
+# .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
 #             location of the data on your machine.
 from pathlib import Path
 
