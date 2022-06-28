@@ -47,6 +47,7 @@ import matplotlib.pyplot as plt
 imu_data = free_walk.data
 segmented_stride_list = free_walk.segmented_stride_list_
 
+
 def plot_strides(imu_data, segmented_stride_list):
     fig, axs = plt.subplots(2, 1, sharex=True)
     foot = "right_sensor"
@@ -59,6 +60,7 @@ def plot_strides(imu_data, segmented_stride_list):
             ax.axvline(s["start"], color="k", linestyle="--")
             ax.axvline(s["end"], color="k", linestyle="--")
     return fig
+
 
 fig = plot_strides(imu_data, segmented_stride_list)
 fig.show()
@@ -92,4 +94,3 @@ segmented_stride_list = gait_test.segmented_stride_list_
 
 fig = plot_strides(imu_data, segmented_stride_list)
 fig.show()
-
