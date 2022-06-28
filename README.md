@@ -39,3 +39,6 @@ The `poe` task is configured to clean all relevant files in the `docs/_build` fo
 
 After a update of the documentation, you will see that you also need to make a commit in the main repo, as the commit 
 hash of the docs submodule has changed.
+
+To make sure you don't forget to update the docs, the `poe prepare_release` task will also build and upload the docs 
+automatically.
