@@ -1,0 +1,6 @@
+﻿gaitmap\_datasets.StairAmbulationHealthy2021Full
+================================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autoclass:: StairAmbulationHealthy2021Full

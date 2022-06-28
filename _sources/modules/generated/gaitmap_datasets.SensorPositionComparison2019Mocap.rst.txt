@@ -1,0 +1,6 @@
+﻿gaitmap\_datasets.SensorPositionComparison2019Mocap
+===================================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autoclass:: SensorPositionComparison2019Mocap

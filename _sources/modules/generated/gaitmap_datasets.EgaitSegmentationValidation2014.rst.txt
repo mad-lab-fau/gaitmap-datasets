@@ -1,0 +1,6 @@
+﻿gaitmap\_datasets.EgaitSegmentationValidation2014
+=================================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autoclass:: EgaitSegmentationValidation2014

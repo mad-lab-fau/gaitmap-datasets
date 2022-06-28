@@ -1,0 +1,734 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Changelog &#8212; gaitmap-datasets 0.14.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=927b94d3fcb96560df09" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=927b94d3fcb96560df09" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=927b94d3fcb96560df09"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'CHANGELOG';</script>
+    <link rel="shortcut icon" href="_static/datasets.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="SensorPositionComparison2019 - Full mocap reference data set with 6 sensors per foot" href="auto_examples/sensor_position_comparison_2019.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/datasets_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/datasets_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="README.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="guides/index.html">
+                        User Guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="modules/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="auto_examples/index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Changelog
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__kbd-shortcut">Search</span>
+    <span><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mad-lab-fau/gaitmap-datasets" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__kbd-shortcut">Search</span>
+    <span><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="README.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="guides/index.html">
+                        User Guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="modules/index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="auto_examples/index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Changelog
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mad-lab-fau/gaitmap-datasets" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Changelog</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading">#</a></h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a class="reference external" href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a> (+ the Migration Guide),
+and this project adheres to <a class="reference external" href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<section id="id1">
+<h2>[0.14.0] - 2023-07-21<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<section id="fixed">
+<h3>Fixed<a class="headerlink" href="#fixed" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The convert event methods for the EgaitAddidas2014 dataset had a bug that the offset was not taken into account
+correctly.</p></li>
+<li><p>For two participants of the EgaitAddidas2014 dataset the offset between the systems was for some reason not consistent
+across all strides. We decided to ignore this, but warn the user about it.</p></li>
+</ul>
+</section>
+<section id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">mocap_sampling_rate_hz</span></code> method of the Kluge2017 dataset is now called <code class="docutils literal notranslate"><span class="pre">mocap_sampling_rate_hz_</span></code>
+(with trailing underscore) to be consistent with the other datasets.</p></li>
+</ul>
+</section>
+<section id="added">
+<h3>Added<a class="headerlink" href="#added" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>SensorPositionComparison2019 now has a method to get the marker trajectories per stride.</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2>[0.13.0] - 2023-07-13<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<section id="id3">
+<h3>Fixed<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The egait segmentation validation dataset contained strides that had negative duration.
+We now remove them during loading.</p></li>
+</ul>
+</section>
+</section>
+<section id="id4">
+<h2>[0.12.0] - 2023-04-27<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
+<section id="id5">
+<h3>Added<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>New labels for the EgaitSegmentationValidation dataset have been created and are distributed with all future versions
+of the dataset.
+These new labels are now the default labels used by the dataset.
+The old labels can be accessed using the <code class="docutils literal notranslate"><span class="pre">segmented_stride_list_original_</span></code> property.</p></li>
+</ul>
+</section>
+</section>
+<section id="id6">
+<h2>[0.11.0] - 2023-04-21<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h2>
+<section id="id7">
+<h3>Fixed<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fixed further potential cases where the index of datasets was not deterministically sorted.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>Changed<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Config files are<a class="reference internal" href="#"><span class="doc">CHANGELOG.md</span></a> frozen now</p></li>
+</ul>
+</section>
+</section>
+<section id="id9">
+<h2>[0.10.0] - 2023-03-10<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h2>
+<section id="id10">
+<h3>Fixed<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fixed an issue that the index of <code class="docutils literal notranslate"><span class="pre">EgaitParameterValidation2013</span></code> was not deterministically sorted.</p></li>
+</ul>
+</section>
+<section id="id11">
+<h3>Changed<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Removed pydantic as dependency and switched to custom logic to set configs.
+The use-facing API remains the same.</p></li>
+</ul>
+</section>
+</section>
+<section id="id12">
+<h2>[0.9.0] - 2023-02-02<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="id13">
+<h2>Added<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">EgaitParameterValidation2013</span></code> dataset now has the option to exclude participant “P52”, which appears to have
+non-sensical imu data.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">EgaitAdidas2014</span></code> dataset was added.
+The dataset is not publicly available yet, but will be soon and contains data from healthy participants walking
+through a Vicon motion capture system.</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">convert_segmented_stride_list</span></code> was added to convert segmented event list to min_vel eventlists.</p></li>
+</ul>
+</section>
+<section id="id14">
+<h2>Changed<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The method <code class="docutils literal notranslate"><span class="pre">convert_with_padding</span></code> of the <code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019</span></code> dataset is now called
+<code class="docutils literal notranslate"><span class="pre">convert_events_with_padding</span></code>.</p></li>
+</ul>
+</section>
+<section id="id15">
+<h2>[0.8.0] - 2023-30-01<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h2>
+<section id="id16">
+<h3>Added<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>It is now possible to create a global config file containing the local path to the datasets.
+This allows you to use the datasets without having to specify the path to the dataset every time.
+Further, it means that you don’t have to modify source code (just a config file) to run the examples and tests during
+development.
+See the README for more details.
+(https://github.com/mad-lab-fau/gaitmap-datasets/pull/8)</p></li>
+</ul>
+</section>
+</section>
+<section id="id17">
+<h2>[0.7.0] - 2023-23-01<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h2>
+<section id="id18">
+<h3>Added<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Support for the new alternative calibration files for the <code class="docutils literal notranslate"><span class="pre">egait_parameter_validation_2013</span></code> dataset.
+Basically, we found out that the original calibration files were not that good and added new ones to the public
+dataset, that should result in significantly better results when calculating spatial gait parameters.</p></li>
+<li><p>All datasets now have images visualizing the applied coordinate system transformations.</p></li>
+<li><p>The stair pyshoe dataset has now a new index column describing the number of levels the participant walked during a
+single trail.</p></li>
+</ul>
+</section>
+</section>
+<section id="id19">
+<h2>[0.6.0] - 2022-21-12<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h2>
+<section id="id20">
+<h3>Added<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The PyShoe Dataset (https://github.com/utiasSTARS/pyshoe)</p></li>
+</ul>
+</section>
+<section id="id21">
+<h3>Changed<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The sensor position dataset now reports the mocap distance in m instead of mm to be consistent with the use of SI
+units.</p></li>
+</ul>
+</section>
+</section>
+<section id="id22">
+<h2>[0.5.0] - 2022-13-12<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h2>
+<p>Changed package name mad-datasets to gaitmap-datasets!
+All old releases will still be available under the old name.
+All new releases will be available under the new name.</p>
+</section>
+<section id="id23">
+<h2>[0.4.0] - 2022-12-12<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h2>
+<section id="id24">
+<h3>Added<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Support for the sensor position dataset (https://zenodo.org/record/5747173). This replaces the dedicated package that
+existed for this dataset before and makes some usability improvements.
+Note, when switching from the old package (https://github.com/mad-lab-fau/sensor_position_dataset_helper), you might
+see small changes in the final results of calculated parameters.
+This is because the way padding is handled was changed to be more consistent and less confusing.
+(https://github.com/mad-lab-fau/gaitmap-datasets/pull/5)</p></li>
+</ul>
+</section>
+<section id="id25">
+<h3>Changed<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added faster version to perform the initial alignment with the sensor data frame.
+We replaced performing the actual rotations with simple column swaps when possible.
+(https://github.com/mad-lab-fau/gaitmap-datasets/pull/5)</p></li>
+</ul>
+</section>
+<section id="id26">
+<h3>Fixed<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Upper version constrains for most packages are removed</p></li>
+<li><p>Loading the StairAmbulationHealthy2021 dataset now works with nilspodlib&gt;=3.6</p></li>
+</ul>
+</section>
+</section>
+<section id="id27">
+<h2>[0.3.0] - 2022-07-07<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h2>
+<section id="id28">
+<h3>Changed<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>The StairAmbulationDataset loader was adapted to work with the official public version of the dataset.</p></li>
+<li><p>The script to generate the pressure events for the StairAmbulationDataset can now get the dataset path as a cli
+argument.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">[0.14.0] - 2023-07-21</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">[0.13.0] - 2023-07-13</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Fixed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">[0.12.0] - 2023-04-27</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">[0.11.0] - 2023-04-21</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Changed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">[0.10.0] - 2023-03-10</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Changed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">[0.9.0] - 2023-02-02</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Added</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Changed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id15">[0.8.0] - 2023-30-01</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id16">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id17">[0.7.0] - 2023-23-01</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id18">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id19">[0.6.0] - 2022-21-12</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id20">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id21">Changed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id22">[0.5.0] - 2022-13-12</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id23">[0.4.0] - 2022-12-12</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id24">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id25">Changed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id26">Fixed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id27">[0.3.0] - 2022-07-07</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id28">Changed</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="_sources/CHANGELOG.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=927b94d3fcb96560df09"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=927b94d3fcb96560df09"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2022 - 2023, MaD Lab, FAU.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

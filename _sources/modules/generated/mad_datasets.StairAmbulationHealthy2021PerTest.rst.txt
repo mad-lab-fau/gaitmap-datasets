@@ -1,0 +1,6 @@
+﻿mad\_datasets.StairAmbulationHealthy2021PerTest
+===============================================
+
+.. currentmodule:: mad_datasets
+
+.. autoclass:: StairAmbulationHealthy2021PerTest

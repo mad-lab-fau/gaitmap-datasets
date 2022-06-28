@@ -1,0 +1,6 @@
+﻿gaitmap\_datasets.PyShoe2019Stairs
+==================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autoclass:: PyShoe2019Stairs

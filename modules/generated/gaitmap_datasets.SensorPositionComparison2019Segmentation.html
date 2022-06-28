@@ -1,0 +1,952 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>gaitmap_datasets.SensorPositionComparison2019Segmentation &#8212; gaitmap-datasets 0.14.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=927b94d3fcb96560df09" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=927b94d3fcb96560df09" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=927b94d3fcb96560df09" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=927b94d3fcb96560df09"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'modules/generated/gaitmap_datasets.SensorPositionComparison2019Segmentation';</script>
+    <link rel="shortcut icon" href="../../_static/datasets.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="gaitmap_datasets.SensorPositionComparison2019Mocap" href="gaitmap_datasets.SensorPositionComparison2019Mocap.html" />
+    <link rel="prev" title="gaitmap_datasets.StairAmbulationHealthy2021Full" href="gaitmap_datasets.StairAmbulationHealthy2021Full.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/datasets_logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/datasets_logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../README.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../guides/index.html">
+                        User Guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOG.html">
+                        Changelog
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__kbd-shortcut">Search</span>
+    <span><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mad-lab-fau/gaitmap-datasets" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__kbd-shortcut">Search</span>
+    <span><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../README.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../guides/index.html">
+                        User Guides
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../CHANGELOG.html">
+                        Changelog
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/mad-lab-fau/gaitmap-datasets" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.EgaitSegmentationValidation2014.html">gaitmap_datasets.EgaitSegmentationValidation2014</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.EgaitParameterValidation2013.html">gaitmap_datasets.EgaitParameterValidation2013</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.StairAmbulationHealthy2021PerTest.html">gaitmap_datasets.StairAmbulationHealthy2021PerTest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.StairAmbulationHealthy2021Full.html">gaitmap_datasets.StairAmbulationHealthy2021Full</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">gaitmap_datasets.SensorPositionComparison2019Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.SensorPositionComparison2019Mocap.html">gaitmap_datasets.SensorPositionComparison2019Mocap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.Kluge2017.html">gaitmap_datasets.Kluge2017</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.PyShoe2019Vicon.html">gaitmap_datasets.PyShoe2019Vicon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.PyShoe2019Hallway.html">gaitmap_datasets.PyShoe2019Hallway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.PyShoe2019Stairs.html">gaitmap_datasets.PyShoe2019Stairs</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.utils.convert_segmented_stride_list.html">gaitmap_datasets.utils.convert_segmented_stride_list</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.config.html">gaitmap_datasets.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.set_config.html">gaitmap_datasets.set_config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.reset_config.html">gaitmap_datasets.reset_config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.create_config_template.html">gaitmap_datasets.create_config_template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.get_dataset_path.html">gaitmap_datasets.get_dataset_path</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gaitmap_datasets.DatasetsConfig.html">gaitmap_datasets.DatasetsConfig</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">gaitmap_datasets.SensorPositionComparison2019Segmentation</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="gaitmap-datasets-sensorpositioncomparison2019segmentation">
+<h1>gaitmap_datasets.SensorPositionComparison2019Segmentation<a class="headerlink" href="#gaitmap-datasets-sensorpositioncomparison2019segmentation" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gaitmap_datasets.</span></span><span class="sig-name descname"><span class="pre">SensorPositionComparison2019Segmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><span class="pre">Path</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_wrong_recording</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Memory</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Memory(location=None)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupby_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subset_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.0)"><span class="pre">DataFrame</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/sensor_position_comparison_2019/_dataset.py#L116"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation" title="Permalink to this definition">#</a></dt>
+<dd><p>A dataset for stride segmentation benchmarking.</p>
+<p>Data is only loaded once the respective attributes are accessed.
+This means filtering the dataset should be fast, but accessing attributes like <code class="docutils literal notranslate"><span class="pre">.data</span></code> can be slow.
+By default, we do not perform any caching of these values.
+This means, if you need to use the value multiple times, the best way is to assign it to a variable.
+Alternatively, you can use the <code class="docutils literal notranslate"><span class="pre">memory</span></code> parameter to create a disk based cache for the data loading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data_folder</strong></dt><dd><p>The base folder where the dataset can be found.</p>
+</dd>
+<dt><strong>include_wrong_recording</strong></dt><dd><p>If True the first trail of 6dbe is included, which has one missing sensor</p>
+</dd>
+<dt><strong>align_data</strong></dt><dd><p>If True the coordinate systems of all sensors are roughly aligned based on their known mounting orientation</p>
+</dd>
+<dt><strong>memory</strong></dt><dd><p>Optional joblib memory object to cache the data loading. Note that this can lead to large hard disk usage!</p>
+</dd>
+<dt><strong>groupby_cols</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">tpcp</span></code> internal parameters.</p>
+</dd>
+<dt><strong>subset_index</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">tpcp</span></code> internal parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.data" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></dt><dd><p>Get the IMU data of the as pandas Dataframe.</p>
+</dd>
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.group" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group</span></code></a></dt><dd><p>Get the current group.</p>
+</dd>
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.grouped_index" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.grouped_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grouped_index</span></code></a></dt><dd><p>Return the index with the <code class="docutils literal notranslate"><span class="pre">groupby</span></code> columns set as multiindex.</p>
+</dd>
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.groups" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">groups</span></code></a></dt><dd><p>Get all groups based on the set groupby level.</p>
+</dd>
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.index" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a></dt><dd><p>Get index.</p>
+</dd>
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.metadata" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metadata</span></code></a></dt><dd><p>Get the metadata for a participant.</p>
+</dd>
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.sampling_rate_hz" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.sampling_rate_hz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sampling_rate_hz</span></code></a></dt><dd><p>Get the sampling rate of the IMUs.</p>
+</dd>
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segmented_stride_list_</span></code></a></dt><dd><p>Get the manual segmented stride list per foot.</p>
+</dd>
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_per_sensor_" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_per_sensor_"><code class="xref py py-obj docutils literal notranslate"><span class="pre">segmented_stride_list_per_sensor_</span></code></a></dt><dd><p>Get the segmented stride list per sensor.</p>
+</dd>
+<dt><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.shape" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></dt><dd><p>Get the shape of the dataset.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.as_attrs" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.as_attrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_attrs</span></code></a>()</p></td>
+<td><p>Return a version of the Dataset class that can be subclassed using <code class="docutils literal notranslate"><span class="pre">attrs</span></code> defined classes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.as_dataclass" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.as_dataclass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_dataclass</span></code></a>()</p></td>
+<td><p>Return a version of the Dataset class that can be subclassed using dataclasses.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_is_single</span></code></a>(groupby_cols, property_name)</p></td>
+<td><p>Raise error if index does contain more than one group/row with the given groupby settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single_group" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assert_is_single_group</span></code></a>(property_name)</p></td>
+<td><p>Raise error if index does contain more than one group/row.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.clone" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.clone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clone</span></code></a>()</p></td>
+<td><p>Create a new instance of the class with all parameters copied over.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.create_group_labels" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.create_group_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_group_labels</span></code></a>(label_cols)</p></td>
+<td><p>Generate a list of labels for each group/row in the dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.create_index" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.create_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_index</span></code></a>()</p></td>
+<td><p>Create the full index for the dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.get_params" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
+<td><p>Get parameters for this algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.get_subset" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.get_subset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_subset</span></code></a>(*[, groups, index, bool_map])</p></td>
+<td><p>Get a subset of the dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.groupby" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.groupby"><code class="xref py py-obj docutils literal notranslate"><span class="pre">groupby</span></code></a>(groupby_cols)</p></td>
+<td><p>Return a copy of the dataset grouped by the specified columns.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_single</span></code></a>(groupby_cols)</p></td>
+<td><p>Return True if index contains only one row/group with the given groupby settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single_group" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_single_group</span></code></a>()</p></td>
+<td><p>Return True if index contains only one group.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.iter_level" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.iter_level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_level</span></code></a>(level)</p></td>
+<td><p>Return generator object containing a subset for every category from the selected level.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.set_params" title="gaitmap_datasets.SensorPositionComparison2019Segmentation.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
+<td><p>Set the parameters of this Algorithm.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.as_attrs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_attrs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L620"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.as_attrs" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a version of the Dataset class that can be subclassed using <code class="docutils literal notranslate"><span class="pre">attrs</span></code> defined classes.</p>
+<p>Note, this requires <code class="docutils literal notranslate"><span class="pre">attrs</span></code> to be installed!</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.as_dataclass">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_dataclass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L606"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.as_dataclass" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a version of the Dataset class that can be subclassed using dataclasses.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single">
+<span class="sig-name descname"><span class="pre">assert_is_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L312"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single" title="Permalink to this definition">#</a></dt>
+<dd><p>Raise error if index does contain more than one group/row with the given groupby settings.</p>
+<p>This should be used when implementing access to data values, which can only be accessed when only a single
+trail/participant/etc. exist in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>groupby_cols</strong></dt><dd><p>None (no grouping) or a valid subset of the columns available in the dataset index.</p>
+</dd>
+<dt><strong>property_name</strong></dt><dd><p>Name of the property this check is used in.
+Used to format the error message.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single_group">
+<span class="sig-name descname"><span class="pre">assert_is_single_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">property_name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L335"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single_group" title="Permalink to this definition">#</a></dt>
+<dd><p>Raise error if index does contain more than one group/row.</p>
+<p>Note that this is different from <code class="docutils literal notranslate"><span class="pre">assert_is_single</span></code> as it is aware of the current grouping.
+Instead of checking that a certain combination of columns is left in the dataset, it checks that only a
+single group exists with the already selected grouping as defined by <code class="docutils literal notranslate"><span class="pre">self.groupby_cols</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>property_name</strong></dt><dd><p>Name of the property this check is used in.
+Used to format the error message.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.clone">
+<span class="sig-name descname"><span class="pre">clone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_base.py#L353"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.clone" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a new instance of the class with all parameters copied over.</p>
+<p>This will create a new instance of the class itself and all nested objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.create_group_labels">
+<span class="sig-name descname"><span class="pre">create_group_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L364"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.create_group_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate a list of labels for each group/row in the dataset.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This has a different use case than the dataset-wide groupby.
+Using <code class="docutils literal notranslate"><span class="pre">groupby</span></code> reduces the effective size of the dataset to the number of groups.
+This method produces a group label for each group/row that is already in the dataset, without changing the
+dataset.</p>
+</div>
+<p>The output of this method can be used in combination with <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupKFold.html#sklearn.model_selection.GroupKFold" title="(in scikit-learn v1.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupKFold</span></code></a> as
+the group label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>label_cols</strong></dt><dd><p>The columns that should be included in the label.
+If the dataset is already grouped, this must be a subset of  <code class="docutils literal notranslate"><span class="pre">self.groupby_cols</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.create_index">
+<span class="sig-name descname"><span class="pre">create_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.0)"><span class="pre">DataFrame</span></a></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/sensor_position_comparison_2019/_dataset.py#L155"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.create_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Create the full index for the dataset.</p>
+<p>This needs to be implemented by the subclass.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make absolutely sure that the dataframe you return is deterministic and does not change between
+runs!
+This can lead to some nasty bugs!
+We try to catch them internally, but it is not always possible.
+As tips, avoid reliance on random numbers and make sure that the order is not depend on things
+like file system order, when creating an index by scanning a directory.
+Particularly nasty are cases when using non-sorted container like <code class="docutils literal notranslate"><span class="pre">set</span></code>, that sometimes maintain
+their order, but sometimes don’t.
+At the very least, we recommend to sort the final dataframe you return in <code class="docutils literal notranslate"><span class="pre">create_index</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.data">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.0)"><span class="pre">DataFrame</span></a></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.data" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the IMU data of the as pandas Dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_base.py#L328"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.get_params" title="Permalink to this definition">#</a></dt>
+<dd><p>Get parameters for this algorithm.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>deep</strong></dt><dd><p>Only relevant if object contains nested algorithm objects.
+If this is the case and deep is True, the params of these nested objects are included in the output using a
+prefix like <code class="docutils literal notranslate"><span class="pre">nested_object_name__</span></code> (Note the two “_” at the end)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>params</dt><dd><p>Parameter names mapped to their values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.get_subset">
+<span class="sig-name descname"><span class="pre">get_subset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.0)"><span class="pre">DataFrame</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bool_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.11)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L175"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.get_subset" title="Permalink to this definition">#</a></dt>
+<dd><p>Get a subset of the dataset.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All arguments are mutable exclusive!</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>groups</strong></dt><dd><p>A valid row locator or slice that can be passed to <code class="docutils literal notranslate"><span class="pre">self.grouped_index.loc[locator,</span> <span class="pre">:]</span></code>.
+This basically needs to be a subset of <code class="docutils literal notranslate"><span class="pre">self.groups</span></code>.
+Note that this is the only indexer that works on the grouped index.
+All other indexers work on the pure index.</p>
+</dd>
+<dt><strong>index</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">pd.DataFrame</span></code> that is a valid subset of the current dataset index.</p>
+</dd>
+<dt><strong>bool_map</strong></dt><dd><p>bool-map that is used to index the current index-dataframe.
+The list <strong>must</strong> be of same length as the number of rows in the index.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>The key <strong>must</strong> be the name of an index column.
+The value is a list containing strings that correspond to the categories that should be kept.
+For examples see above.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>subset</dt><dd><p>New dataset object filtered by specified parameters.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.group">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">group</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.group" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the current group.</p>
+<p>Note, this attribute can only be used, if there is just a single group.
+If there is only a single groupby column or column in the index, this will return a string.
+Otherwise, this will return a named tuple.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.groupby">
+<span class="sig-name descname"><span class="pre">groupby</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L159"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.groupby" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a copy of the dataset grouped by the specified columns.</p>
+<p>Each unique group represents a single data point in the resulting dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>groupby_cols</strong></dt><dd><p>None (no grouping) or a valid subset of the columns available in the dataset index.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.grouped_index">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grouped_index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.0)"><span class="pre">DataFrame</span></a></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.grouped_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the index with the <code class="docutils literal notranslate"><span class="pre">groupby</span></code> columns set as multiindex.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.groups" title="Permalink to this definition">#</a></dt>
+<dd><p>Get all groups based on the set groupby level.</p>
+<p>This will either return a list of strings/integers, if there is only a single group level or index column.
+If there are multiple groupy levels/index columns, it will return a list of named tuples.</p>
+<p>Note, that if one of the groupby levels/index columns is not a valid Python attribute name (e.g. in contains
+spaces or starts with a number), the named tuple will not contain the correct column name!
+For more information see the documentation of the <code class="docutils literal notranslate"><span class="pre">rename</span></code> parameter of <a class="reference external" href="https://docs.python.org/3/library/collections.html#collections.namedtuple" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">collections.namedtuple</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.index">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.0)"><span class="pre">DataFrame</span></a></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.index" title="Permalink to this definition">#</a></dt>
+<dd><p>Get index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single">
+<span class="sig-name descname"><span class="pre">is_single</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">groupby_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L294"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if index contains only one row/group with the given groupby settings.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">groupby_cols=None</span></code> this checks if there is only a single row left.
+If you want to check if there is only a single group within the current grouping, use <code class="docutils literal notranslate"><span class="pre">is_single_group</span></code> instead.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>groupby_cols</strong></dt><dd><p>None (no grouping) or a valid subset of the columns available in the dataset index.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single_group">
+<span class="sig-name descname"><span class="pre">is_single_group</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L308"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single_group" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if index contains only one group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.iter_level">
+<span class="sig-name descname"><span class="pre">iter_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.11)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Self</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_dataset.py#L274"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.iter_level" title="Permalink to this definition">#</a></dt>
+<dd><p>Return generator object containing a subset for every category from the selected level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>level</strong></dt><dd><p>Optional <code class="docutils literal notranslate"><span class="pre">str</span></code> that sets the level which shall be used for iterating.
+This <strong>must</strong> be one of the columns names of the index.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>subset</dt><dd><p>New dataset object containing only one category in the specified <code class="docutils literal notranslate"><span class="pre">level</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.metadata">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the metadata for a participant.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.sampling_rate_hz">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sampling_rate_hz</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.sampling_rate_hz" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the sampling rate of the IMUs.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">segmented_stride_list_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.0)"><span class="pre">DataFrame</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the manual segmented stride list per foot.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_per_sensor_">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">segmented_stride_list_per_sensor_</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.1.0)"><span class="pre">DataFrame</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_per_sensor_" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the segmented stride list per sensor.</p>
+<p>Instead of providing the stride list per foot, this ouput has all the sensors as keys and the correct
+stridelist (either left or right foot) as value.
+This can be helpful, if you want to iterate over all sensors and get the correct stride list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference external" href="https://github.com/mad-lab-fau/gaitmap-datasets/blob/3c9f05a/gaitmap_datasets/../.venv/lib/python3.8/site-packages/tpcp/_base.py#L346"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.set_params" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the parameters of this Algorithm.</p>
+<p>To set parameters of nested objects use <code class="docutils literal notranslate"><span class="pre">nested_object_name__para_name=</span></code>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gaitmap_datasets.SensorPositionComparison2019Segmentation.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.11)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.shape" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the shape of the dataset.</p>
+<p>This only reports a single dimension.
+This is equal to the number of rows in the index, if <code class="docutils literal notranslate"><span class="pre">self.groupby_cols=None</span></code>.
+Otherwise, it is equal to the number of unique groups.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.as_attrs"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.as_attrs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.as_dataclass"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.as_dataclass</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.assert_is_single</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.assert_is_single_group"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.assert_is_single_group</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.clone"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.clone</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.create_group_labels"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.create_group_labels</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.create_index"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.create_index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.data"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.data</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.get_params"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.get_params</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.get_subset"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.get_subset</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.group"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.group</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.groupby"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.groupby</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.grouped_index"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.grouped_index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.groups"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.groups</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.index"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.index</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.is_single</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.is_single_group"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.is_single_group</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.iter_level"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.iter_level</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.metadata"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.metadata</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.sampling_rate_hz"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.sampling_rate_hz</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.segmented_stride_list_</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.segmented_stride_list_per_sensor_"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.segmented_stride_list_per_sensor_</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.set_params"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.set_params</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaitmap_datasets.SensorPositionComparison2019Segmentation.shape"><code class="docutils literal notranslate"><span class="pre">SensorPositionComparison2019Segmentation.shape</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/modules/generated/gaitmap_datasets.SensorPositionComparison2019Segmentation.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=927b94d3fcb96560df09"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=927b94d3fcb96560df09"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2022 - 2023, MaD Lab, FAU.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

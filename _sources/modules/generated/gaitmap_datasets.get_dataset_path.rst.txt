@@ -1,0 +1,8 @@
+﻿gaitmap_datasets.get_dataset_path
+=====================================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autofunction:: get_dataset_path
+
+.. include:: /modules/generated/backreferences/gaitmap_datasets.get_dataset_path.examples

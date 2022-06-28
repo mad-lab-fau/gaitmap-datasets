@@ -1,0 +1,8 @@
+﻿gaitmap_datasets.create_config_template
+===========================================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autofunction:: create_config_template
+
+.. include:: /modules/generated/backreferences/gaitmap_datasets.create_config_template.examples

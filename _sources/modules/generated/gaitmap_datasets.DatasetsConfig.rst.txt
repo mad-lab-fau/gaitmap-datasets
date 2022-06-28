@@ -1,0 +1,6 @@
+﻿gaitmap\_datasets.DatasetsConfig
+================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autoclass:: DatasetsConfig

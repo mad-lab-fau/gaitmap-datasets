@@ -1,0 +1,8 @@
+﻿gaitmap_datasets.config
+===========================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autofunction:: config
+
+.. include:: /modules/generated/backreferences/gaitmap_datasets.config.examples

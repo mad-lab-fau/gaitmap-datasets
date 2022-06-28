@@ -1,0 +1,8 @@
+﻿gaitmap_datasets.utils.convert_segmented_stride_list
+========================================================================
+
+.. currentmodule:: gaitmap_datasets.utils
+
+.. autofunction:: convert_segmented_stride_list
+
+.. include:: /modules/generated/backreferences/gaitmap_datasets.utils.convert_segmented_stride_list.examples

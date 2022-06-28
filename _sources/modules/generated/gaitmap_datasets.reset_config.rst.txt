@@ -1,0 +1,8 @@
+﻿gaitmap_datasets.reset_config
+=================================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autofunction:: reset_config
+
+.. include:: /modules/generated/backreferences/gaitmap_datasets.reset_config.examples

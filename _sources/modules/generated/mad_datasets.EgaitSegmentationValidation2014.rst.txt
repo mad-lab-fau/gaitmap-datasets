@@ -1,0 +1,6 @@
+﻿mad\_datasets.EgaitSegmentationValidation2014
+=============================================
+
+.. currentmodule:: mad_datasets
+
+.. autoclass:: EgaitSegmentationValidation2014

@@ -1,0 +1,168 @@
+:orphan:
+
+.. _examples:
+
+Examples
+========
+Examples that show how to work with gaitmap-datasets.
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The EgaitSegmentationValidation2014 dataset allows access to the stride segmentation validation...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_egait_segmentation_validation_2014_thumb.png
+    :alt: EgaitSegmentationValidation2014 - A Stride Segmentation validation dataset
+
+  :ref:`sphx_glr_auto_examples_egait_segmentation_validation_2014.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">EgaitSegmentationValidation2014 - A Stride Segmentation validation dataset</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The PyShoe dataset [1]_ contains multiple trials with spatial reference for longer trials. This...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_pyshoe_2019_thumb.png
+    :alt: PyShoe2019 - Indoor Navigation with foot-mounted inertial sensors
+
+  :ref:`sphx_glr_auto_examples_pyshoe_2019.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">PyShoe2019 - Indoor Navigation with foot-mounted inertial sensors</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The EgaitParameterValidation2013 dataset allows access to the parameter validation dataset reco...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_egait_parameter_validation_2013_thumb.png
+    :alt: EgaitParameterValidation2013 - A Stride Parameter validation dataset
+
+  :ref:`sphx_glr_auto_examples_egait_parameter_validation_2013.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">EgaitParameterValidation2013 - A Stride Parameter validation dataset</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This dataset contains data from healthy participants walking with different speed levels throug...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_egait_adidas_2014_thumb.png
+    :alt: EgaitAdidas2014 - Healthy Participants with MoCap reference
+
+  :ref:`sphx_glr_auto_examples_egait_adidas_2014.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">EgaitAdidas2014 - Healthy Participants with MoCap reference</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The Kluge 2017 dataset was recorded to test the validity of spatial-temporal parameters extract...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_kluge_2017_thumb.png
+    :alt: Kluge2017 - A dataset for in-lab parameter validation in healthy and PD.
+
+  :ref:`sphx_glr_auto_examples_kluge_2017.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Kluge2017 - A dataset for in-lab parameter validation in healthy and PD.</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The dataset can be downloaded from here:">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_stair_ambulation_healthy_2021_thumb.png
+    :alt: StairAmbulationHealthy2021 - A Stride Segmentation and Event Detection dataset with focus on stairs
+
+  :ref:`sphx_glr_auto_examples_stair_ambulation_healthy_2021.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">StairAmbulationHealthy2021 - A Stride Segmentation and Event Detection dataset with focus on stairs</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="SensorPositionComparison2019Segmentation:     In this dataset no Mocap ground truth is provided...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_sensor_position_comparison_2019_thumb.png
+    :alt: SensorPositionComparison2019 - Full mocap reference data set with 6 sensors per foot
+
+  :ref:`sphx_glr_auto_examples_sensor_position_comparison_2019.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">SensorPositionComparison2019 - Full mocap reference data set with 6 sensors per foot</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/egait_segmentation_validation_2014
+   /auto_examples/pyshoe_2019
+   /auto_examples/egait_parameter_validation_2013
+   /auto_examples/egait_adidas_2014
+   /auto_examples/kluge_2017
+   /auto_examples/stair_ambulation_healthy_2021
+   /auto_examples/sensor_position_comparison_2019
+
+
+.. only:: html
+
+  .. container:: sphx-glr-footer sphx-glr-footer-gallery
+
+    .. container:: sphx-glr-download sphx-glr-download-python
+
+      :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
+
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+      :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

@@ -1,0 +1,6 @@
+﻿mad\_datasets.EgaitParameterValidation2013
+==========================================
+
+.. currentmodule:: mad_datasets
+
+.. autoclass:: EgaitParameterValidation2013

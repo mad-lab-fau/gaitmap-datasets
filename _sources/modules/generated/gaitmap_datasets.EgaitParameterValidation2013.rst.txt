@@ -1,0 +1,6 @@
+﻿gaitmap\_datasets.EgaitParameterValidation2013
+==============================================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autoclass:: EgaitParameterValidation2013

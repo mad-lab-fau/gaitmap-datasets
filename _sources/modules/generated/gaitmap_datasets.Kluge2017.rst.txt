@@ -1,0 +1,6 @@
+﻿gaitmap\_datasets.Kluge2017
+===========================
+
+.. currentmodule:: gaitmap_datasets
+
+.. autoclass:: Kluge2017
