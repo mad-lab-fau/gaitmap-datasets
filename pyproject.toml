@@ -27,12 +27,13 @@ pytest-cov = "^3.0.0"
 prospector = "^1.7.7"
 ipykernel = "^6.15.0"
 numpydoc = "^1.4.0"
-Sphinx = "^5.0.2"
+Sphinx = "^4.2.0"
 sphinx-gallery = "^0.10.1"
 recommonmark = "^0.7.1"
 memory-profiler = "^0.60.0"
 matplotlib = "^3.5.2"
 toml = "^0.10.2"
+pydata-sphinx-theme = "^0.9.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -75,3 +76,4 @@ _check_isort = "isort . --check"
 check = { sequence = ["_check_black", "_check_isort", "lint"], help = "Check all potential format and linting issues." }
 test = { cmd = "pytest --cov=mad_datasets --cov-report=term-missing --cov-report=xml", help = "Run Pytest with coverage." }
 version = { script = "_tasks:task_update_version()" }
+docs = { script = "_tasks:task_docs()" }

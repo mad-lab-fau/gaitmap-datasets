@@ -1,7 +1,7 @@
 .. mad-datasets documentation master file
 
 mad-datasets Docu Overview
-==================
+==========================
 
 .. toctree::
    :maxdepth: 1
