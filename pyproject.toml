@@ -77,3 +77,5 @@ check = { sequence = ["_check_black", "_check_isort", "lint"], help = "Check all
 test = { cmd = "pytest --cov=mad_datasets --cov-report=term-missing --cov-report=xml", help = "Run Pytest with coverage." }
 version = { script = "_tasks:task_update_version()" }
 docs = { script = "_tasks:task_docs()" }
+upload_docs = { script = "_tasks:task_upload_docs()" }
+
