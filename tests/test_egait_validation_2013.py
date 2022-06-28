@@ -11,6 +11,7 @@ from mad_datasets.egait_parameter_validation_2013.helper import (
     get_gaitrite_parameters,
     get_segmented_stride_list,
 )
+from mad_datasets.utils.consts import SF_COLS
 
 base_dir = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database")
 
@@ -96,6 +97,7 @@ class TestEgaitParameterValidation2013Dataset:
                 check_names=False,
             )
             assert imu_data[sensor].index.name == "time [s]"
+            assert imu_data[sensor].columns.tolist() == SF_COLS
 
     def test_stride_borders(self):
         dataset = EgaitParameterValidation2013(data_folder=base_dir)

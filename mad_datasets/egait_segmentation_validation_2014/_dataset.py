@@ -12,7 +12,6 @@ from mad_datasets.egait_segmentation_validation_2014.helper import (
     get_all_participants,
 )
 
-# TODO: Handle the missing datafile
 
 class EgaitSegmentationValidation2014(Dataset):
     """Egait stride segmentation validation 2013 dataset."""
@@ -21,10 +20,12 @@ class EgaitSegmentationValidation2014(Dataset):
         self,
         data_folder: Optional[Union[str, Path]] = None,
         *,
+        exclude_incomplete_participants: bool = False,
         memory: Memory = Memory(None),
         groupby_cols: Optional[Union[List[str], str]] = None,
         subset_index: Optional[pd.DataFrame] = None
     ):
+        self.exclude_incomplete_participants = exclude_incomplete_participants
         self.data_folder = data_folder
         self.memory = memory
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)
@@ -49,6 +50,10 @@ class EgaitSegmentationValidation2014(Dataset):
         )
         final_data = {}
         for k, v in data.items():
+            if v is None:
+                # For one participant the data from one sensor is missing.
+                # For the output, we ignore it and not include it in the output.
+                continue
             v.index /= self.sampling_rate_hz
             v.index.name = "time [s]"
             final_data[k] = v
@@ -59,10 +64,16 @@ class EgaitSegmentationValidation2014(Dataset):
         """Get the segmented stride list."""
         self.assert_is_single(None, "segmented_stride_list_")
         cohort, test, participant, = self.group
-        return get_segmented_stride_list(participant, cohort, test, base_dir=self._data_folder_path)
+        stride_list = get_segmented_stride_list(participant, cohort, test, base_dir=self._data_folder_path)
+        # For one participant the data from one sensor is missing.
+        # For the output, we ignore it and not include it in the output.
+        return {k: v for k, v in stride_list.items() if v is not None}
 
     def create_index(self) -> pd.DataFrame:
         """Create index."""
-        return pd.DataFrame(
+        index = pd.DataFrame(
             get_all_participants(base_dir=self._data_folder_path), columns=["cohort", "test", "participant"]
         )
+        if self.exclude_incomplete_participants:
+            index = index[index.participant != "GA214026"].copy()
+        return index
