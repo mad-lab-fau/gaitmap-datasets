@@ -9,7 +9,11 @@ Helper to access to open-source gait datasets of the MaD-Lab (and maybe external
 
 The aim of this package is to ensure that all datasets can be loaded in a similar fashion and all data (and annotations)
 are in the same format (i.e. the same sensor orientations, units, etc.).
-This should allow to easily run the same algorithm accross multiple datasets.
+This should allow to easily run the same algorithm across multiple datasets.
+
+> :warning: While this makes it easier to work with the datasets, the coordinate system and other data information
+> provided with the dataset might not match the format you get when using this library!
+
 
 All datasets APIs are built using the 
 [`tpcp.Dataset`](https://tpcp.readthedocs.io/en/latest/modules/generated/dataset/tpcp.Dataset.html#tpcp.Dataset)
@@ -72,7 +76,7 @@ We will always just update a single commit on the gh-pages branch to keep the ef
 This will delete the submodule and might cause issues.
 The `poe` task is configured to clean all relevant files in the `docs/_build` folder before each run.
 
-After a update of the documentation, you will see that you also need to make a commit in the main repo, as the commit 
+After an update of the documentation, you will see that you also need to make a commit in the main repo, as the commit 
 hash of the docs submodule has changed.
 
 To make sure you don't forget to update the docs, the `poe prepare_release` task will also build and upload the docs 
