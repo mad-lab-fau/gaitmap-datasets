@@ -13,10 +13,16 @@ This works in 3 steps:
    We use a relatively simple peak detection and check if we can find two zero-crossings with an adaptive threshold.
    These crossings mark the IC and the TC.
 
-Note: To run the script, the data path must be adjusted.
-This will overwrite the previous event data.
+Running this script will overwrite the previous event data in your downloaded dataset.
 Usually there is no need to rerun this script unless the data or the event detection method have been changed.
+
+Run the script as follows:
+
+```shell
+python -m mad_datasets.stair_ambulation_healthy_2021.scripts.create_pressure_events --data_path="..."
+```
 """
+import argparse
 from pathlib import Path
 
 import pandas as pd
@@ -31,7 +37,11 @@ from mad_datasets.utils.coordinate_transforms import convert_to_fbf
 
 if __name__ == "__main__":
 
-    data_path = Path("/home/arne/Documents/repos/work/datasets/stair-ambulation-data-ba-liv")
+    # Get path from commandline argument
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data_path", type=Path, required=True)
+    args = parser.parse_args()
+    data_path = Path(args.data_path)
 
     dataset = StairAmbulationHealthy2021Full(
         data_folder=data_path, ignore_manual_session_markers=True, include_pressure_data=True, memory=Memory(".cache")
