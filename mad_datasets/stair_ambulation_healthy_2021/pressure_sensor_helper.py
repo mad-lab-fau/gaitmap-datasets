@@ -11,7 +11,7 @@ from mad_datasets.utils.event_detection import detect_min_vel
 
 def _fsr_calibration_path(base_dir: Path) -> Path:
     """Get the relative path to the fsr-calibration data."""
-    return base_dir / "fsr_calibrations"
+    return base_dir / "calibrations" / "fsr_calibrations"
 
 
 def load_fsr_calibration_data_from_path(path: Path):

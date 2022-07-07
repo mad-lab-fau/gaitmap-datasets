@@ -14,7 +14,7 @@ from mad_datasets.stair_ambulation_healthy_2021.helper import (
     get_segmented_stride_list,
 )
 
-base_dir = Path("/home/arne/Documents/repos/work/datasets/stair-ambulation-data-ba-liv")
+base_dir = Path("/home/arne/Documents/repos/work/datasets/stair_ambulation_dataset")
 
 
 def test_get_all_participants():
