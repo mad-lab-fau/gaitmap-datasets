@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mad-datasets"
-version = "0.2.0"
+version = "0.3.0"
 description = "Helper to access to open-source gait datasets of the MaD-Lab"
 authors = [
     "Arne Küderle <arne.kuederle@fau.de>",
