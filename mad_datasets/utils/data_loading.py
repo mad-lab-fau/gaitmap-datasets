@@ -1,12 +1,12 @@
 """General Helpers to load binary data."""
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Type
 
 import numpy as np
 import pandas as pd
 
 
-def load_bin_file(path: Path, dtype_dict: Dict[str, np.dtype]) -> pd.DataFrame:
+def load_bin_file(path: Path, dtype_dict: Dict[str, Type[np.dtype]]) -> pd.DataFrame:
     """Load a binary file containing sensor data.
 
     This function will load data from a binary file given the specified data type structure.
