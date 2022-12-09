@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Literal, Optional, Union
 import pandas as pd
 from imucal.management import CalibrationWarning
 from nilspodlib import SyncedSession
-from nilspodlib.exceptions import SynchronisationWarning
+from nilspodlib.exceptions import SynchronisationWarning, SynchronisationError
 from scipy.spatial.transform import Rotation
 
 from mad_datasets.stair_ambulation_healthy_2021.pressure_sensor_helper import calibrate_analog_data
@@ -97,7 +97,7 @@ def get_all_data_for_participant(
         warnings.filterwarnings("ignore", category=SynchronisationWarning)
         try:
             session = session.align_to_syncregion()
-        except ValueError:
+        except SynchronisationError:
             # This is a NilsPod bug that happens sometimes.
             # In this case the index of the last couple of values is broken.
             # Therefore, we simply remove them.
