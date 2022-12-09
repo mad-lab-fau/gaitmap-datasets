@@ -267,7 +267,7 @@ class PressureEventDetection:
             )
 
         stride_list = pd.DataFrame.from_records(ped_stride_list).rename_axis("s_id")
-        stride_list["pre_ic"] = _build_pre_ic_list(stride_list)
+        stride_list["pre_ic"] = _build_pre_ic_list(stride_list)  # pylint: disable=unsupported-assignment-operation
 
         return stride_list
 

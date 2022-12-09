@@ -115,6 +115,20 @@ jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
+name = "c3d"
+version = "0.5.1"
+description = "A library for manipulating C3D binary files"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.dependencies]
+numpy = ">=1,<2"
+
+[package.extras]
+gui = ["pyglet (>=1.5.21,<2.0.0)"]
+
+[[package]]
 name = "certifi"
 version = "2022.12.7"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -1613,7 +1627,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4.0"
-content-hash = "e5068c0f0938a6b17092cc01f8a49727f33cf00a407adb71bd8f9333abf5091c"
+content-hash = "8ce26bc01a10bbabbea1811fb10daceec8170827e01ce32152cb8522860eaf6d"
 
 [metadata.files]
 alabaster = [
@@ -1661,6 +1675,10 @@ black = [
     {file = "black-22.10.0-cp39-cp39-win_amd64.whl", hash = "sha256:432247333090c8c5366e69627ccb363bc58514ae3e63f7fc75c54b1ea80fa7de"},
     {file = "black-22.10.0-py3-none-any.whl", hash = "sha256:c957b2b4ea88587b46cf49d1dc17681c1e672864fd7af32fc1e9664d572b3458"},
     {file = "black-22.10.0.tar.gz", hash = "sha256:f513588da599943e0cde4e32cc9879e825d58720d6557062d1098c5ad80080e1"},
+]
+c3d = [
+    {file = "c3d-0.5.1-py3-none-any.whl", hash = "sha256:f8564bc827663d7b41fa128ed1fef3d3967465fa7c52c848eb5b2548a353a605"},
+    {file = "c3d-0.5.1.tar.gz", hash = "sha256:3f4f3d317b0f7617dc2fb3b2e892d6fd9813a384fe32301e33df88ad22ce41fa"},
 ]
 certifi = [
     {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},

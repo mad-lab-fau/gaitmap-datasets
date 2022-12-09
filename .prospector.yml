@@ -14,6 +14,8 @@ pycodestyle:
     - E127
     - W391
     - E203 # ignoring white space before colon :
+    - N806  # Variable in function should be lowercase, handled by pylint
+
 
 pydocstyle:
   options:
@@ -50,3 +52,4 @@ pylint:
     - too-many-lines
     - bad-whitespace
     - cyclic-import # ignored because of false positive due to Type hints
+    - django-not-available

@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Literal, Optional, Union
 import pandas as pd
 from imucal.management import CalibrationWarning
 from nilspodlib import SyncedSession
-from nilspodlib.exceptions import SynchronisationWarning, SynchronisationError
+from nilspodlib.exceptions import SynchronisationError, SynchronisationWarning
 from scipy.spatial.transform import Rotation
 
 from mad_datasets.stair_ambulation_healthy_2021.pressure_sensor_helper import calibrate_analog_data
