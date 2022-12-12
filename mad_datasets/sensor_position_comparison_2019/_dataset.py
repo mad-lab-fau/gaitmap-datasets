@@ -123,7 +123,7 @@ class SensorPositionComparison2019Segmentation(_SensorPostionDataset):
 
     Data is only loaded once the respective attributes are accessed.
     This means filtering the dataset should be fast, but accessing attributes like `.data` can be slow.
-    By default we do not perform any caching of these values.
+    By default, we do not perform any caching of these values.
     This means, if you need to use the value multiple times, the best way is to assign it to a variable.
     Alternatively, you can use the `memory` parameter to create a disk based cache for the data loading.
 
@@ -324,6 +324,10 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
             If the input are events in mocap samples (`from_time_axis="mocap"`), they must not include the padding.
             I.e. the first sample of the mocap data is sample 0 and test start is sample 0.
 
+        ... note::
+            If the input are events in IMU samples (`from_time_axis="imu"`) and padding is used, it can happen that the
+            resulting mocap samples have negative values (as the events occure before the start of the test).
+
         """
         if from_time_axis == to_time_axis:
             return events.copy()
@@ -336,7 +340,8 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
                     + self.data_padding_imu_samples
                 )
             if to_time_axis == "time":
-                return events / self.mocap_sampling_rate_hz_ + self.data_padding_s
+                # time 0 == mocap sample 0 -> This is independent of the padding
+                return events / self.mocap_sampling_rate_hz_
         if from_time_axis == "imu":
             if to_time_axis == "mocap":
                 return convert_sampling_rates_event_list(
@@ -345,5 +350,5 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
                     new_sampling_rate=self.mocap_sampling_rate_hz_,
                 )
             if to_time_axis == "time":
-                return events / self.sampling_rate_hz - self.data_padding_s
+                return (events - self.data_padding_imu_samples) / self.sampling_rate_hz
         raise ValueError(f"Cannot convert from {from_time_axis} to {to_time_axis}.")
