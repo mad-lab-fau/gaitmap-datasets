@@ -1,27 +1,15 @@
-"""The core tpcp Dataset class for the Stair Psotion Comparison dataset.
-
-We provide 2 versions of the dataset:
-
-SensorPositionDatasetSegmentation: In this dataset no Mocap ground truth is provided and the IMu data is not cut to
-    the individdual gait test, but just a single recording for all participants exists with all tests (including
-    failed once) and movement between the tests.
-    This can be used for stride segmentation tasks, as we hand-labeled all stride-start-end events in these recordings
-SensorPositionDatasetMocap: In this dataset the data is cut into the individual tests.
-    This means 7 data segments exist per participants.
-    For each of these segments full synchronised motion capture reference is provided.
-
-For more information about the dataset, see the dataset [documentation](https://zenodo.org/record/5747173)
-"""
+"""The core tpcp Dataset class for the Stair Psotion Comparison dataset."""
 
 import warnings
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Any, Tuple
 
 import pandas as pd
 from imucal.management import CalibrationWarning
 from joblib import Memory
 from nilspodlib.exceptions import CorruptedPackageWarning, LegacyWarning, SynchronisationWarning
 from tpcp import Dataset
+from typing_extensions import Literal
 
 from mad_datasets.sensor_position_comparison_2019.helper import (
     align_coordinates,
@@ -34,7 +22,9 @@ from mad_datasets.sensor_position_comparison_2019.helper import (
     get_mocap_events,
     get_mocap_test,
     get_session_df,
+    get_metadata_participant,
 )
+from mad_datasets.utils.event_detection import convert_sampling_rates_event_list
 
 
 def _get_session_and_align(participant, data_folder):
@@ -43,14 +33,14 @@ def _get_session_and_align(participant, data_folder):
 
 
 class _SensorPostionDataset(Dataset):
-    data_folder: Optional[Union[str, Path]]
+    data_folder: Union[str, Path]
     include_wrong_recording: bool
     memory: Memory
     align_data: bool
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: Union[str, Path],
         *,
         include_wrong_recording: bool = False,
         align_data: bool = True,
@@ -63,6 +53,11 @@ class _SensorPostionDataset(Dataset):
         self.memory = memory
         self.align_data = align_data
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)
+
+    @property
+    def _data_folder_path(self) -> Path:
+        """Get the path to the data folder as Path object."""
+        return Path(self.data_folder)
 
     @property
     def sampling_rate_hz(self) -> float:
@@ -89,13 +84,22 @@ class _SensorPostionDataset(Dataset):
             )
             if self.align_data is True:
                 session_df = self.memory.cache(_get_session_and_align)(
-                    self.index["participant"].iloc[0], data_folder=self.data_folder
+                    self.index["participant"].iloc[0], data_folder=self._data_folder_path
                 )
             else:
                 session_df = self.memory.cache(get_session_df)(
-                    self.index["participant"].iloc[0], data_folder=self.data_folder
+                    self.index["participant"].iloc[0], data_folder=self._data_folder_path
                 )
         return session_df
+
+    @property
+    def metadata(self) -> Dict[str, Any]:
+        """Get the metadata for a participant."""
+        self.assert_is_single(["participant"], "metadata")
+        particpant_id = self.group
+        if isinstance(particpant_id, tuple):
+            particpant_id = particpant_id.participant
+        return get_metadata_participant(particpant_id, data_folder=self._data_folder_path)
 
     @property
     def segmented_stride_list_per_sensor_(self) -> Dict[str, pd.DataFrame]:
@@ -149,13 +153,13 @@ class SensorPositionDatasetSegmentation(_SensorPostionDataset):
         return df
 
     def _get_segmented_stride_list(self, index) -> pd.DataFrame:
-        stride_list = get_manual_labels(index["participant"].iloc[0], self.data_folder)
+        stride_list = get_manual_labels(index["participant"].iloc[0], self._data_folder_path)
         stride_list = stride_list.set_index("s_id")
         return stride_list
 
     def create_index(self) -> pd.DataFrame:
         return pd.DataFrame(
-            {"participant": get_all_participants(self.include_wrong_recording, data_folder=self.data_folder)}
+            {"participant": get_all_participants(self.include_wrong_recording, data_folder=self._data_folder_path)}
         )
 
 
@@ -164,7 +168,7 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
 
     Data is only loaded once the respective attributes are accessed.
     This means filtering the dataset should be fast, but accessing attributes like `.data` can be slow.
-    By default we do not perform any caching of these values.
+    By default, we do not perform any caching of these values.
     This means, if you need to use the value multiple times, the best way is to assign it to a variable.
     Alternatively, you can use the `memory` parameter to create a disk based cache for the data loading.
 
@@ -183,8 +187,9 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
         This should make it easy to remove the padded values if required.
 
         .. warning:: The same padding is not applied to the mocap samples (as we do not have any mocap samples
-                     outside the gait tests!
-                     However, the time value provided in the index of the pandas Dataframe are still aligned!
+                     outside the gait tests)!
+                     However, the time value provided in the index of the pandas Dataframe are still aligned,
+                     as we add negative time values to the IMU time index.
     memory
         Optional joblib memory object to cache the data loading. Note that this can lead to large hard disk usage!
     groupby_cols
@@ -194,15 +199,15 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
 
     """
 
-    data_padding_s: int
+    data_padding_s: float
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: Union[str, Path],
         *,
         include_wrong_recording: bool = False,
         align_data: bool = True,
-        data_padding_s: int = 0,
+        data_padding_s: float = 0,
         memory: Optional[Memory] = None,
         groupby_cols: Optional[Union[List[str], str]] = None,
         subset_index: Optional[pd.DataFrame] = None,
@@ -229,11 +234,7 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
         """
         session_df = self._get_base_df()
         df = get_imu_test(
-            self.index["participant"].iloc[0],
-            self.index["test"].iloc[0],
-            session_df=session_df,
-            data_folder=self.data_folder,
-            padding_s=self.data_padding_s,
+            *self.group, session_df=session_df, data_folder=self._data_folder_path, padding_s=self.data_padding_s,
         )
         df = df.reset_index(drop=True)
         df.index /= self.sampling_rate_hz
@@ -249,7 +250,7 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
 
     def _get_segmented_stride_list(self, index) -> pd.DataFrame:
         stride_list = get_manual_labels_for_test(
-            index["participant"].iloc[0], index["test"].iloc[0], data_folder=self.data_folder
+            index["participant"].iloc[0], index["test"].iloc[0], data_folder=self._data_folder_path
         )
         stride_list = stride_list.set_index("s_id")
         stride_list[["start", "end"]] += self.data_padding_imu_samples
@@ -260,13 +261,14 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
         """Get mocap events calculated the Zeni Algorithm.
 
         Note that the events are provided in mocap samples after the start of the test.
-        `self.data_padding_s` is also ignored.
+        This means `self.data_padding_s` is ignored here.
+        Use `self.convert_with_padding` to convert the events to IMU samples/seconds while respecting the padding.
         """
         self.assert_is_single(None, "mocap_events_")
         mocap_events = get_mocap_events(
-            self.index["participant"].iloc[0], self.index["test"].iloc[0], data_folder=self.data_folder
+            *self.group, data_folder=self.data_folder
         )
-        mocap_events = {k: v.drop("foot", axis=1) for k, v in mocap_events.groupby("foot")}
+        mocap_events = {k: v.drop("foot", axis=1).set_index("s_id") for k, v in mocap_events.groupby("foot")}
         return mocap_events
 
     @property
@@ -279,10 +281,17 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
         """Get the marker trajectories of a test.
 
         Note, the index is provided in seconds after the start of the test and `self.data_padding_s` is ignored!
+        However, as long as the time domain index is used, the two data streams are aligned.
+
+        All values are provided in mm in the global coordinate system of the motion capture system.
+
+        NaN values are provided, if one of the marker was not visible in the mocap system and its trajectory could
+        not be restored.
+
         """
         self.assert_is_single(None, "marker_position_")
         df = self.memory.cache(get_mocap_test)(
-            self.index["participant"].iloc[0], self.index["test"].iloc[0], data_folder=self.data_folder
+            *self.group, data_folder=self._data_folder_path
         )
         df = df.reset_index(drop=True)
         df.index /= self.mocap_sampling_rate_hz_
@@ -292,7 +301,49 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
     def create_index(self) -> pd.DataFrame:
         tests = (
             (p, t)
-            for p in get_all_participants(self.include_wrong_recording, data_folder=self.data_folder)
-            for t in get_all_tests(p, self.data_folder)
+            for p in get_all_participants(self.include_wrong_recording, data_folder=self._data_folder_path)
+            for t in get_all_tests(p, self._data_folder_path)
         )
         return pd.DataFrame(tests, columns=["participant", "test"])
+
+    def convert_with_padding(
+        self,
+        events: pd.DataFrame,
+        from_time_axis: Literal["mocap", "imu"],
+        to_time_axis: Literal["mocap", "imu", "time"],
+    ):
+        """Convert the time/sample values of mocap and IMU events into other time domains.
+
+        This method will use the respective sampling rates and the padding of the IMU data to convert the time/sample.
+
+        ... warning::
+            This method will only work, if the provided samples follow the padding conventions used in this class!
+            This means, if the input are events in IMU samples (`from_time_axis="imu"`), they must respect the
+            padding of the IMU data.
+            I.e. the first sample of the IMU data is sample 0 and test start is sample `self.data_padding_imu_samples`.
+            If the input are events in mocap samples (`from_time_axis="mocap"`), they must not include the padding.
+            I.e. the first sample of the mocap data is sample 0 and test start is sample 0.
+
+        """
+        if from_time_axis == to_time_axis:
+            return events.copy()
+        if from_time_axis == "mocap":
+            if to_time_axis == "imu":
+                return (
+                    convert_sampling_rates_event_list(
+                        events, old_sampling_rate=self.mocap_sampling_rate_hz_, new_sampling_rate=self.sampling_rate_hz
+                    )
+                    + self.data_padding_imu_samples
+                )
+            if to_time_axis == "time":
+                return events / self.mocap_sampling_rate_hz_ + self.data_padding_s
+        if from_time_axis == "imu":
+            if to_time_axis == "mocap":
+                return convert_sampling_rates_event_list(
+                    events - self.data_padding_imu_samples,
+                    old_sampling_rate=self.sampling_rate_hz,
+                    new_sampling_rate=self.mocap_sampling_rate_hz_,
+                )
+            if to_time_axis == "time":
+                return events / self.sampling_rate_hz - self.data_padding_s
+        raise ValueError(f"Cannot convert from {from_time_axis} to {to_time_axis}.")

@@ -1,6 +1,7 @@
 """General event detection helper."""
 
 import numpy as np
+import pandas as pd
 from numpy.linalg import norm
 
 
@@ -10,9 +11,7 @@ def detect_min_vel(gyr: np.ndarray, min_vel_search_win_size: int) -> float:
     if min_vel_search_win_size >= len(energy):
         raise ValueError("The value chosen for min_vel_search_win_size_ms is too large. Should be around 100 ms.")
     energy_view = sliding_window_view(
-        energy,
-        window_length=min_vel_search_win_size,
-        overlap=min_vel_search_win_size - 1,
+        energy, window_length=min_vel_search_win_size, overlap=min_vel_search_win_size - 1,
     )
     # find window with lowest summed energy
     min_vel_start = np.argmin(np.sum(energy_view, axis=1))
@@ -94,3 +93,30 @@ def sliding_window_view(arr: np.ndarray, window_length: int, overlap: int, nan_p
     view = np.squeeze(view)  # get rid of single-dimensional entries from the shape of an array.
 
     return view
+
+
+def convert_sampling_rates_event_list(
+    event_list: pd.DataFrame, old_sampling_rate: float, new_sampling_rate: float
+) -> pd.DataFrame:
+    """Convert sampling rate of a given data frame.
+
+    Parameters
+    ----------
+    event_list : pd.DataFrame
+        Data frame with data to be converted.
+    old_sampling_rate : float
+        Sampling rate of the data frame.
+    new_sampling_rate : float
+        Sampling rate to convert to.
+
+    Returns
+    -------
+    pd.DataFrame
+        Data frame with converted sampling rate.
+
+    """
+    if old_sampling_rate == new_sampling_rate:
+        return event_list
+
+    # For all columns we simply convert to the new sampling rate and round to the nearest integer
+    return (event_list / old_sampling_rate * new_sampling_rate).round().astype(int)
