@@ -38,11 +38,8 @@ The best way to get started is to then check the example for the respective data
 |---------------------------------|-----------------------------------------------------------------|-------------------------------------|
 | EgaitSegmentationValidation2014 | https://www.mad.tf.fau.de/research/activitynet/digital-biobank/ | Email to data owner (see info link) |
 | EgaitParameterValidation2013    | https://www.mad.tf.fau.de/research/activitynet/digital-biobank/ | Email to data owner (see info link) |
-| StairAmbulationHealthy2021      | https://osf.io/sgbw7/                                           |  https://osf.io/download/5ueq6/     |
-
-Note: The `sensor_position_comparison` dataset recorded in 2019 is not part of the mad-datasets package, but can be 
-obtained in a similar format using the
-[`sensor_position_dataset_helper`](https://github.com/mad-lab-fau/sensor_position_dataset_helper) python package.
+| StairAmbulationHealthy2021      | https://osf.io/sgbw7/                                           | https://osf.io/download/5ueq6/      |
+| SensorPositionDataset2019       | https://zenodo.org/record/5747173                               | https://zenodo.org/record/5747173   |
 
 ## Testing
 

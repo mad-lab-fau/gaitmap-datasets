@@ -10,7 +10,7 @@ from typing import Dict, List, Literal, Optional
 import pandas as pd
 from scipy.spatial.transform import Rotation
 
-from mad_datasets.utils.coordinate_transforms import rotate_sensor
+from mad_datasets.utils.coordinate_transforms import flip_sensor
 from mad_datasets.utils.egait_loading_helper import load_shimmer2_data
 
 CALIBRATION_FILE_NAMES = {
@@ -61,7 +61,7 @@ def get_all_data_for_participant(
         data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_{foot}.dat"
         calibration_path = _calibration_folder(base_dir) / CALIBRATION_FILE_NAMES[sensor]
         data = load_shimmer2_data(data_path, calibration_path)
-        data = rotate_sensor(data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION[sensor]))
+        data = flip_sensor(data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION[sensor]))
         all_data[sensor] = data
     return all_data
 

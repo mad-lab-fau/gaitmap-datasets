@@ -59,6 +59,49 @@ def rotation_from_angle(axis: np.ndarray, angle: Union[float, np.ndarray]) -> Ro
     return Rotation.from_rotvec(np.squeeze(axis * angle.T))
 
 
+def flip_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: bool = False) -> pd.DataFrame:
+    """Flip (same as rotate, but only 90 deg rots allowed) the data of a single sensor.
+
+    Compared to normal rotations, this function can result in massive speedups!
+    """
+    if rotation is None:
+        return data
+    if rotation.single is False:
+        raise ValueError("Only single rotations are allowed!")
+
+    tol = 10e-9
+    rot_matrix = rotation.as_matrix().squeeze()
+    all_1 = np.allclose(np.abs(rot_matrix[~np.isclose(rot_matrix, 0, atol=tol)]).flatten(), 1, atol=tol)
+    if not all_1:
+        raise ValueError(
+            "Only 90 deg rotations are allowed (i.e. 1 and -1 in the rotation matrix)! "
+            f"The current matrix is:\n\n {rot_matrix}"
+        )
+
+    # Now that we know the rotation is valid, we round the values to make all further checks simpler
+    rot_matrix = np.round(rot_matrix)
+
+    if inplace is False:
+        data = data.copy()
+
+    orig_col_order = data.columns
+    for sensor in ["acc", "gyr"]:
+        cols = np.array({"acc": SF_ACC, "gyr": SF_GYR}[sensor])
+        rename = {}
+        mirror = []
+        # We basically iterate over the rotation matrix and find which axis is transformed to which other axis.
+        # If the entry is -1, we also mirror the axis.
+        for col, row in zip(cols, rot_matrix):
+            old_index = cols[np.abs(row).astype(bool)][0]
+            rename[old_index] = col
+            if np.sum(row) == -1:
+                mirror.append(col)
+        data = data.rename(columns=rename)
+        data[mirror] *= -1
+    data = data[orig_col_order]
+    return data
+
+
 def rotate_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: bool = False) -> pd.DataFrame:
     """Rotate the data of a single sensor with acc and gyro."""
     if inplace is False:
@@ -68,6 +111,40 @@ def rotate_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: boo
     data[SF_GYR] = rotation.apply(data[SF_GYR].to_numpy())
     data[SF_ACC] = rotation.apply(data[SF_ACC].to_numpy())
     return data
+
+
+def flip_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Rotation]]) -> pd.DataFrame:
+    """Flip datasets (same as rotate, but only 90 deg rots allowed).
+
+    Parameters
+    ----------
+    dataset
+        dataframe representing a multiple synchronised sensors.
+    rotation
+        In case a single rotation object is passed, it will be applied to all sensors of the dataset.
+        If a dictionary of rotations is applied, the respective rotations will be matched to the sensors based on the
+        dict keys.
+        If no rotation is provided for a sensor, it will not be modified.
+
+    Returns
+    -------
+    flipped dataset
+        This will always be a copy. The original dataframe will not be modified.
+
+    """
+    rotation_dict = rotation
+    if not isinstance(rotation_dict, dict):
+        rotation_dict = {k: rotation for k in dataset.columns.unique(level=0)}
+
+    rotated_dataset = dataset.copy()
+    original_cols = dataset.columns
+
+    for key in rotation_dict.keys():
+        rotated_dataset[key] = flip_sensor(dataset[key], rotation_dict[key], inplace=False)
+
+    # Restore original order
+    rotated_dataset = rotated_dataset[original_cols]
+    return rotated_dataset
 
 
 def rotate_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Rotation]]) -> pd.DataFrame:
@@ -97,8 +174,7 @@ def rotate_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Ro
     original_cols = dataset.columns
 
     for key in rotation_dict.keys():
-        test = rotate_sensor(dataset[key], rotation_dict[key], inplace=False)
-        rotated_dataset[key] = test
+        rotated_dataset[key] = rotate_sensor(dataset[key], rotation_dict[key], inplace=False)
 
     # Restore original order
     rotated_dataset = rotated_dataset[original_cols]

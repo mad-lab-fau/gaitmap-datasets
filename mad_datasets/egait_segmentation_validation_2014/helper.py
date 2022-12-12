@@ -8,7 +8,7 @@ from typing import Dict, List, Literal, Optional, Tuple
 import pandas as pd
 from scipy.spatial.transform import Rotation
 
-from mad_datasets.utils.coordinate_transforms import rotate_sensor
+from mad_datasets.utils.coordinate_transforms import flip_sensor
 from mad_datasets.utils.egait_loading_helper import load_shimmer2_data
 
 Cohorts = Literal["control", "pd", "geriatric"]
@@ -108,7 +108,7 @@ def get_all_data_for_participant(
         stride_segmentation_file = stride_segmentation_folder / file_path.with_suffix(".txt").name
         calibration_file_path = _calibration_folder(base_dir) / f"{_get_sensor_node(stride_segmentation_file)}.csv"
         data = load_shimmer2_data(file_path, calibration_file_path)
-        data = rotate_sensor(data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION[sensor]))
+        data = flip_sensor(data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION[sensor]))
         all_data[sensor] = data
     return all_data
 
