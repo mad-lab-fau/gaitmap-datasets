@@ -1,14 +1,14 @@
 r"""
-SensorPositionDataset2019 - Full mocap reference data set with 6 sensors per foot
-=================================================================================
+SensorPositionComparison2019 - Full mocap reference data set with 6 sensors per foot
+====================================================================================
 
 We provide 2 versions of the dataset:
 
-SensorPositionDatasetSegmentation: In this dataset no Mocap ground truth is provided and the IMU data is not cut to
+SensorPositionComparison2019Segmentation: In this dataset no Mocap ground truth is provided and the IMU data is not cut to
     the individual gait test, but just a single recording for all participants exists with all tests (including
     failed ones) and movement between the tests.
     This can be used for stride segmentation tasks, as we hand-labeled all stride-start-end events in these recordings
-SensorPositionDatasetMocap: In this dataset the data is cut into the individual tests.
+SensorPositionComparison2019Mocap: In this dataset the data is cut into the individual tests.
     This means 7 data segments exist per participants.
     For each of these segments full synchronised motion capture reference is provided.
 
@@ -20,12 +20,12 @@ For more information about the dataset, see the dataset [documentation](https://
 from pathlib import Path
 
 dataset_path = Path(
-    "/home/arne/Documents/repos/work/projects/sensor_position_comparison" "/sensor_position_main_analysis/data/raw"
+    "/home/arne/Documents/repos/work/projects/sensor_position_comparison/sensor_position_main_analysis/data/raw"
 )
 
 
 # %%
-# SensorPositionDatasetSegmentation
+# SensorPositionComparison2019Segmentation
 # =================================
 # This version of the dataset contains one recording per participant with all tests and movement between the tests.
 # No Mocap reference is provided, but just the IMU data and the stride borders based on the IMU data.
@@ -36,9 +36,9 @@ dataset_path = Path(
 #
 from joblib import Memory
 
-from mad_datasets.sensor_position_comparison_2019 import SensorPositionDatasetSegmentation
+from mad_datasets.sensor_position_comparison_2019 import SensorPositionComparison2019Segmentation
 
-dataset = SensorPositionDatasetSegmentation(
+dataset = SensorPositionComparison2019Segmentation(
     data_folder=dataset_path,
     memory=Memory("../.cache"),
 )
@@ -102,7 +102,7 @@ fig.tight_layout()
 fig.show()
 
 # %%
-# SensorPositionDatasetMocap
+# SensorPositionComparison2019Mocap
 # ==========================
 # For this version of the dataset, the data is split into the individual tests.
 # This means 7 data segments exist per participants.
@@ -111,9 +111,9 @@ fig.show()
 # For each of these segments full synchronised motion capture trajectory of all markers is provided.
 # Further, we provide labels for IC and TC derived from the motion capture data for each of the hand labeled strides
 # within the segments.
-from mad_datasets.sensor_position_comparison_2019 import SensorPositionDatasetMocap
+from mad_datasets.sensor_position_comparison_2019 import SensorPositionComparison2019Mocap
 
-dataset = SensorPositionDatasetMocap(
+dataset = SensorPositionComparison2019Mocap(
     data_folder=dataset_path,
     memory=Memory("../.cache"),
 )
@@ -240,7 +240,7 @@ fig.show()
 # On the time axis, we assign negative time stamps to all the padded values that are before the actual test start.
 # This ensures that the time axis of the IMU data and the mocap data are still aligned, even tough no mocap data
 # exists in the padded region.
-dataset = SensorPositionDatasetMocap(
+dataset = SensorPositionComparison2019Mocap(
     data_folder=dataset_path,
     memory=Memory("../.cache"),
     data_padding_s=3,
@@ -265,6 +265,10 @@ fig.show()
 # the event data.
 # Only events/labels provided with IMU samples (or with a time axis) respect the padding correctly.
 # For example, the `segmented_stride_list` is provided with in IMU samples, so it is padded correctly.
+#
+# Note: The strides that are included in the segmented stride list will not change, if you increase the padding!
+#       This means if you increase the padding so that strides outside the selected gait tests are part of the signal,
+#       they will not be included in the segmented stride list.
 segmented_stride_labels = datapoint.segmented_stride_list_["left"]
 segmented_stride_labels.head()
 

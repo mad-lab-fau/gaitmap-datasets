@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
 import c3d
-import git
 import numpy as np
 import pandas as pd
 from nilspodlib import SyncedSession
@@ -52,36 +51,6 @@ COORDINATE_TRANSFORMATION_DICT = dict(
         "right_sensor": [[0, -1, 0], [1, 0, 0], [0, 0, 1]],
     },
 )
-
-
-def _get_repo_state(repo, version="HEAD"):
-    return repo.git.rev_parse(version)
-
-
-def ensure_git_revision(data_folder=None, version="HEAD"):
-    """Check if the local dataset folder is at the expected git-revision.
-
-    This is important for reproducibility.
-
-    This will raise a ValueError, if the repo is not at the expected version or has uncommitted changes.
-
-    If `data_folder = None`, the configured repo path will be used (if set).
-    """
-    data_folder = get_data_folder(data_folder, data_subfolder=False)
-    repo = git.Repo(data_folder)
-    if repo.is_dirty(untracked_files=True):
-        raise ValueError("The dataset repo has uncommitted changes.")
-    try:
-        expected_version_hash = _get_repo_state(repo, version)
-    except git.GitCommandError as e:
-        if "unknown revision or path not in the working tree" in e.stderr:
-            raise ValueError(f"The expected version {version} is not a valid git revision or git hash.") from e
-        raise e
-    if _get_repo_state(repo, "HEAD") != expected_version_hash:
-        raise ValueError(
-            f"The dataset is not at the expected version {version} ({expected_version_hash}) but at "
-            f"{_get_repo_state(repo, 'HEAD')}."
-        )
 
 
 def get_data_folder(data_folder=None, data_subfolder=True):
@@ -184,7 +153,11 @@ def get_session_df(participant_id: str, data_folder=None) -> pd.DataFrame:
 
 
 def get_imu_test(
-    participant: str, test_name: str, session_df: Optional[pd.DataFrame] = None, padding_s: int = 0, data_folder=None
+    participant: str,
+    test_name: str,
+    session_df: Optional[pd.DataFrame] = None,
+    padding_samples: int = 0,
+    data_folder=None,
 ) -> pd.DataFrame:
     """Get the imu data from a single performed test.
 
@@ -200,7 +173,7 @@ def get_imu_test(
     session_df
         An optional df obtained by calling `get_session_df`. If not provided it will be loaded using the same function.
         Providing it, can improve performance if multiple tests from the same participant are required.
-    padding_s
+    padding_samples
         Additional padding for and after the test that is included in the output.
         This might be helpful to get a longer region of no movement before the test starts to perform gravity
         alignments.
@@ -213,13 +186,9 @@ def get_imu_test(
     if session_df is None:
         session_df = get_session_df(participant, data_folder=data_folder)
     meta_data = get_metadata_participant(participant, data_folder=data_folder)
-    test_start = pd.Timestamp(
-        np.datetime64(meta_data["imu_tests"][test_name]["start"]) - np.timedelta64(padding_s, "s")
-    ).tz_localize("UTC")
-    test_stop = pd.Timestamp(
-        np.datetime64(meta_data["imu_tests"][test_name]["stop"]) + np.timedelta64(padding_s, "s")
-    ).tz_localize("UTC")
-    test = session_df.loc[test_start:test_stop]
+    start_index = meta_data["imu_tests"][test_name]["start_idx"] - padding_samples
+    stop_index = meta_data["imu_tests"][test_name]["stop_idx"] + padding_samples
+    test = session_df.iloc[start_index : stop_index + 1]
     return test
 
 

@@ -118,7 +118,7 @@ class _SensorPostionDataset(Dataset):
         return final_stride_list
 
 
-class SensorPositionDatasetSegmentation(_SensorPostionDataset):
+class SensorPositionComparison2019Segmentation(_SensorPostionDataset):
     """A dataset for stride segmentation benchmarking.
 
     Data is only loaded once the respective attributes are accessed.
@@ -163,7 +163,7 @@ class SensorPositionDatasetSegmentation(_SensorPostionDataset):
         )
 
 
-class SensorPositionDatasetMocap(_SensorPostionDataset):
+class SensorPositionComparison2019Mocap(_SensorPostionDataset):
     """A dataset for trajectory benchmarking.
 
     Data is only loaded once the respective attributes are accessed.
@@ -208,7 +208,7 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
         include_wrong_recording: bool = False,
         align_data: bool = True,
         data_padding_s: float = 0,
-        memory: Optional[Memory] = None,
+        memory: Memory = Memory(None),
         groupby_cols: Optional[Union[List[str], str]] = None,
         subset_index: Optional[pd.DataFrame] = None,
     ):
@@ -237,17 +237,18 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
             *self.group,
             session_df=session_df,
             data_folder=self._data_folder_path,
-            padding_s=self.data_padding_s,
+            padding_samples=self.data_padding_imu_samples,
         )
         df = df.reset_index(drop=True)
-        df.index /= self.sampling_rate_hz
-        df.index -= self.data_padding_s
+        # We first subtract the offset in samples and then divide by the sampling rate
+        # This ensures, that the 0 is still at the same position independent of the padding
+        df.index = (df.index - self.data_padding_imu_samples) / self.sampling_rate_hz
         df.index.name = "time after start [s]"
 
         return df
 
     @property
-    def data_padding_imu_samples(self):
+    def data_padding_imu_samples(self) -> int:
         """Get the actual padding in samples based on `data_padding_s`."""
         return int(round(self.data_padding_s * self.sampling_rate_hz))
 
