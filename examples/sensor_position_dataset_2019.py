@@ -40,7 +40,7 @@ from mad_datasets.sensor_position_comparison_2019 import SensorPositionDatasetSe
 
 dataset = SensorPositionDatasetSegmentation(
     data_folder=dataset_path,
-    memory=Memory(".cache"),
+    memory=Memory("../.cache"),
 )
 dataset
 
@@ -115,7 +115,7 @@ from mad_datasets.sensor_position_comparison_2019 import SensorPositionDatasetMo
 
 dataset = SensorPositionDatasetMocap(
     data_folder=dataset_path,
-    memory=Memory(".cache"),
+    memory=Memory("../.cache"),
 )
 dataset
 
@@ -242,7 +242,7 @@ fig.show()
 # exists in the padded region.
 dataset = SensorPositionDatasetMocap(
     data_folder=dataset_path,
-    memory=Memory(".cache"),
+    memory=Memory("../.cache"),
     data_padding_s=3,
 )
 datapoint = dataset[0]

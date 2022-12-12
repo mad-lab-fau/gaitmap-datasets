@@ -37,7 +37,7 @@ dataset = StairAmbulationHealthy2021PerTest(
     include_pressure_data=True,
     include_baro_data=True,
     include_hip_sensor=True,
-    memory=Memory(".cache"),
+    memory=Memory("../.cache"),
 )
 dataset
 
@@ -180,7 +180,7 @@ dataset = StairAmbulationHealthy2021Full(
     include_pressure_data=True,
     include_baro_data=True,
     include_hip_sensor=True,
-    memory=Memory(".cache"),
+    memory=Memory("../.cache"),
 )
 dataset
 
