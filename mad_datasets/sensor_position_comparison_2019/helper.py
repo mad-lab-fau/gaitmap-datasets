@@ -11,7 +11,7 @@ from nilspodlib import SyncedSession
 from scipy.spatial.transform import Rotation
 from typing_extensions import Literal
 
-from mad_datasets.utils.coordinate_transforms import rotation_from_angle, flip_dataset
+from mad_datasets.utils.coordinate_transforms import flip_dataset, rotation_from_angle
 
 COORDINATE_TRANSFORMATION_DICT = dict(
     qualisis_lateral_nilspodv1={
