@@ -26,7 +26,7 @@ dataset_path = Path(
 
 # %%
 # SensorPositionComparison2019Segmentation
-# =================================
+# ========================================
 # This version of the dataset contains one recording per participant with all tests and movement between the tests.
 # No Mocap reference is provided, but just the IMU data and the stride borders based on the IMU data.
 #
@@ -103,7 +103,7 @@ fig.show()
 
 # %%
 # SensorPositionComparison2019Mocap
-# ==========================
+# =================================
 # For this version of the dataset, the data is split into the individual tests.
 # This means 7 data segments exist per participants.
 # For details about the respective tests, see the dataset documentation.
