@@ -306,7 +306,7 @@ def load_c3d_data(path: Union[Path, str], insert_nan: bool = True) -> pd.DataFra
         for _, points, _ in reader.read_frames():
             frames.append(points[:, :3])
 
-        labels = [l.strip().lower() for l in reader.point_labels]
+        labels = [label.strip().lower() for label in reader.point_labels]
         frames = np.stack(frames)
         frames = frames.reshape(frames.shape[0], -1)
     index = pd.MultiIndex.from_product([labels, list("xyz")])

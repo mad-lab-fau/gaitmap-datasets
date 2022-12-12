@@ -35,9 +35,13 @@ dataset_path = Path(
 # used for all sensors.
 #
 from joblib import Memory
+
 from mad_datasets.sensor_position_comparison_2019 import SensorPositionDatasetSegmentation
 
-dataset = SensorPositionDatasetSegmentation(data_folder=dataset_path, memory=Memory(".cache"),)
+dataset = SensorPositionDatasetSegmentation(
+    data_folder=dataset_path,
+    memory=Memory(".cache"),
+)
 dataset
 
 # %%
@@ -109,7 +113,10 @@ fig.show()
 # within the segments.
 from mad_datasets.sensor_position_comparison_2019 import SensorPositionDatasetMocap
 
-dataset = SensorPositionDatasetMocap(data_folder=dataset_path, memory=Memory(".cache"),)
+dataset = SensorPositionDatasetMocap(
+    data_folder=dataset_path,
+    memory=Memory(".cache"),
+)
 dataset
 
 # %%
@@ -182,10 +189,20 @@ for (i, s) in event_labels_times.iterrows():
     axes[0].axvspan(s["start"], s["end"], alpha=0.2, color="C1")
     axes[1].axvspan(s["start"], s["end"], alpha=0.2, color="C1")
 axes[0].scatter(
-    event_labels_times["ic"], gyr_y.iloc[event_labels_in_imu["ic"]], marker="s", color="k", zorder=10, label="IC",
+    event_labels_times["ic"],
+    gyr_y.iloc[event_labels_in_imu["ic"]],
+    marker="s",
+    color="k",
+    zorder=10,
+    label="IC",
 )
 axes[0].scatter(
-    event_labels_times["tc"], gyr_y.iloc[event_labels_in_imu["tc"]], marker="o", color="C3", zorder=10, label="TC",
+    event_labels_times["tc"],
+    gyr_y.iloc[event_labels_in_imu["tc"]],
+    marker="o",
+    color="C3",
+    zorder=10,
+    label="TC",
 )
 axes[1].scatter(
     event_labels_times["ic"],
@@ -223,7 +240,11 @@ fig.show()
 # On the time axis, we assign negative time stamps to all the padded values that are before the actual test start.
 # This ensures that the time axis of the IMU data and the mocap data are still aligned, even tough no mocap data
 # exists in the padded region.
-dataset = SensorPositionDatasetMocap(data_folder=dataset_path, memory=Memory(".cache"), data_padding_s=3,)
+dataset = SensorPositionDatasetMocap(
+    data_folder=dataset_path,
+    memory=Memory(".cache"),
+    data_padding_s=3,
+)
 datapoint = dataset[0]
 imu_data = datapoint.data
 mocap_traj = datapoint.marker_position_

@@ -1,18 +1,17 @@
 r"""
-
 StairAmbulationHealthy2021 - A Stride Segmentation and Event Detection dataset with focus on stairs
 ===================================================================================================
 
 The dataset can be downloaded from here:
 
-.. note:: The dataset only contains the healthy participants of the full dataset presentent in the paper!
+.. note:: The dataset only contains the healthy participants of the full dataset presented in the paper!
 
 We provide two `tpcp.Dataset` classes to access the data:
 
 1. :class:`mad_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021PerTest`: This class allows to access
    all data and events for each of the performed gait tests individually.
 2. :class:`mad_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021Full`: This class allows to access the
-   entire recordings for each participants (two recordings per participant) independently of the performed gait tests.
+   entire recordings for each participant (two recordings per participant) independently of the performed gait tests.
 
 In the following we will show the usage of both classes and the data that is contained within.
 """
@@ -21,13 +20,13 @@ In the following we will show the usage of both classes and the data that is con
 #              location of the data on your machine.
 from pathlib import Path
 
-dataset_path = Path("/home/arne/Documents/repos/work/datasets/stair-ambulation-data-ba-liv")
+dataset_path = Path("/home/arne/Documents/repos/work/datasets/stair_ambulation_dataset/")
 
 # %%
 # StairAmbulationHealthy2021PerTest
 # =================================
 # First we can simple create an instance of the dataset class and directly see the contained data points.
-# Note, that we will enable the loading of all available data.
+# Note, that we will enable the loading of all available data (pressure, baro, and hip sensor).
 # You might want to disable that, to reduce the RAM usage and speed up the data loading.
 from joblib import Memory
 
@@ -109,7 +108,7 @@ datapoint.get_segmented_stride_list_with_type()
 datapoint.get_segmented_stride_list_with_type(stride_type=["level"])
 
 # %%
-# Below we plot all the relvant data for a single gait test to make it easier to understand.
+# Below we plot all the relevant data for a single gait test to make it easier to understand.
 #
 # For the selected test, we can see that the participant basically started walking right away.
 # While it can not be easily seen from the raw data IMU itself, the participant walked down a stair in two bouts.

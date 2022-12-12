@@ -2,7 +2,7 @@
 
 import warnings
 from pathlib import Path
-from typing import Dict, List, Optional, Union, Any, Tuple
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 from imucal.management import CalibrationWarning
@@ -19,10 +19,10 @@ from mad_datasets.sensor_position_comparison_2019.helper import (
     get_imu_test,
     get_manual_labels,
     get_manual_labels_for_test,
+    get_metadata_participant,
     get_mocap_events,
     get_mocap_test,
     get_session_df,
-    get_metadata_participant,
 )
 from mad_datasets.utils.event_detection import convert_sampling_rates_event_list
 
@@ -234,7 +234,10 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
         """
         session_df = self._get_base_df()
         df = get_imu_test(
-            *self.group, session_df=session_df, data_folder=self._data_folder_path, padding_s=self.data_padding_s,
+            *self.group,
+            session_df=session_df,
+            data_folder=self._data_folder_path,
+            padding_s=self.data_padding_s,
         )
         df = df.reset_index(drop=True)
         df.index /= self.sampling_rate_hz
@@ -265,9 +268,7 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
         Use `self.convert_with_padding` to convert the events to IMU samples/seconds while respecting the padding.
         """
         self.assert_is_single(None, "mocap_events_")
-        mocap_events = get_mocap_events(
-            *self.group, data_folder=self.data_folder
-        )
+        mocap_events = get_mocap_events(*self.group, data_folder=self.data_folder)
         mocap_events = {k: v.drop("foot", axis=1).set_index("s_id") for k, v in mocap_events.groupby("foot")}
         return mocap_events
 
@@ -290,9 +291,7 @@ class SensorPositionDatasetMocap(_SensorPostionDataset):
 
         """
         self.assert_is_single(None, "marker_position_")
-        df = self.memory.cache(get_mocap_test)(
-            *self.group, data_folder=self._data_folder_path
-        )
+        df = self.memory.cache(get_mocap_test)(*self.group, data_folder=self._data_folder_path)
         df = df.reset_index(drop=True)
         df.index /= self.mocap_sampling_rate_hz_
         df.index.name = "time after start [s]"

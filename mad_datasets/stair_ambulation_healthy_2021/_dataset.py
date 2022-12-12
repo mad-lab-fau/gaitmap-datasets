@@ -24,7 +24,7 @@ class _StairAmbulationHealthy2021(Dataset):
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: Union[str, Path],
         *,
         memory: Memory = Memory(None),
         include_pressure_data: bool = False,

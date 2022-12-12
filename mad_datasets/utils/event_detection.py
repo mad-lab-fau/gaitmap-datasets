@@ -11,7 +11,9 @@ def detect_min_vel(gyr: np.ndarray, min_vel_search_win_size: int) -> float:
     if min_vel_search_win_size >= len(energy):
         raise ValueError("The value chosen for min_vel_search_win_size_ms is too large. Should be around 100 ms.")
     energy_view = sliding_window_view(
-        energy, window_length=min_vel_search_win_size, overlap=min_vel_search_win_size - 1,
+        energy,
+        window_length=min_vel_search_win_size,
+        overlap=min_vel_search_win_size - 1,
     )
     # find window with lowest summed energy
     min_vel_start = np.argmin(np.sum(energy_view, axis=1))
