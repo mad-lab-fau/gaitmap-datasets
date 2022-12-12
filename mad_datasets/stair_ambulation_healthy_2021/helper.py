@@ -16,7 +16,7 @@ from nilspodlib.exceptions import SynchronisationError, SynchronisationWarning
 from scipy.spatial.transform import Rotation
 
 from mad_datasets.stair_ambulation_healthy_2021.pressure_sensor_helper import calibrate_analog_data
-from mad_datasets.utils.coordinate_transforms import rotate_dataset
+from mad_datasets.utils.coordinate_transforms import rotate_dataset, flip_dataset
 
 COORDINATE_SYSTEM_TRANSFORMATION = {  # stair_ambulation_instep_nilspodv2
     # [[-y -> +x], [+x -> +y], [+z -> +z]]
@@ -115,7 +115,7 @@ def get_all_data_for_participant(
     # Rename all columns
     session_df = session_df.rename(columns=sensor_mapping)
     # Rotate the data to the correct coordinate system
-    session_df = rotate_dataset(
+    session_df = flip_dataset(
         session_df, {k: Rotation.from_matrix(v) for k, v in COORDINATE_SYSTEM_TRANSFORMATION.items()}
     )
 

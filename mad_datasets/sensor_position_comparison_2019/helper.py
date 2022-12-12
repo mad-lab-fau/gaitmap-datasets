@@ -11,7 +11,7 @@ from nilspodlib import SyncedSession
 from scipy.spatial.transform import Rotation
 from typing_extensions import Literal
 
-from mad_datasets.utils.coordinate_transforms import rotate_dataset, rotation_from_angle
+from mad_datasets.utils.coordinate_transforms import rotation_from_angle, flip_dataset
 
 COORDINATE_TRANSFORMATION_DICT = dict(
     qualisis_lateral_nilspodv1={
@@ -142,11 +142,11 @@ def get_session_df(participant_id: str, data_folder=None) -> pd.DataFrame:
     # Some sensors were wrongly attached, this will be fixed here:
     if participant_id in ["8d60", "cb3d", "cdfc"]:
         rotation = rotation_from_angle(np.deg2rad(180), np.array([0, 0, 1]))
-        df = rotate_dataset(df, {"l_cavity": rotation})
+        df = flip_dataset(df, {"l_cavity": rotation})
 
     if participant_id in ["4d91", "5237", "80b8", "c9bb"]:
         rotation = rotation_from_angle(np.deg2rad(180), np.array([0, 0, 1]))
-        df = rotate_dataset(df, {"l_medial": rotation})
+        df = flip_dataset(df, {"l_medial": rotation})
 
     df[("sync", "trigger")] = trigger
     return df
@@ -311,6 +311,5 @@ def align_coordinates(multi_sensor_data: pd.DataFrame):
         if not rot:
             continue
         rotations[s] = Rotation.from_matrix(rot[f"{feet[foot]}_sensor"])
-    ds = rotate_dataset(multi_sensor_data.drop(columns="sync"), rotations)
-    ds["sync"] = multi_sensor_data["sync"]
+    ds = flip_dataset(multi_sensor_data.drop(columns="sync"), rotations)
     return ds
