@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union, Type
+from typing import Type, Union
 
 import numpy as np
 import pandas as pd
@@ -10,8 +10,8 @@ from pandas._testing import assert_frame_equal, assert_series_equal
 
 import mad_datasets.sensor_position_comparison_2019.helper as h
 from mad_datasets.sensor_position_comparison_2019 import (
-    SensorPositionComparison2019Segmentation,
     SensorPositionComparison2019Mocap,
+    SensorPositionComparison2019Segmentation,
 )
 
 base_dir = Path(
@@ -35,10 +35,12 @@ def test_get_all_tests():
     tests = h.get_all_tests("4d91", data_folder=base_dir)
     assert len(list(tests)) == 7
 
+
 def _convert_to_flat_str_index(df: pd.DataFrame) -> pd.DataFrame:
     df.columns = df.columns.to_flat_index()
     df.columns = ["__".join([str(k) for k in col]) for col in df.columns]
     return df
+
 
 def test_get_mocap_data(snapshot):
     mocap_data = h.get_mocap_test("4d91", "fast_20", data_folder=base_dir)
