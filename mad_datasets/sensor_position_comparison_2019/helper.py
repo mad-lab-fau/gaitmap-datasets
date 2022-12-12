@@ -1,13 +1,16 @@
 """A set of helpers to load the dataset."""
 
 import json
+import warnings
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
 import c3d
 import numpy as np
 import pandas as pd
+from imucal.management import CalibrationWarning
 from nilspodlib import SyncedSession
+from nilspodlib.exceptions import CorruptedPackageWarning, LegacyWarning, SynchronisationWarning
 from scipy.spatial.transform import Rotation
 from typing_extensions import Literal
 
@@ -121,9 +124,13 @@ def get_session_df(participant_id: str, data_folder=None) -> pd.DataFrame:
     - Fix known issues as far as possible
 
     """
-    session = SyncedSession.from_folder_path(
-        get_participant_imu_folder(participant_id, data_folder=data_folder), legacy_support="resolve"
-    )
+    with warnings.catch_warnings():
+        warnings.simplefilter(
+            "ignore", (LegacyWarning, CorruptedPackageWarning, CalibrationWarning, SynchronisationWarning)
+        )
+        session = SyncedSession.from_folder_path(
+            get_participant_imu_folder(participant_id, data_folder=data_folder), legacy_support="resolve"
+        )
     session = session.align_to_syncregion()
     session = session.calibrate_imu(
         session.find_closest_calibration(

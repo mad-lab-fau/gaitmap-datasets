@@ -1,13 +1,10 @@
 """The core tpcp Dataset class for the Stair Psotion Comparison dataset."""
 
-import warnings
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
-from imucal.management import CalibrationWarning
 from joblib import Memory
-from nilspodlib.exceptions import CorruptedPackageWarning, LegacyWarning, SynchronisationWarning
 from tpcp import Dataset
 from typing_extensions import Literal
 
@@ -78,18 +75,14 @@ class _SensorPostionDataset(Dataset):
 
     def _get_base_df(self):
         self.assert_is_single(None, "data")
-        with warnings.catch_warnings():
-            warnings.simplefilter(
-                "ignore", (LegacyWarning, CorruptedPackageWarning, CalibrationWarning, SynchronisationWarning)
+        if self.align_data is True:
+            session_df = self.memory.cache(_get_session_and_align)(
+                self.index["participant"].iloc[0], data_folder=self._data_folder_path
             )
-            if self.align_data is True:
-                session_df = self.memory.cache(_get_session_and_align)(
-                    self.index["participant"].iloc[0], data_folder=self._data_folder_path
-                )
-            else:
-                session_df = self.memory.cache(get_session_df)(
-                    self.index["participant"].iloc[0], data_folder=self._data_folder_path
-                )
+        else:
+            session_df = self.memory.cache(get_session_df)(
+                self.index["participant"].iloc[0], data_folder=self._data_folder_path
+            )
         return session_df
 
     @property
