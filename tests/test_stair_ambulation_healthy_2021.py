@@ -364,7 +364,7 @@ class TestStairAmbulationHealthy2021Full:
                 assert (stride_borders + full_session["start"] <= full_session["end"]).all().all()
         dataset.memory.clear(warn=False)
 
-    def test_pressure_insole_event_list_cut_to_seesion(self):
+    def test_pressure_insole_event_list_cut_to_session(self):
         dataset = StairAmbulationHealthy2021Full(
             base_dir,
             memory=Memory(".cache"),
