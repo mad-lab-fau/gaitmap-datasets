@@ -13,4 +13,4 @@ __all__ = [
     "StairAmbulationHealthy2021PerTest",
     "StairAmbulationHealthy2021Full",
 ]
-__version__ = "0.4.0"
+__version__ = "0.5.0"
