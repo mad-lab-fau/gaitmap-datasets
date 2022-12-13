@@ -6,7 +6,7 @@ import pandas as pd
 from joblib import Memory
 from tpcp import Dataset
 
-from mad_datasets.egait_segmentation_validation_2014.helper import (
+from gaitmap_datasets.egait_segmentation_validation_2014.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_segmented_stride_list,

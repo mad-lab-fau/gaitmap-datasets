@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "mad-datasets"
+name = "gaitmap-datasets"
 version = "0.4.0"
 description = "Helper to access to open-source gait datasets used by MaD-Lab"
 authors = [

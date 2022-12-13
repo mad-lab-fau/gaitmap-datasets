@@ -6,7 +6,7 @@ import pandas as pd
 from joblib import Memory
 from tpcp import Dataset
 
-from mad_datasets.egait_parameter_validation_2013.helper import (
+from gaitmap_datasets.egait_parameter_validation_2013.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_gaitrite_parameters,

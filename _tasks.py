@@ -71,7 +71,7 @@ def _get_poetry_version():
 def update_version(version):
     subprocess.run(["poetry", "version", version], shell=False, check=True)
     new_version = _get_poetry_version()
-    update_version_strings(HERE.joinpath("mad_datasets/__init__.py"), new_version)
+    update_version_strings(HERE.joinpath("gaitmap_datasets/__init__.py"), new_version)
 
 
 def task_update_version():

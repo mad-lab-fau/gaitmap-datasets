@@ -8,7 +8,7 @@ from joblib import Memory
 from tpcp import Dataset
 from typing_extensions import Literal
 
-from mad_datasets.sensor_position_comparison_2019.helper import (
+from gaitmap_datasets.sensor_position_comparison_2019.helper import (
     align_coordinates,
     get_all_participants,
     get_all_tests,
@@ -21,7 +21,7 @@ from mad_datasets.sensor_position_comparison_2019.helper import (
     get_mocap_test,
     get_session_df,
 )
-from mad_datasets.utils.event_detection import convert_sampling_rates_event_list
+from gaitmap_datasets.utils.event_detection import convert_sampling_rates_event_list
 
 
 def _get_session_and_align(participant, data_folder):

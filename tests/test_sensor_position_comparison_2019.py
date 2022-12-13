@@ -8,8 +8,8 @@ from joblib import Memory
 from numpy.testing import assert_almost_equal
 from pandas._testing import assert_frame_equal, assert_series_equal
 
-import mad_datasets.sensor_position_comparison_2019.helper as h
-from mad_datasets.sensor_position_comparison_2019 import (
+import gaitmap_datasets.sensor_position_comparison_2019.helper as h
+from gaitmap_datasets.sensor_position_comparison_2019 import (
     SensorPositionComparison2019Mocap,
     SensorPositionComparison2019Segmentation,
 )

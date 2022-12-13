@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial.transform import Rotation
 
-from mad_datasets.utils.consts import (
+from gaitmap_datasets.utils.consts import (
     BF_COLS,
     FSF_FBF_CONVERSION_LEFT,
     FSF_FBF_CONVERSION_RIGHT,

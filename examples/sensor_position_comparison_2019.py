@@ -1,7 +1,6 @@
 r"""
 SensorPositionComparison2019 - Full mocap reference data set with 6 sensors per foot
 ====================================================================================
-
 We provide 2 versions of the dataset:
 
 SensorPositionComparison2019Segmentation: In this dataset no Mocap ground truth is provided and the IMU data is not cut to
@@ -36,7 +35,7 @@ dataset_path = Path(
 #
 from joblib import Memory
 
-from mad_datasets.sensor_position_comparison_2019 import SensorPositionComparison2019Segmentation
+from gaitmap_datasets.sensor_position_comparison_2019 import SensorPositionComparison2019Segmentation
 
 dataset = SensorPositionComparison2019Segmentation(
     data_folder=dataset_path,
@@ -111,7 +110,7 @@ fig.show()
 # For each of these segments full synchronised motion capture trajectory of all markers is provided.
 # Further, we provide labels for IC and TC derived from the motion capture data for each of the hand labeled strides
 # within the segments.
-from mad_datasets.sensor_position_comparison_2019 import SensorPositionComparison2019Mocap
+from gaitmap_datasets.sensor_position_comparison_2019 import SensorPositionComparison2019Mocap
 
 dataset = SensorPositionComparison2019Mocap(
     data_folder=dataset_path,

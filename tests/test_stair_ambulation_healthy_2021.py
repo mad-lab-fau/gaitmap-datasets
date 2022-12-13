@@ -4,8 +4,11 @@ from typing import Type, Union
 import pytest
 from joblib import Memory
 
-from mad_datasets.stair_ambulation_healthy_2021 import StairAmbulationHealthy2021Full, StairAmbulationHealthy2021PerTest
-from mad_datasets.stair_ambulation_healthy_2021.helper import (
+from gaitmap_datasets.stair_ambulation_healthy_2021 import (
+    StairAmbulationHealthy2021Full,
+    StairAmbulationHealthy2021PerTest,
+)
+from gaitmap_datasets.stair_ambulation_healthy_2021.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_all_participants_and_tests,

@@ -4,14 +4,14 @@ import pandas as pd
 import pytest
 from pandas._testing import assert_frame_equal, assert_series_equal
 
-from mad_datasets.egait_parameter_validation_2013 import EgaitParameterValidation2013
-from mad_datasets.egait_parameter_validation_2013.helper import (
+from gaitmap_datasets.egait_parameter_validation_2013 import EgaitParameterValidation2013
+from gaitmap_datasets.egait_parameter_validation_2013.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_gaitrite_parameters,
     get_segmented_stride_list,
 )
-from mad_datasets.utils.consts import SF_COLS
+from gaitmap_datasets.utils.consts import SF_COLS
 
 base_dir = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database")
 
