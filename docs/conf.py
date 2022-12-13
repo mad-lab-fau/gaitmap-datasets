@@ -128,10 +128,11 @@ html_theme_options = {
 # intersphinx configuration
 intersphinx_module_mapping = {
     "numpy": ("https://numpy.org/doc/stable/", None),
-    "scipy": ("https://docs.scipy.org/doc/scipy/reference/", None),
-    "matplotlib": ("https://matplotlib.org/", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+    "matplotlib": ("https://matplotlib.org/stable/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
     "sklearn": ("https://scikit-learn.org/stable/", None),
+    "tpcp": ("https://tpcp.readthedocs.io/en/latest", None),
 }
 
 user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:25.0) Gecko/20100101 Firefox/25.0"
@@ -145,7 +146,7 @@ intersphinx_mapping = {
 sphinx_gallery_conf = {
     "examples_dirs": ["../examples"],
     "gallery_dirs": ["./auto_examples"],
-    "reference_url": {"gaitmap_datasets": None, **{k: v[0] for k, v in intersphinx_module_mapping.items()}},
+    "reference_url": {"gaitmap_datasets": None},
     # 'default_thumb_file': 'fig/logo.png',
     "backreferences_dir": "modules/generated/backreferences",
     "doc_module": ("gaitmap_datasets",),
@@ -159,6 +160,6 @@ from sphinxext.githublink import make_linkcode_resolve
 
 linkcode_resolve = make_linkcode_resolve(
     "gaitmap_datasets",
-    "https://github.com/mad-lab-fau/mad-datasets/blob/{revision}/{package}/{path}#L{lineno}",
+    "https://github.com/mad-lab-fau/gaitmap-datasets/blob/{revision}/{package}/{path}#L{lineno}",
 )
 

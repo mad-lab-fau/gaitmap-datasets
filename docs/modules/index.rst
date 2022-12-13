@@ -4,7 +4,7 @@
 API Reference
 =============
 
-When working with mad-datasets, you should interact with the highlevel Dataset classes listed below.
+When working with gaitmap-datasets, you should interact with the highlevel Dataset classes listed below.
 To better understand which class belongs to which dataset and how to use the respective classes,
 checkout the README (Getting Started) and the Examples.
 
