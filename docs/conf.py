@@ -25,7 +25,7 @@ sys.path.insert(0, str(HERE.parent))
 sys.path.insert(0, str(HERE.parent.parent))
 
 
-URL = "https://github.com/mad-lab-fau/mad-datasets"
+URL = "https://github.com/mad-lab-fau/gaitmap-datasets"
 
 # -- Project information -----------------------------------------------------
 
@@ -145,10 +145,10 @@ intersphinx_mapping = {
 sphinx_gallery_conf = {
     "examples_dirs": ["../examples"],
     "gallery_dirs": ["./auto_examples"],
-    "reference_url": {"mad_datasets": None, **{k: v[0] for k, v in intersphinx_module_mapping.items()}},
+    "reference_url": {"gaitmap_datasets": None, **{k: v[0] for k, v in intersphinx_module_mapping.items()}},
     # 'default_thumb_file': 'fig/logo.png',
     "backreferences_dir": "modules/generated/backreferences",
-    "doc_module": ("mad_datasets",),
+    "doc_module": ("gaitmap_datasets",),
     "filename_pattern": re.escape(os.sep),
     "remove_config_comments": True,
     "show_memory": True,
@@ -158,7 +158,7 @@ sphinx_gallery_conf = {
 from sphinxext.githublink import make_linkcode_resolve
 
 linkcode_resolve = make_linkcode_resolve(
-    "mad_datasets",
+    "gaitmap_datasets",
     "https://github.com/mad-lab-fau/mad-datasets/blob/{revision}/{package}/{path}#L{lineno}",
 )
 

@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from imucal import FerrarisCalibrationInfo
 
-from mad_datasets.utils.data_loading import load_bin_file
+from gaitmap_datasets.utils.data_loading import load_bin_file
 
 SHIMMER2_DATA_LAYOUT = {
     "acc_x": np.uint16,

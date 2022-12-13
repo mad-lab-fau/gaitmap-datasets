@@ -1,11 +1,11 @@
-[![PyPI](https://img.shields.io/pypi/v/mad-datasets)](https://pypi.org/project/mad-datasets/)
-[![Documentation status](https://img.shields.io/badge/docs-online-green)](https://mad-lab-fau.github.io/mad-datasets)
+[![PyPI](https://img.shields.io/pypi/v/gaitmap-datasets)](https://pypi.org/project/gaitmap-datasets/)
+[![Documentation status](https://img.shields.io/badge/docs-online-green)](https://mad-lab-fau.github.io/gaitmap-datasets)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/mad-datasets)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/gaitmap-datasets)
 
-# mad-datasets
+# gaitmap-datasets
 
-Helper to access to open-source gait datasets of the MaD-Lab (and maybe externals in the future).
+Helper to access to open-source gait datasets compatible with the MaD-Lab gaitanalysis library gaitmap.
 
 The aim of this package is to ensure that all datasets can be loaded in a similar fashion and all data (and annotations)
 are in the same format (i.e. the same sensor orientations, units, etc.).
@@ -25,12 +25,12 @@ For available datasets see the table below.
 Install the package from Pip
 
 ```
-pip install mad-datasets
+pip install gaitmap-datasets
 ```
 
 Then download/obtain the dataset that you are planning to use (see below).
 The best way to get started is to then check the example for the respective dataset on the 
-[documentation page](https://mad-lab-fau.github.io/mad-datasets/auto_examples/index.html).
+[documentation page](https://mad-lab-fau.github.io/gaitmap-datasets/auto_examples/index.html).
 
 ## Datasets
 

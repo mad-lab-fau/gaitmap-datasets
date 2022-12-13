@@ -2,4 +2,4 @@
 
 Examples
 ========
-Examples that show how to work with mad-datasets.
+Examples that show how to work with gaitmap-datasets.

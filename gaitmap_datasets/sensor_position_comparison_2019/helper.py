@@ -14,7 +14,7 @@ from nilspodlib.exceptions import CorruptedPackageWarning, LegacyWarning, Synchr
 from scipy.spatial.transform import Rotation
 from typing_extensions import Literal
 
-from mad_datasets.utils.coordinate_transforms import flip_dataset, rotation_from_angle
+from gaitmap_datasets.utils.coordinate_transforms import flip_dataset, rotation_from_angle
 
 COORDINATE_TRANSFORMATION_DICT = dict(
     qualisis_lateral_nilspodv1={

@@ -13,7 +13,7 @@ However, be carefull, when doing that.
 These low level function might return data formats that might not be in line with the return values of the high-level
 interface.
 
-.. currentmodule:: mad_datasets
+.. currentmodule:: gaitmap_datasets
 
 .. autosummary::
    :toctree: generated

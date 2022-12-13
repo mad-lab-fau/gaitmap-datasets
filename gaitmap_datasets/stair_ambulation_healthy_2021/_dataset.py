@@ -7,7 +7,7 @@ import pandas as pd
 from joblib import Memory
 from tpcp import Dataset
 
-from mad_datasets.stair_ambulation_healthy_2021.helper import (
+from gaitmap_datasets.stair_ambulation_healthy_2021.helper import (
     StrideTypes,
     get_all_data_for_participant,
     get_all_participants,
@@ -16,7 +16,7 @@ from mad_datasets.stair_ambulation_healthy_2021.helper import (
     get_pressure_insole_events,
     get_segmented_stride_list,
 )
-from mad_datasets.utils.consts import SF_COLS
+from gaitmap_datasets.utils.consts import SF_COLS
 
 
 class _StairAmbulationHealthy2021(Dataset):

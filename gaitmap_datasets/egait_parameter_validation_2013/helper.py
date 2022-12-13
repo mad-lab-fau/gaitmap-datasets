@@ -10,8 +10,8 @@ from typing import Dict, List, Literal, Optional
 import pandas as pd
 from scipy.spatial.transform import Rotation
 
-from mad_datasets.utils.coordinate_transforms import flip_sensor
-from mad_datasets.utils.egait_loading_helper import load_shimmer2_data
+from gaitmap_datasets.utils.coordinate_transforms import flip_sensor
+from gaitmap_datasets.utils.egait_loading_helper import load_shimmer2_data
 
 CALIBRATION_FILE_NAMES = {
     "left_sensor": "A917.csv",

@@ -4,13 +4,13 @@ import pandas as pd
 import pytest
 from pandas._testing import assert_frame_equal, assert_series_equal
 
-from mad_datasets.egait_segmentation_validation_2014 import EgaitSegmentationValidation2014
-from mad_datasets.egait_segmentation_validation_2014.helper import (
+from gaitmap_datasets.egait_segmentation_validation_2014 import EgaitSegmentationValidation2014
+from gaitmap_datasets.egait_segmentation_validation_2014.helper import (
     get_all_data_for_participant,
     get_all_participants,
     get_segmented_stride_list,
 )
-from mad_datasets.utils.consts import SF_COLS
+from gaitmap_datasets.utils.consts import SF_COLS
 
 base_dir = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database_segmentation")
 

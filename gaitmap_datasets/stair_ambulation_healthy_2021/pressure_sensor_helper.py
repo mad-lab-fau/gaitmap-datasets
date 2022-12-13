@@ -5,8 +5,8 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 
-from mad_datasets.utils.consts import BF_GYR
-from mad_datasets.utils.event_detection import detect_min_vel
+from gaitmap_datasets.utils.consts import BF_GYR
+from gaitmap_datasets.utils.event_detection import detect_min_vel
 
 
 def _fsr_calibration_path(base_dir: Path) -> Path:

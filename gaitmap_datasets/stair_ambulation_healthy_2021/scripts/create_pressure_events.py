@@ -19,7 +19,7 @@ Usually there is no need to rerun this script unless the data or the event detec
 Run the script as follows:
 
 ```shell
-python -m mad_datasets.stair_ambulation_healthy_2021.scripts.create_pressure_events --data_path="..."
+python -m gaitmap_datasets.stair_ambulation_healthy_2021.scripts.create_pressure_events --data_path="..."
 ```
 """
 import argparse
@@ -28,12 +28,12 @@ from pathlib import Path
 import pandas as pd
 from joblib import Memory
 
-from mad_datasets.stair_ambulation_healthy_2021 import StairAmbulationHealthy2021Full
-from mad_datasets.stair_ambulation_healthy_2021.pressure_sensor_helper import (
+from gaitmap_datasets.stair_ambulation_healthy_2021 import StairAmbulationHealthy2021Full
+from gaitmap_datasets.stair_ambulation_healthy_2021.pressure_sensor_helper import (
     PressureEventDetection,
     convert_segmented_stride_list_to_min_vel_list,
 )
-from mad_datasets.utils.coordinate_transforms import convert_to_fbf
+from gaitmap_datasets.utils.coordinate_transforms import convert_to_fbf
 
 if __name__ == "__main__":
 

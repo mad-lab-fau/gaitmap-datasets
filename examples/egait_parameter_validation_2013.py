@@ -1,5 +1,4 @@
 r"""
-
 EgaitParameterValidation2013 - A Stride Parameter validation dataset
 ====================================================================
 
@@ -20,7 +19,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from mad_datasets import EgaitParameterValidation2013
+from gaitmap_datasets import EgaitParameterValidation2013
 
 dataset_path = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database/")
 

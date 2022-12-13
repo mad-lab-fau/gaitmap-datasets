@@ -1,5 +1,4 @@
 r"""
-
 EgaitSegmentationValidation2014 - A Stride Segmentation validation dataset
 ==========================================================================
 
@@ -16,7 +15,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from mad_datasets import EgaitSegmentationValidation2014
+from gaitmap_datasets import EgaitSegmentationValidation2014
 
 dataset_path = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database_segmentation/")
 

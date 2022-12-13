@@ -8,9 +8,9 @@ The dataset can be downloaded from here:
 
 We provide two `tpcp.Dataset` classes to access the data:
 
-1. :class:`mad_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021PerTest`: This class allows to access
+1. :class:`gaitmap_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021PerTest`: This class allows to access
    all data and events for each of the performed gait tests individually.
-2. :class:`mad_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021Full`: This class allows to access the
+2. :class:`gaitmap_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021Full`: This class allows to access the
    entire recordings for each participant (two recordings per participant) independently of the performed gait tests.
 
 In the following we will show the usage of both classes and the data that is contained within.
@@ -30,7 +30,7 @@ dataset_path = Path("/home/arne/Documents/repos/work/datasets/stair_ambulation_d
 # You might want to disable that, to reduce the RAM usage and speed up the data loading.
 from joblib import Memory
 
-from mad_datasets import StairAmbulationHealthy2021PerTest
+from gaitmap_datasets import StairAmbulationHealthy2021PerTest
 
 dataset = StairAmbulationHealthy2021PerTest(
     data_folder=dataset_path,
@@ -173,7 +173,7 @@ plt.show()
 #
 # The StairAmbulationHealthy2021Full dataclass can be used equivalently to the StairAmbulationHealthyPerTest dataset.
 # The only difference is that instead of the individual tests, we can see the two parts in the index for the dataset.
-from mad_datasets import StairAmbulationHealthy2021Full
+from gaitmap_datasets import StairAmbulationHealthy2021Full
 
 dataset = StairAmbulationHealthy2021Full(
     data_folder=dataset_path,
