@@ -131,12 +131,12 @@ def get_session_df(participant_id: str, data_folder=None) -> pd.DataFrame:
         session = SyncedSession.from_folder_path(
             get_participant_imu_folder(participant_id, data_folder=data_folder), legacy_support="resolve"
         )
-    session = session.align_to_syncregion()
-    session = session.calibrate_imu(
-        session.find_closest_calibration(
-            ignore_file_not_found=False, folder=get_data_folder(data_folder, data_subfolder=False) / "calibrations"
+        session = session.align_to_syncregion()
+        session = session.calibrate_imu(
+            session.find_closest_calibration(
+                ignore_file_not_found=False, folder=get_data_folder(data_folder, data_subfolder=False) / "calibrations"
+            )
         )
-    )
 
     meta_data = get_metadata_participant(participant_id, data_folder=data_folder)
     sensor_map = {v.lower(): k for k, v in meta_data["sensors"].items()}
