@@ -1,3 +1,4 @@
+"""The core tpcp dataset classes for the pyshoe dataset."""
 from pathlib import Path
 from typing import List, Optional, Union
 
