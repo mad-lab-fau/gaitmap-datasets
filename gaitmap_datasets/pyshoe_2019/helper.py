@@ -1,3 +1,5 @@
+"""Helper to load the pyshoe data."""
+
 from functools import lru_cache
 from pathlib import Path
 from typing import Tuple

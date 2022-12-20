@@ -1,4 +1,4 @@
-"""The core tpcp Dataset class for the Stair Psotion Comparison dataset."""
+"""The core tpcp Dataset class for the Stair Postion Comparison dataset."""
 
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
