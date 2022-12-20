@@ -40,7 +40,7 @@ def _calibration_folder(base_dir: Path) -> Path:
     return base_dir / "calibrations"
 
 
-def get_all_participants(*, base_dir: Optional[Path] = None) -> List[str]:
+def get_all_participants(*, base_dir: Path) -> List[str]:
     """Get the folder names of all participants."""
     # TODO: Rename healthy folder
     return [f.name for f in _participant_subfolder(base_dir).glob("subject_*")]
