@@ -50,7 +50,7 @@ def get_data_hallway(trial: Tuple[str, str, str], *, base_dir: Path) -> Tuple[pd
     ts = data["ts"][0]
     imu = _transform_imu_data(pd.DataFrame(data["imu"], columns=SF_COLS, index=pd.Series(ts, name="time [s]")))
     gt_idx = data["gt_idx"][0]
-    gt = pd.DataFrame(data["gt"], columns=["x", "y", "z"], index=pd.Series(ts[gt_idx], name="time [s]")) * 1000
+    gt = pd.DataFrame(data["gt"], columns=["x", "y", "z"], index=pd.Series(ts[gt_idx], name="time [s]"))
     gt.columns = pd.MultiIndex.from_tuples((("right_sensor", c) for c in gt.columns), names=["sensor", "direction"])
     return imu, gt, pd.Series(gt_idx, index=pd.Series(ts[gt_idx], name="time [s]"))
 
@@ -64,7 +64,7 @@ def get_data_stairs(trial: Tuple[str, str], *, base_dir: Path) -> Tuple[pd.DataF
     ts = data["ts"][0]
     imu = _transform_imu_data(pd.DataFrame(data["imu"], columns=SF_COLS, index=pd.Series(ts, name="time [s]")))
     gt_idx = data["gt_idx"][0]
-    gt = pd.DataFrame(data["gt"].T, columns=["z"], index=pd.Series(ts[gt_idx], name="time [s]")) * 1000
+    gt = pd.DataFrame(data["gt"].T, columns=["z"], index=pd.Series(ts[gt_idx], name="time [s]"))
     gt.columns = pd.MultiIndex.from_tuples((("right_sensor", c) for c in gt.columns), names=["sensor", "direction"])
     return imu, gt, pd.Series(gt_idx, index=pd.Series(ts[gt_idx], name="time [s]"))
 

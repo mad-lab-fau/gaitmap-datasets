@@ -286,7 +286,7 @@ def load_c3d_data(path: Union[Path, str], insert_nan: bool = True) -> pd.DataFra
         frames = np.stack(frames)
         frames = frames.reshape(frames.shape[0], -1)
     index = pd.MultiIndex.from_product([labels, list("xyz")])
-    data = pd.DataFrame(frames, columns=index)
+    data = pd.DataFrame(frames, columns=index) / 1000  # To get the data in m
     if insert_nan is True:
         data[data == 0.000000] = np.nan
     return data

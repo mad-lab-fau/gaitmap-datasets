@@ -47,7 +47,7 @@ def test_get_mocap_data(snapshot):
 
     assert mocap_data.columns.get_level_values(1).unique().tolist() == ["x", "y", "z"]
 
-    mocap_data = _convert_to_flat_str_index(mocap_data)
+    mocap_data = _convert_to_flat_str_index(mocap_data) * 1000
 
     snapshot.assert_match(mocap_data.describe(), name=f"example_mocap_summary")
 

@@ -68,10 +68,10 @@ To run them locally, make sure datasets are downloaded into the correct folders 
 Like the tests, the documentation requires the datasets to be downloaded into the correct folders to execute the 
 examples.
 Therefore, we can not build the docs automatically on RTD.
-Instead we host the docs via github pages.
+Instead, we host the docs via github pages.
 The HTML source can be found in the `gh-pages` branch of this repo.
 
-To make the deplowment as easy as possible, we "mounted" the `gh-pages` branch as a submodule in the `docs/_build/html`
+To make the deployment as easy as possible, we "mounted" the `gh-pages` branch as a submodule in the `docs/_build/html`
 folder.
 Hence, before you attempt to build the docs, you need to initialize the submodule.
 
@@ -83,7 +83,7 @@ After that you can run `poe docs` to build the docs and then `poe upload_docs` t
 branch.
 We will always just update a single commit on the gh-pages branch to keep the effective file size small.
 
-**WARNING: ** Don't delete the `docs/_build` folder manually or by running the sphinx make file!
+**WARNING:** Don't delete the `docs/_build` folder manually or by running the sphinx make file!
 This will delete the submodule and might cause issues.
 The `poe` task is configured to clean all relevant files in the `docs/_build` folder before each run.
 
