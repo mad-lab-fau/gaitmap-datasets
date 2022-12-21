@@ -145,7 +145,7 @@ imu_data["l_insole"].filter(like="gyr").plot(ax=axes[0])
 mocap_traj["l_fcc"].sub(mocap_traj["l_fcc"].iloc[0]).plot(ax=axes[1])
 axes[0].set_xlim(0, 7.5)
 axes[0].set_ylabel("IMU gyr [rad/s]")
-axes[1].set_ylabel("Marker Trajectory [mm]")
+axes[1].set_ylabel("Marker Trajectory [m]")
 fig.tight_layout()
 fig.show()
 
@@ -223,7 +223,7 @@ axes[1].scatter(
 axes[0].legend()
 axes[0].set_xlim(0, 7.5)
 axes[0].set_ylabel("IMU gyr [rad/s]")
-axes[1].set_ylabel("Marker Trajectory [mm]")
+axes[1].set_ylabel("Marker Trajectory [m]")
 fig.tight_layout()
 fig.show()
 
