@@ -34,12 +34,26 @@ The best way to get started is to then check the example for the respective data
 
 ## Datasets
 
+Below is a list of all available datasets with links to all information.
+Make sure you cite the respective papers if you use the data for your research.
+Recommended citations can be found in the respective dataset documentation (info link) and/or in the docstrings of the 
+individual dataset classes.
+
+### MaD-Lab Dataset
+
 | Dataset                         | Info Link                                                       | Download                            |
 |---------------------------------|-----------------------------------------------------------------|-------------------------------------|
 | EgaitSegmentationValidation2014 | https://www.mad.tf.fau.de/research/activitynet/digital-biobank/ | Email to data owner (see info link) |
 | EgaitParameterValidation2013    | https://www.mad.tf.fau.de/research/activitynet/digital-biobank/ | Email to data owner (see info link) |
 | StairAmbulationHealthy2021      | https://osf.io/sgbw7/                                           | https://osf.io/download/5ueq6/      |
 | SensorPositionDataset2019       | https://zenodo.org/record/5747173                               | https://zenodo.org/record/5747173   |
+
+### External Datasets
+
+| Dataset    | Info Link                              | Download                                                                                                                          |
+|------------|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| PyShoe2019 | https://github.com/utiasSTARS/pyshoe/  | https://ieee-dataport.org/open-access/university-toronto-foot-mounted-inertial-navigation-dataset (or bash script in github repo) |
+
 
 ## Testing
 

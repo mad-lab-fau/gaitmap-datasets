@@ -23,3 +23,8 @@ interface.
     EgaitParameterValidation2013
     StairAmbulationHealthy2021PerTest
     StairAmbulationHealthy2021Full
+    SensorPositionComparison2019Segmentation
+    SensorPositionComparison2019Mocap
+    PyShoe2019Vicon
+    PyShoe2019Hallway
+    PyShoe2019Stairs
