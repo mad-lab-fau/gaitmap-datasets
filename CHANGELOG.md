@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) (+ the Migration Guide),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2022-21-12
+
+### Added
+- The PyShoe Dataset (https://github.com/utiasSTARS/pyshoe)
+
+### Changed
+- The sensor position dataset now reports the mocap distance in m instead of mm to be consistent with the use of SI 
+  units.
+
 ## [0.5.0] - 2022-13-12
 
 Changed package name mad-datasets to gaitmap-datasets!
