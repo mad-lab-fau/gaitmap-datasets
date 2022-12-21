@@ -10,6 +10,8 @@ HERE = Path(__file__).parent
 
 def task_prepare_release():
     update_version(sys.argv[1])
+    html_dir = HERE / "docs/_build/html"
+    subprocess.run(["git", "switch", "gh-pages"], shell=False, check=True, cwd=html_dir)
     task_docs()
     task_upload_docs()
     new_version = _get_poetry_version()
