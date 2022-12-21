@@ -17,8 +17,9 @@ COORDINATE_TRANSFORMATION_DICT = {
     "right_sensor": [[1, 0, 0], [0, -1, 0], [0, 0, -1]],
 }
 
-VICON_SUBFOLDER = Path("data/vicon/processed")
+VICON_SUBFOLDER = Path("data/vicon/processed/")
 HALLWAY_SUBFOLDER = Path("data/hallway/")
+STAIRS_SUBFOLDER = Path("data/stairs/test/")
 
 
 def _transform_imu_data(data: pd.DataFrame) -> pd.DataFrame:
@@ -42,7 +43,7 @@ def get_data_vicon(trial: str, *, base_dir: Path) -> Tuple[pd.DataFrame, pd.Data
 
 @lru_cache(maxsize=1)
 def get_data_hallway(trial: Tuple[str, str, str], *, base_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
-    """Get the data from the hallway portion of the trial."""
+    """Get the data from the hallway dataset."""
     data_path = Path(base_dir) / HALLWAY_SUBFOLDER / trial[1] / trial[0][1] / trial[2]
 
     data = sio.loadmat(str(data_path / "processed_data.mat"))
@@ -50,6 +51,20 @@ def get_data_hallway(trial: Tuple[str, str, str], *, base_dir: Path) -> Tuple[pd
     imu = _transform_imu_data(pd.DataFrame(data["imu"], columns=SF_COLS, index=pd.Series(ts, name="time [s]")))
     gt_idx = data["gt_idx"][0]
     gt = pd.DataFrame(data["gt"], columns=["x", "y", "z"], index=pd.Series(ts[gt_idx], name="time [s]")) * 1000
+    gt.columns = pd.MultiIndex.from_tuples((("right_sensor", c) for c in gt.columns), names=["sensor", "direction"])
+    return imu, gt, pd.Series(gt_idx, index=pd.Series(ts[gt_idx], name="time [s]"))
+
+
+@lru_cache(maxsize=1)
+def get_data_stairs(trial: Tuple[str, str], *, base_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
+    """Get the data from the test part of the stairs dataset."""
+    data_path = Path(base_dir) / STAIRS_SUBFOLDER / trial[1]
+
+    data = sio.loadmat(str(data_path / "processed_data.mat"))
+    ts = data["ts"][0]
+    imu = _transform_imu_data(pd.DataFrame(data["imu"], columns=SF_COLS, index=pd.Series(ts, name="time [s]")))
+    gt_idx = data["gt_idx"][0]
+    gt = pd.DataFrame(data["gt"].T, columns=["z"], index=pd.Series(ts[gt_idx], name="time [s]")) * 1000
     gt.columns = pd.MultiIndex.from_tuples((("right_sensor", c) for c in gt.columns), names=["sensor", "direction"])
     return imu, gt, pd.Series(gt_idx, index=pd.Series(ts[gt_idx], name="time [s]"))
 
@@ -66,3 +81,12 @@ def get_all_hallway_trials(base_dir: Path):
     for f in data_path.rglob("processed_data.mat"):
         # Participant, trial_type, trial_number
         yield f"p{f.parent.parent.name}", f.parent.parent.parent.name, f.parent.name
+
+
+def get_all_stairs_trials(base_dir: Path):
+    """Get all stairs trials."""
+    data_path = Path(base_dir) / STAIRS_SUBFOLDER
+    for f in data_path.rglob("processed_data.mat"):
+        # direction, trial
+        direction = f.parent.name.split("-")[-2]
+        yield direction, f.parent.name
