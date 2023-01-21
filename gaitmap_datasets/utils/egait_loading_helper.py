@@ -52,7 +52,7 @@ def calibrate_shimmer2_data(
     calibration_file_path: Path,
 ) -> pd.DataFrame:
     """Calibrate shimmer2 data."""
-    cal_matrix = load_compact_cal_matrix(calibration_file_path)
+    cal_matrix = load_compact_cal_matrix(calibration_file_path, shimmer2_fix=True)
     data = cal_matrix.calibrate_df(data, "a.u.", "a.u.")
 
     return data
@@ -69,7 +69,7 @@ def load_shimmer2_data(
     return data
 
 
-def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:
+def load_compact_cal_matrix(path: Path, shimmer2_fix: bool = False) -> FerrarisCalibrationInfo:
     """Load a compact calibration matrix from a file."""
     cal_matrix = np.genfromtxt(path, delimiter=",")
     plus_g = cal_matrix[0]
@@ -79,6 +79,12 @@ def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:
     K_a /= 9.81  # convert to m/s^2  # pylint: disable=invalid-name
     R_a = np.eye(3)  # pylint: disable=invalid-name
     b_g = cal_matrix[2]
+    if shimmer2_fix:
+        # We swap the x and y axis of b_g here because the shimmer 2R gyr was not aligned with the acc.
+        # This means during the calibration measurement the x and y axis were swapped.
+        b_g[0], b_g[1] = b_g[1], b_g[0]
+
+    # 2.731 is the digital conversion factor for the gyro
     K_g = np.eye(3) * 2.731  # pylint: disable=invalid-name
     R_g = np.eye(3)  # pylint: disable=invalid-name
     K_ga = np.zeros((3, 3))  # pylint: disable=invalid-name
