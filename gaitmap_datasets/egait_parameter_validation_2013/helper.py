@@ -72,13 +72,20 @@ def get_segmented_stride_list(
     """Get the list of all strides for a participant."""
     stride_borders = {}
     for foot in ["left", "right"]:
-        stride_borders[f"{foot}_sensor"] = (
+        stride_list = (
             pd.read_csv(
                 _reference_stride_borders_folder(base_dir) / f"{participant_id}_E4_{foot}.txt", skiprows=8, header=0
             )
             .rename(columns={"Sart": "start", "Start": "start", "End": "end"})
             .rename_axis(index="s_id")
         )
+        # We have the issue, that the stride borders start and end values of consecutive strides are not exactly the
+        # same in many cases (i.e. they are of by +/- 1 sample).
+        # Based on our internal conventions, these values should be the same, so we need to fix this.
+        diff = stride_list["end"] - stride_list["start"].shift(-1)
+        stride_list.loc[diff.abs() == 1, "end"] -= diff[diff.abs() == 1]
+
+        stride_borders[f"{foot}_sensor"] = stride_list
     return stride_borders
 
 
