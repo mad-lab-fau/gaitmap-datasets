@@ -21,11 +21,13 @@ class EgaitParameterValidation2013(Dataset):
         self,
         data_folder: Optional[Union[str, Path]] = None,
         *,
+        use_alternative_calibrations: bool = True,
         memory: Memory = Memory(None),
         groupby_cols: Optional[Union[List[str], str]] = None,
         subset_index: Optional[pd.DataFrame] = None
     ):
         self.data_folder = data_folder
+        self.use_alternative_calibrations = use_alternative_calibrations
         self.memory = memory
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)
 
@@ -43,7 +45,9 @@ class EgaitParameterValidation2013(Dataset):
     def data(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the imu data."""
         self.assert_is_single(None, "data")
-        data = self.memory.cache(get_all_data_for_participant)(self.group, base_dir=self._data_folder_path)
+        data = self.memory.cache(get_all_data_for_participant)(
+            self.group, use_alternative_calibrations=self.use_alternative_calibrations, base_dir=self._data_folder_path
+        )
         final_data = {}
         for k, v in data.items():
             v.index /= self.sampling_rate_hz

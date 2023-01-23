@@ -23,7 +23,7 @@ def test_get_all_participants():
 
 
 def test_get_all_data_for_participant():
-    data = get_all_data_for_participant("P115", base_dir=base_dir)
+    data = get_all_data_for_participant("P115", use_alternative_calibrations=False, base_dir=base_dir)
 
     reference_data = {
         "left_sensor": pd.read_csv(HERE / "egait_validation_2013_test_data/P115_E4_left_calibrated.csv", header=0).drop(
@@ -122,3 +122,14 @@ class TestEgaitParameterValidation2013Dataset:
         dataset = EgaitParameterValidation2013(data_folder=base_dir)
         with pytest.raises(ValueError):
             getattr(dataset, attribute)
+
+    def test_alternative_calibrations(self):
+        # This is a stupid test that simple tests that if data is loaded with alternative calibrations it is different
+        # from the data loaded with the default calibrations.
+        dataset = EgaitParameterValidation2013(data_folder=base_dir, use_alternative_calibrations=False)
+        imu_data = dataset.get_subset(participant="P115").data
+        dataset_alternative = EgaitParameterValidation2013(data_folder=base_dir, use_alternative_calibrations=True)
+        imu_data_alternative_calibrations = dataset_alternative.get_subset(participant="P115").data
+
+        for sensor in ["left_sensor", "right_sensor"]:
+            assert not imu_data[sensor].equals(imu_data_alternative_calibrations[sensor])

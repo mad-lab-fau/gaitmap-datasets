@@ -18,6 +18,11 @@ CALIBRATION_FILE_NAMES = {
     "right_sensor": "A6DF.csv",
 }
 
+ALTERNATIVE_CALIBRATION_FOLDER_NAMES = {
+    "left_sensor": Path("A917/2015-01-01_00-01/"),
+    "right_sensor": Path("A6DF/2015-01-01_00-01/"),
+}
+
 COORDINATE_SYSTEM_TRANSFORMATION = {  # egait_lateral_shimmer2r
     # [[-y -> +x], [+z -> +y], [-x -> +z]]
     "left_sensor": [[0, -1, 0], [0, 0, 1], [-1, 0, 0]],
@@ -46,20 +51,28 @@ def _calibration_folder(base_dir: Path) -> Path:
     return base_dir
 
 
+def _alternative_calibration_folder(base_dir: Path) -> Path:
+    """Return the relative path to the imu-calibration subfolder."""
+    return base_dir / "alternative_calibrations"
+
+
 def get_all_participants(*, base_dir: Optional[Path] = None) -> List[str]:
     """Get the folder names of all participants."""
     return [f.name.split("_")[0] for f in _raw_data_folder(base_dir).glob("*_left.dat")]
 
 
 def get_all_data_for_participant(
-    participant_id: str, *, base_dir: Optional[Path] = None
+    participant_id: str, use_alternative_calibrations: bool = True, *, base_dir: Optional[Path] = None
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get all data for a participant."""
     all_data = {}
     for foot in ["left", "right"]:
         sensor = foot + "_sensor"
         data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_{foot}.dat"
-        calibration_path = _calibration_folder(base_dir) / CALIBRATION_FILE_NAMES[sensor]
+        if use_alternative_calibrations:
+            calibration_path = _alternative_calibration_folder(base_dir) / ALTERNATIVE_CALIBRATION_FOLDER_NAMES[sensor]
+        else:
+            calibration_path = _calibration_folder(base_dir) / CALIBRATION_FILE_NAMES[sensor]
         data = load_shimmer2_data(data_path, calibration_path)
         data = flip_sensor(data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION[sensor]))
         all_data[sensor] = data

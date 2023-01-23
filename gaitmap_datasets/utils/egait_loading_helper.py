@@ -52,7 +52,12 @@ def calibrate_shimmer2_data(
     calibration_file_path: Path,
 ) -> pd.DataFrame:
     """Calibrate shimmer2 data."""
-    cal_matrix = load_compact_cal_matrix(calibration_file_path, shimmer2_fix=True)
+    if calibration_file_path.is_file():
+        cal_matrix = load_compact_cal_matrix(calibration_file_path)
+    elif calibration_file_path.is_dir():
+        cal_matrix = load_extended_calib(calibration_file_path)
+    else:
+        raise ValueError("Calibration file does not exist.")
     data = cal_matrix.calibrate_df(data, "a.u.", "a.u.")
 
     return data
@@ -69,7 +74,7 @@ def load_shimmer2_data(
     return data
 
 
-def load_compact_cal_matrix(path: Path, shimmer2_fix: bool = False) -> FerrarisCalibrationInfo:
+def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:
     """Load a compact calibration matrix from a file."""
     cal_matrix = np.genfromtxt(path, delimiter=",")
     plus_g = cal_matrix[0]
@@ -79,10 +84,6 @@ def load_compact_cal_matrix(path: Path, shimmer2_fix: bool = False) -> FerrarisC
     K_a /= 9.81  # convert to m/s^2  # pylint: disable=invalid-name
     R_a = np.eye(3)  # pylint: disable=invalid-name
     b_g = cal_matrix[2]
-    if shimmer2_fix:
-        # We swap the x and y axis of b_g here because the shimmer 2R gyr was not aligned with the acc.
-        # This means during the calibration measurement the x and y axis were swapped.
-        b_g[0], b_g[1] = b_g[1], b_g[0]
 
     # 2.731 is the digital conversion factor for the gyro
     K_g = np.eye(3) * 2.731  # pylint: disable=invalid-name
@@ -92,3 +93,35 @@ def load_compact_cal_matrix(path: Path, shimmer2_fix: bool = False) -> FerrarisC
     return FerrarisCalibrationInfo(
         b_a=b_a, K_a=K_a, R_a=R_a, b_g=b_g, K_g=K_g, R_g=R_g, K_ga=K_ga, from_acc_unit="a.u.", from_gyr_unit="a.u."
     )
+
+
+def load_extended_calib(calib_folder: Path) -> FerrarisCalibrationInfo:
+    """Convert calibration files in format *_acc.csv and *_gyr.csv into a FerrarisCalibrationInfo object.
+
+    This calibration format is used by later iterations of the egait system.
+    It contains more information than the short calibration matrix and if data in this format is available, it should be
+    preferred over the short calibration matrix.
+    """
+    # Each folder is a calibration
+
+    acc_calib_path = next(calib_folder.glob("*_acc.csv"))
+    gyr_calib_path = next(calib_folder.glob("*_gyro.csv"))
+    acc_cal_phct = pd.read_csv(acc_calib_path, header=None)
+    gyr_cal_phct = pd.read_csv(gyr_calib_path, header=None)
+    imucal_cal = {
+        "K_a": acc_cal_phct[[4, 5, 6]].to_numpy() / 9.81,
+        "R_a": acc_cal_phct[[1, 2, 3]].to_numpy(),
+        "b_a": acc_cal_phct[0].to_numpy(),
+        "K_g": gyr_cal_phct[[4, 5, 6]].to_numpy(),
+        "R_g": gyr_cal_phct[[1, 2, 3]].to_numpy(),
+        "K_ga": np.zeros((3, 3)),
+        "b_g": gyr_cal_phct[0].to_numpy(),
+        "acc_unit": "m/s^2",
+        "gyr_unit": "deg/s",
+        "from_acc_unit": "a.u.",
+        "from_gyr_unit": "a.u.",
+    }
+    imucal_cal = FerrarisCalibrationInfo(
+        **imucal_cal, comment=f"Date: {calib_folder.name}, Sensor Node: " f"{acc_calib_path.stem.split('_')[0]}"
+    )
+    return imucal_cal

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) (+ the Migration Guide),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 
+
+### Added
+- Support for the new alternative calibration files for the `egait_parameter_validation_2013` dataset.
+  Basically, we found out that the original calibration files were not that good and added new ones to the public 
+  dataset, that should result in significantly better results when calculating spatial gait parameters. 
+
 ## [0.6.0] - 2022-21-12
 
 ### Added
