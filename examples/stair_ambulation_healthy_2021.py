@@ -6,6 +6,16 @@ The dataset can be downloaded from here:
 
 .. note:: The dataset only contains the healthy participants of the full dataset presented in the paper!
 
+General information
+-------------------
+The dataset was recorded with Nilspod V2 sensors from Portabiles.
+One sensor was attached on the instep of each foot and one sensor was attached on the lower back.
+On loading the transform the coordinate systems of the foot-mounted IMUs to the gaitmap coordinate system.
+
+.. figure:: /images/coordinate_systems/coordinate_transform_nilspodV2_instep_stair_ambulation_ba_liv.svg
+    :alt: coordinate system definition
+    :figclass: align-center
+
 We provide two `tpcp.Dataset` classes to access the data:
 
 1. :class:`gaitmap_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021PerTest`: This class allows to access

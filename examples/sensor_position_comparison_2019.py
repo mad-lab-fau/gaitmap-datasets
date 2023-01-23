@@ -12,6 +12,26 @@ SensorPositionComparison2019Mocap: In this dataset the data is cut into the indi
     For each of these segments full synchronised motion capture reference is provided.
 
 For more information about the dataset, see the dataset [documentation](https://zenodo.org/record/5747173)
+
+General information
+-------------------
+The dataset was recorded with Nilspod sensors by Portabiles.
+Multiple sensors were attached to the feet of the participants.
+For most tasks you will only be interested in the data from one sensor position.
+
+The data from all foot-mounted IMUs are transformed into the gaitmap coordinate system on loading.
+If you want to use the data from the ankle or hip sensor, they will remain in their original coordinate system as
+defined by the sensor node.
+For attachment images see the dataset [documentation](https://zenodo.org/record/5747173).
+
+Below we show the performed dataset transformation for the instep sensor as an example.
+All other sensor transformations are shown at the end of this document.
+
+.. figure:: /images/coordinate_systems/coordinate_transform_nilspodV1_instep_fraunhofer_qualisis.svg
+    :alt: coordinate system definition instep
+    :figclass: align-center
+
+
 """
 # %%
 # .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
@@ -298,3 +318,27 @@ event_labels_in_imu.head()
 # Below you can see that the first event is now after 4 seconds, indicating that the signal is correctly padded.
 event_labels_times = datapoint.convert_with_padding(event_labels_in_mocap, from_time_axis="mocap", to_time_axis="time")
 event_labels_times.head()
+
+# %%
+# Other coordinate transformations
+# ================================
+# For reference, here are visual representations for the coordinate systems transforms used for all the foot sensors.
+#
+# .. figure:: /images/coordinate_systems/coordinate_transform_nilspodV1_instep_fraunhofer_qualisis.svg
+#     :alt: coordinate system definition instep
+#     :figclass: align-center
+# .. figure:: /images/coordinate_systems/coordinate_transform_nilspodV1_heel_fraunhofer_qualisis.svg
+#     :alt: coordinate system definition heel
+#     :figclass: align-center
+# .. figure:: /images/coordinate_systems/coordinate_transform_nilspodV1_lateral_fraunhofer_qualisis.svg
+#     :alt: coordinate system definition lateral
+#     :figclass: align-center
+# .. figure:: /images/coordinate_systems/coordinate_transform_nilspodV1_medial_fraunhofer_qualisis.svg
+#     :alt: coordinate system definition medial
+#     :figclass: align-center
+# .. figure:: /images/coordinate_systems/coordinate_transform_nilspodV1_cavity_fraunhofer_qualisis.svg
+#     :alt: coordinate system definition cavity
+#     :figclass: align-center
+# .. figure:: /images/coordinate_systems/coordinate_transform_nilspodV1_insoles_fraunhofer_qualisis.svg
+#     :alt: coordinate system definition insoles
+#     :figclass: align-center

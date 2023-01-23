@@ -5,7 +5,25 @@ EgaitSegmentationValidation2014 - A Stride Segmentation validation dataset
 The EgaitSegmentationValidation2014 dataset allows access to the stride segmentation validation dataset recorded for
 the EGait system.
 It contains multiple 4x10 m walks and simulated "free-living" walks recorded by two foot worn IMU sensors.
-The indivudal strides were labeled manually by multiple gait experts.
+The individual strides were labeled manually by multiple gait experts.
+
+General information
+-------------------
+The dataset was recorded with Shimmer 2R sensors.
+In these IMU nodes, the coordinate systems of the accelerometer and the gyroscope are different.
+
+In the version provided in this dataset, we fix this by transforming the gyroscope data to the accelerometer coordinate
+system and then transform the combined data to the coordinate system of the gaitmap coordinate system.
+
+.. figure:: /images/coordinate_systems/coordinate_transform_shimmer2R_lateral_eGait.svg
+    :alt: coordinate system definition
+    :figclass: align-center
+
+.. warn:: The calibration files distributed with the dataset are likely of low quality.
+          We recommend to only use this dataset for validation of stride segmentation algorithms.
+          Algorithms for spatial parameters that depend on the exact values of the IMU, might not provide good results
+          with this dataset.
+
 """
 
 # %%

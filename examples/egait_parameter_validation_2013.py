@@ -9,6 +9,22 @@ Unfortunately, the Gaitrite and the IMU sensors are not synchronized.
 To solve this, the IMU-data was cut to the strides that are expected to be on the GaitRite carpet by counting the number
 of strides performed in both systems (see original publication for more info).
 
+General information
+-------------------
+The dataset was recorded with Shimmer 2R sensors.
+In these IMU nodes, the coordinate systems of the accelerometer and the gyroscope are different.
+
+In the version provided in this dataset, we fix this by transforming the gyroscope data to the accelerometer coordinate
+system and then transform the combined data to the coordinate system of the gaitmap coordinate system.
+
+.. figure:: /images/coordinate_systems/coordinate_transform_shimmer2R_lateral_eGait.svg
+    :alt: coordinate system definition
+    :figclass: align-center
+
+.. note:: In the instructions provided with the dataset, the conversation of the gyroscope data is not mentioned,
+          but was handled by the authors as part of their data processing pipeline.
+
+
 In the following we will show how to interact with the dataset and how to make sense of the reference information.
 """
 
