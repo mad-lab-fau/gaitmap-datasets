@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support for the new alternative calibration files for the `egait_parameter_validation_2013` dataset.
   Basically, we found out that the original calibration files were not that good and added new ones to the public 
-  dataset, that should result in significantly better results when calculating spatial gait parameters. 
+  dataset, that should result in significantly better results when calculating spatial gait parameters.
+- All datasets now have images visualizing the applied coordinate system transformations.
+- The stair pyshoe dataset has now a new index column describing the number of levels the participant walked during a 
+  single trail.
 
 ## [0.6.0] - 2022-21-12
 
