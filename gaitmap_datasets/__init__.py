@@ -23,4 +23,4 @@ __all__ = [
     "PyShoe2019Hallway",
     "PyShoe2019Stairs",
 ]
-__version__ = "0.6.0"
+__version__ = "0.7.0"
