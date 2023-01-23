@@ -236,4 +236,6 @@ class PyShoe2019Stairs(Dataset):
 
     def create_index(self) -> pd.DataFrame:
         """Create the index for the dataset."""
-        return pd.DataFrame(get_all_stairs_trials(self._data_folder_path), columns=["direction", "trial"])
+        return pd.DataFrame(
+            get_all_stairs_trials(self._data_folder_path), columns=["n_levels", "first_direction", "trial"]
+        )

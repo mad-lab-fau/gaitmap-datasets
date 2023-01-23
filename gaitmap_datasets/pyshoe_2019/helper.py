@@ -56,9 +56,9 @@ def get_data_hallway(trial: Tuple[str, str, str], *, base_dir: Path) -> Tuple[pd
 
 
 @lru_cache(maxsize=1)
-def get_data_stairs(trial: Tuple[str, str], *, base_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
+def get_data_stairs(trial: Tuple[str, str, str], *, base_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
     """Get the data from the test part of the stairs dataset."""
-    data_path = Path(base_dir) / STAIRS_SUBFOLDER / trial[1]
+    data_path = Path(base_dir) / STAIRS_SUBFOLDER / trial[-1]
 
     data = sio.loadmat(str(data_path / "processed_data.mat"))
     ts = data["ts"][0]
@@ -88,5 +88,6 @@ def get_all_stairs_trials(base_dir: Path):
     data_path = Path(base_dir) / STAIRS_SUBFOLDER
     for f in data_path.rglob("processed_data.mat"):
         # direction, trial
-        direction = f.parent.name.split("-")[-2]
-        yield direction, f.parent.name
+        first_direction = f.parent.name.split("-")[-2]
+        n_levels = f.parent.name.split("-")[-1]
+        yield n_levels, first_direction, f.parent.name
