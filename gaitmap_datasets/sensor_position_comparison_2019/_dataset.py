@@ -8,6 +8,7 @@ from joblib import Memory
 from tpcp import Dataset
 from typing_extensions import Literal
 
+from gaitmap_datasets._config import get_dataset_path
 from gaitmap_datasets.sensor_position_comparison_2019.helper import (
     align_coordinates,
     get_all_participants,
@@ -30,14 +31,14 @@ def _get_session_and_align(participant, data_folder):
 
 
 class _SensorPostionDataset(Dataset):
-    data_folder: Union[str, Path]
+    data_folder: Optional[Union[str, Path]]
     include_wrong_recording: bool
     memory: Memory
     align_data: bool
 
     def __init__(
         self,
-        data_folder: Union[str, Path],
+        data_folder: Optional[Union[str, Path]] = None,
         *,
         include_wrong_recording: bool = False,
         align_data: bool = True,
@@ -54,6 +55,8 @@ class _SensorPostionDataset(Dataset):
     @property
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
+        if self.data_folder is None:
+            return get_dataset_path(Path(__file__).parent.name)
         return Path(self.data_folder)
 
     @property
@@ -196,7 +199,7 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
 
     def __init__(
         self,
-        data_folder: Union[str, Path],
+        data_folder: Optional[Union[str, Path]] = None,
         *,
         include_wrong_recording: bool = False,
         align_data: bool = True,
@@ -262,7 +265,7 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
         Use `self.convert_with_padding` to convert the events to IMU samples/seconds while respecting the padding.
         """
         self.assert_is_single(None, "mocap_events_")
-        mocap_events = get_mocap_events(*self.group, data_folder=self.data_folder)
+        mocap_events = get_mocap_events(*self.group, data_folder=self._data_folder_path)
         mocap_events = {k: v.drop("foot", axis=1).set_index("s_id") for k, v in mocap_events.groupby("foot")}
         return mocap_events
 

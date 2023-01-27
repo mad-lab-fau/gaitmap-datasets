@@ -4,6 +4,7 @@ import pandas as pd
 import pytest
 from pandas._testing import assert_frame_equal, assert_series_equal
 
+from gaitmap_datasets import config
 from gaitmap_datasets.egait_parameter_validation_2013 import EgaitParameterValidation2013
 from gaitmap_datasets.egait_parameter_validation_2013.helper import (
     get_all_data_for_participant,
@@ -13,7 +14,7 @@ from gaitmap_datasets.egait_parameter_validation_2013.helper import (
 )
 from gaitmap_datasets.utils.consts import SF_COLS
 
-base_dir = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database")
+base_dir = config().egait_parameter_validation_2013
 
 HERE = Path(__file__).parent
 

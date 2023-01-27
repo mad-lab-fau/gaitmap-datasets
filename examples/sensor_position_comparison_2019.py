@@ -36,14 +36,7 @@ All other sensor transformations are shown at the end of this document.
 # %%
 # .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
 #              location of the data on your machine.
-from pathlib import Path
-
-dataset_path = Path(
-    "/home/arne/Documents/repos/work/projects/sensor_position_comparison/sensor_position_main_analysis/data/raw"
-)
-
-
-# %%
+#
 # SensorPositionComparison2019Segmentation
 # ========================================
 # This version of the dataset contains one recording per participant with all tests and movement between the tests.
@@ -58,7 +51,6 @@ from joblib import Memory
 from gaitmap_datasets.sensor_position_comparison_2019 import SensorPositionComparison2019Segmentation
 
 dataset = SensorPositionComparison2019Segmentation(
-    data_folder=dataset_path,
     memory=Memory("../.cache"),
 )
 dataset
@@ -133,7 +125,6 @@ fig.show()
 from gaitmap_datasets.sensor_position_comparison_2019 import SensorPositionComparison2019Mocap
 
 dataset = SensorPositionComparison2019Mocap(
-    data_folder=dataset_path,
     memory=Memory("../.cache"),
 )
 dataset
@@ -260,7 +251,6 @@ fig.show()
 # This ensures that the time axis of the IMU data and the mocap data are still aligned, even tough no mocap data
 # exists in the padded region.
 dataset = SensorPositionComparison2019Mocap(
-    data_folder=dataset_path,
     memory=Memory("../.cache"),
     data_padding_s=3,
 )

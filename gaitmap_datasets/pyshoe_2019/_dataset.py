@@ -5,6 +5,7 @@ from typing import List, Optional, Union
 import pandas as pd
 from tpcp import Dataset
 
+from gaitmap_datasets._config import get_dataset_path
 from gaitmap_datasets.pyshoe_2019.helper import (
     get_all_hallway_trials,
     get_all_stairs_trials,
@@ -31,11 +32,11 @@ class PyShoe2019Vicon(Dataset):
 
     """
 
-    data_folder: Union[str, Path]
+    data_folder: Optional[Union[str, Path]]
 
     def __init__(
         self,
-        data_folder: Union[str, Path],
+        data_folder: Optional[Union[str, Path]] = None,
         *,
         groupby_cols: Optional[Union[List[str], str]] = None,
         subset_index: Optional[pd.DataFrame] = None
@@ -56,6 +57,8 @@ class PyShoe2019Vicon(Dataset):
     @property
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
+        if self.data_folder is None:
+            return get_dataset_path(Path(__file__).parent.name)
         return Path(self.data_folder)
 
     @property
@@ -99,11 +102,11 @@ class PyShoe2019Hallway(Dataset):
 
     """
 
-    data_folder: Union[str, Path]
+    data_folder: Optional[Union[str, Path]]
 
     def __init__(
         self,
-        data_folder: Union[str, Path],
+        data_folder: Optional[Union[str, Path]] = None,
         *,
         groupby_cols: Optional[Union[List[str], str]] = None,
         subset_index: Optional[pd.DataFrame] = None
@@ -119,6 +122,8 @@ class PyShoe2019Hallway(Dataset):
     @property
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
+        if self.data_folder is None:
+            return get_dataset_path(Path(__file__).parent.name)
         return Path(self.data_folder)
 
     @property
@@ -177,11 +182,11 @@ class PyShoe2019Stairs(Dataset):
 
     """
 
-    data_folder: Union[str, Path]
+    data_folder: Optional[Union[str, Path]]
 
     def __init__(
         self,
-        data_folder: Union[str, Path],
+        data_folder: Optional[Union[str, Path]] = None,
         *,
         groupby_cols: Optional[Union[List[str], str]] = None,
         subset_index: Optional[pd.DataFrame] = None
@@ -197,6 +202,8 @@ class PyShoe2019Stairs(Dataset):
     @property
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
+        if self.data_folder is None:
+            return get_dataset_path(Path(__file__).parent.name)
         return Path(self.data_folder)
 
     @property

@@ -1,22 +1,19 @@
-from pathlib import Path
 from typing import Type, Union
 
 import numpy as np
 import pandas as pd
 import pytest
 from joblib import Memory
-from numpy.testing import assert_almost_equal
 from pandas._testing import assert_frame_equal, assert_series_equal
 
 import gaitmap_datasets.sensor_position_comparison_2019.helper as h
+from gaitmap_datasets import config
 from gaitmap_datasets.sensor_position_comparison_2019 import (
     SensorPositionComparison2019Mocap,
     SensorPositionComparison2019Segmentation,
 )
 
-base_dir = Path(
-    "/home/arne/Documents/repos/work/projects/sensor_position_comparison/sensor_position_main_analysis/data/raw"
-)
+base_dir = config().sensor_position_comparison_2019
 
 
 @pytest.mark.parametrize("include_failed", [True, False])

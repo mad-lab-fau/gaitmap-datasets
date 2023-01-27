@@ -37,13 +37,11 @@ import pandas as pd
 
 from gaitmap_datasets import EgaitParameterValidation2013
 
-dataset_path = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database/")
-
 # %%
 # First we will create a simple instance of the dataset class.
 # We can see that it contains a single recording per participant for 101 participants.
 
-dataset = EgaitParameterValidation2013(data_folder=dataset_path)
+dataset = EgaitParameterValidation2013()
 dataset
 
 # %%
