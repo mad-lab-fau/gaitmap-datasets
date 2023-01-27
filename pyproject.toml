@@ -21,6 +21,7 @@ imucal = ">=2.3.0"
 nilspodlib = ">=3.6.0"
 scipy = ">=1.8.1"
 c3d = "^0.5.1"
+pydantic = "^1.10.4"
 
 [tool.poetry.dev-dependencies]
 poethepoet = "^0.14.0"
@@ -86,4 +87,5 @@ version = { script = "_tasks:task_update_version()" }
 docs = { script = "_tasks:task_docs()" }
 upload_docs = { script = "_tasks:task_upload_docs()" }
 prepare_release = { script = "_tasks:task_prepare_release()" }
+create_dev_config = { script = "gaitmap_datasets:create_config_template('.datasets.dev.json')" }
 

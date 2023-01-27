@@ -28,11 +28,7 @@ In the following we will show the usage of both classes and the data that is con
 # %%
 # .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
 #              location of the data on your machine.
-from pathlib import Path
-
-dataset_path = Path("/home/arne/Documents/repos/work/datasets/stair_ambulation_dataset/")
-
-# %%
+#
 # StairAmbulationHealthy2021PerTest
 # =================================
 # First we can simple create an instance of the dataset class and directly see the contained data points.
@@ -43,7 +39,6 @@ from joblib import Memory
 from gaitmap_datasets import StairAmbulationHealthy2021PerTest
 
 dataset = StairAmbulationHealthy2021PerTest(
-    data_folder=dataset_path,
     include_pressure_data=True,
     include_baro_data=True,
     include_hip_sensor=True,
@@ -186,7 +181,6 @@ plt.show()
 from gaitmap_datasets import StairAmbulationHealthy2021Full
 
 dataset = StairAmbulationHealthy2021Full(
-    data_folder=dataset_path,
     include_pressure_data=True,
     include_baro_data=True,
     include_hip_sensor=True,

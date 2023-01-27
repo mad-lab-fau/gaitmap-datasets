@@ -238,3 +238,7 @@ $RECYCLE.BIN/
 !docs/_build
 docs/_build/*
 !docs/_build/html
+
+.python-version
+
+.datasets.dev.json

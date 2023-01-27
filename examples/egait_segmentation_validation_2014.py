@@ -19,10 +19,10 @@ system and then transform the combined data to the coordinate system of the gait
     :alt: coordinate system definition
     :figclass: align-center
 
-.. warn:: The calibration files distributed with the dataset are likely of low quality.
-          We recommend to only use this dataset for validation of stride segmentation algorithms.
-          Algorithms for spatial parameters that depend on the exact values of the IMU, might not provide good results
-          with this dataset.
+.. warning:: The calibration files distributed with the dataset are likely of low quality.
+             We recommend to only use this dataset for validation of stride segmentation algorithms.
+             Algorithms for spatial parameters that depend on the exact values of the IMU, might not provide good
+             results with this dataset.
 
 """
 
@@ -35,12 +35,10 @@ import pandas as pd
 
 from gaitmap_datasets import EgaitSegmentationValidation2014
 
-dataset_path = Path("/home/arne/Documents/repos/work/datasets/eGaIT_database_segmentation/")
-
 # %%
 # First we will create a simple instance of the dataset class.
 
-dataset = EgaitSegmentationValidation2014(data_folder=dataset_path)
+dataset = EgaitSegmentationValidation2014()
 dataset
 
 # %%

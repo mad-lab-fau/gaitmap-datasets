@@ -4,6 +4,7 @@ from typing import Type, Union
 import pytest
 from joblib import Memory
 
+from gaitmap_datasets import config
 from gaitmap_datasets.stair_ambulation_healthy_2021 import (
     StairAmbulationHealthy2021Full,
     StairAmbulationHealthy2021PerTest,
@@ -17,7 +18,7 @@ from gaitmap_datasets.stair_ambulation_healthy_2021.helper import (
     get_segmented_stride_list,
 )
 
-base_dir = Path("/home/arne/Documents/repos/work/datasets/stair_ambulation_dataset")
+base_dir = config().stair_ambulation_health_2021
 
 
 def test_get_all_participants():

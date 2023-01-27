@@ -34,17 +34,13 @@ For each part of the data we provide a separate dataset class.
 # %%
 # .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
 #             location of the data on your machine.
-from pathlib import Path
-
-dataset_path = Path("/home/arne/Documents/repos/work/datasets/2019-pyshoe/")
-
-# %%
+#
 # Vicon Dataset
 # -------------
 # First we will create a simple instance of the dataset class.
 from gaitmap_datasets.pyshoe_2019 import PyShoe2019Vicon
 
-dataset = PyShoe2019Vicon(data_folder=dataset_path)
+dataset = PyShoe2019Vicon()
 dataset
 
 # %%
@@ -93,7 +89,7 @@ fig.show()
 # combined).
 from gaitmap_datasets.pyshoe_2019 import PyShoe2019Hallway
 
-dataset = PyShoe2019Hallway(data_folder=dataset_path)
+dataset = PyShoe2019Hallway()
 dataset
 
 # %%
@@ -148,7 +144,7 @@ fig.show()
 # First we will create a simple instance of the dataset class.
 from gaitmap_datasets.pyshoe_2019 import PyShoe2019Stairs
 
-dataset = PyShoe2019Stairs(data_folder=dataset_path)
+dataset = PyShoe2019Stairs()
 dataset
 
 # %%
