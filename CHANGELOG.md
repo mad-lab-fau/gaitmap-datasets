@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) (+ the Migration Guide),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2023-30-01
+
+### Added
+- It is now possible to create a global config file containing the local path to the datasets.
+  This allows you to use the datasets without having to specify the path to the dataset every time.
+  Further, it means that you don't have to modify source code (just a config file) to run the examples and tests during 
+  development.
+  See the README for more details.
+  (https://github.com/mad-lab-fau/gaitmap-datasets/pull/8)
+
 ## [0.7.0] - 2023-23-01
 
 ### Added
