@@ -3,9 +3,8 @@
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
-import c3d
 import numpy as np
 import pandas as pd
 from imucal.management import CalibrationWarning
@@ -14,6 +13,7 @@ from nilspodlib.exceptions import CorruptedPackageWarning, LegacyWarning, Synchr
 from scipy.spatial.transform import Rotation
 from typing_extensions import Literal
 
+from gaitmap_datasets.utils.c3d_loading import load_c3d_data
 from gaitmap_datasets.utils.coordinate_transforms import flip_dataset, rotation_from_angle
 
 COORDINATE_TRANSFORMATION_DICT = dict(
@@ -261,35 +261,6 @@ def get_sensor_file(participant_id: str, sensor_name: str, data_folder=None) -> 
         if f.name.split("-")[1].startswith(sensor_id.upper()):
             return f
     raise FileNotFoundError(f"No sensor file found for {sensor_name} of {participant_id}")
-
-
-def load_c3d_data(path: Union[Path, str], insert_nan: bool = True) -> pd.DataFrame:
-    """Load a c3d file.
-
-    Parameters
-    ----------
-    path
-        Path to the file
-    insert_nan
-        If True missing values in the marker paths will be indicated with a np.nan.
-        Otherwise, there are just 0 (?).
-
-    """
-    with open(path, "rb") as handle:
-        reader = c3d.Reader(handle)
-        frames = []
-
-        for _, points, _ in reader.read_frames():
-            frames.append(points[:, :3])
-
-        labels = [label.strip().lower() for label in reader.point_labels]
-        frames = np.stack(frames)
-        frames = frames.reshape(frames.shape[0], -1)
-    index = pd.MultiIndex.from_product([labels, list("xyz")])
-    data = pd.DataFrame(frames, columns=index) / 1000  # To get the data in m
-    if insert_nan is True:
-        data[data == 0.000000] = np.nan
-    return data
 
 
 def get_foot_sensor(foot: Literal["left", "right"], include_insole: bool = True) -> List[str]:
