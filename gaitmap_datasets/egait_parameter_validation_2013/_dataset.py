@@ -16,18 +16,36 @@ from gaitmap_datasets.egait_parameter_validation_2013.helper import (
 
 
 class EgaitParameterValidation2013(Dataset):
-    """Egait parameter validation 2013 dataset."""
+    """Egait parameter validation 2013 dataset.
+
+    Parameters
+    ----------
+    data_folder
+        The path to the data folder. If None, the path from the config is used.
+    include_bad_data
+        A couple of participants appear to have bad data.
+        If True, these participants are included (as in the original publication).
+        If False, these participants are excluded (recommended).
+    use_alternative_calibrations
+        The original calibration files showed a big acc offset.
+        Therefore, we recommend to use the alternative calibration files.
+        If True, the alternative calibration files are used.
+        If False, the original calibration files are used (as in the original publication).
+
+    """
 
     def __init__(
         self,
         data_folder: Optional[Union[str, Path]] = None,
         *,
+        include_bad_data: bool = False,
         use_alternative_calibrations: bool = True,
         memory: Memory = Memory(None),
         groupby_cols: Optional[Union[List[str], str]] = None,
         subset_index: Optional[pd.DataFrame] = None
     ):
         self.data_folder = data_folder
+        self.include_bad_data = include_bad_data
         self.use_alternative_calibrations = use_alternative_calibrations
         self.memory = memory
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)
@@ -72,4 +90,7 @@ class EgaitParameterValidation2013(Dataset):
 
     def create_index(self) -> pd.DataFrame:
         """Create index."""
-        return pd.DataFrame(get_all_participants(base_dir=self._data_folder_path), columns=["participant"])
+        return pd.DataFrame(
+            get_all_participants(include_bad_data=self.include_bad_data, base_dir=self._data_folder_path),
+            columns=["participant"],
+        )

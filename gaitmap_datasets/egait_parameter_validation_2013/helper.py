@@ -30,6 +30,8 @@ COORDINATE_SYSTEM_TRANSFORMATION = {  # egait_lateral_shimmer2r
     "right_sensor": [[0, 1, 0], [0, 0, -1], [-1, 0, 0]],
 }
 
+BAD_DATA = ["P52"]
+
 
 def _raw_data_folder(base_dir: Path) -> Path:
     """Return the relative path to the participant subfolder."""
@@ -56,9 +58,12 @@ def _alternative_calibration_folder(base_dir: Path) -> Path:
     return base_dir / "alternative_calibrations"
 
 
-def get_all_participants(*, base_dir: Optional[Path] = None) -> List[str]:
+def get_all_participants(include_bad_data: bool = False, *, base_dir: Optional[Path] = None) -> List[str]:
     """Get the folder names of all participants."""
-    return [f.name.split("_")[0] for f in _raw_data_folder(base_dir).glob("*_left.dat")]
+    all_participants = sorted([f.name.split("_")[0] for f in _raw_data_folder(base_dir).glob("*_left.dat")])
+    if include_bad_data:
+        return all_participants
+    return list(set(all_participants) - set(BAD_DATA))
 
 
 def get_all_data_for_participant(
