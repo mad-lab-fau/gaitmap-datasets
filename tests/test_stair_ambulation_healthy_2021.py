@@ -18,7 +18,7 @@ from gaitmap_datasets.stair_ambulation_healthy_2021.helper import (
     get_segmented_stride_list,
 )
 
-base_dir = config().stair_ambulation_health_2021
+base_dir = config().stair_ambulation_healthy_2021
 
 
 def test_get_all_participants():

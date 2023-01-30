@@ -27,8 +27,8 @@ system and then transform the combined data to the coordinate system of the gait
 """
 
 # %%
-# .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
-#             location of the data on your machine.
+# .. warning:: For this example to work, you need to have a global config set containing the path to the dataset.
+#              Check the `README.md` for more information.
 from pathlib import Path
 
 import pandas as pd

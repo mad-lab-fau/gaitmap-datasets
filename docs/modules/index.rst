@@ -28,3 +28,22 @@ interface.
     PyShoe2019Vicon
     PyShoe2019Hallway
     PyShoe2019Stairs
+
+Config API
+----------
+
+.. autosummary::
+   :toctree: generated
+   :template: function.rst
+
+    config
+    set_config
+    reset_config
+    create_config_template
+    get_dataset_path
+
+.. autosummary::
+   :toctree: generated
+   :template: class_no_inherited.rst
+
+    DatasetsConfig

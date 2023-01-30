@@ -55,19 +55,87 @@ individual dataset classes.
 | PyShoe2019 | https://github.com/utiasSTARS/pyshoe/  | https://ieee-dataport.org/open-access/university-toronto-foot-mounted-inertial-navigation-dataset (or bash script in github repo) |
 
 
-## Testing
+## Working with datasets
+
+Each dataset is represented by a class.
+To load the dataset, the path to the dataset folder needs to be provided.
+There are multiple ways to do this:
+
+1. You can provide the path directly in the constructor of the dataset class.
+
+```python
+from gaitmap_datasets import EgaitSegmentationValidation2014
+
+dataset = EgaitSegmentationValidation2014("/path/to/dataset")
+```
+
+2. Alternatively, you can avoid hard-coding path in one location by creating a json config file:
+```python
+# Run the following once, to create the config file
+from gaitmap_datasets import create_config_template
+
+create_config_template("/path/to/config.json")
+```
+Then open the config file and add the path to the dataset folders you have downloaded.
+You can just leave the values as `null` if you don't need a dataset.
+
+```json
+// file: /path/to/config.json
+{
+    "datasets": {
+        "egait_parameter_validation_2013": null,
+        "egait_segmentation_validation_2014": "/path/to/egait_segmentation_validation_2014/dataset",
+        "pyshoe_2019": null,
+        "sensor_position_comparison_2019": null,
+        "stair_ambulation_healthy_2021": null
+    }
+}
+```
+
+Then you can set the global config for gaitmap-datsets to point to the config file:
+
+```python
+from gaitmap_datasets import EgaitSegmentationValidation2014, set_config
+
+set_config("/path/to/config.json")
+# Now you can load the dataset without providing the path
+
+dataset = EgaitSegmentationValidation2014()
+```
+
+
+## Dev setup
+
+First clone the repo and install the dependencies using `poetry` (note this project only supports poetry >=1.2).
+
+```
+git clone https://github.com/mad-lab-fau/gaitmap-datasets.git
+cd gaitmap-datasets
+poetry install
+```
+
+### Downloading and linking datasets
+
+The datasets are not included in the package, and you need to download them manually (see above).
+Store the datasets you need in whatever folder you like.
+
+Then run `poetry run poe create_dev_config`.
+This should create a `.datasets.dev.json` file in the root of the repo.
+Modify this file to point to the folders of the respective datasets.
+
+With that setup, all tests and examples should work without any modification to the code.
+
+### Testing
 
 The `/tests` directory contains a set of tests to check the functionality of the library.
 However, most tests rely on the existence of the respective datasets in certain folders outside the library.
 Therefore, the tests can only be run locally and not on the CI server.
 
-To run them locally, make sure datasets are downloaded into the correct folders and then run `poe test`.
+To run them locally, make sure you completed the dataset setup (see above) then run `poe test`.
 
-## Documentation (build instructions)
+### Documentation (build instructions)
 
-Like the tests, the documentation requires the datasets to be downloaded into the correct folders to execute the 
-examples.
-Therefore, we can not build the docs automatically on RTD.
+As the docs need the datasets to be available, we can not build them automatically on RTD.
 Instead, we host the docs via github pages.
 The HTML source can be found in the `gh-pages` branch of this repo.
 

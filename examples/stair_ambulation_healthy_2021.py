@@ -26,8 +26,8 @@ We provide two `tpcp.Dataset` classes to access the data:
 In the following we will show the usage of both classes and the data that is contained within.
 """
 # %%
-# .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
-#              location of the data on your machine.
+# .. warning:: For this example to work, you need to have a global config set containing the path to the dataset.
+#              Check the `README.md` for more information.
 #
 # StairAmbulationHealthy2021PerTest
 # =================================
