@@ -34,8 +34,8 @@ All other sensor transformations are shown at the end of this document.
 
 """
 # %%
-# .. warning:: For this example to work, you need to modify the dataset path in the following line to point to the
-#              location of the data on your machine.
+# .. warning:: For this example to work, you need to have a global config set containing the path to the dataset.
+#              Check the `README.md` for more information.
 #
 # SensorPositionComparison2019Segmentation
 # ========================================
