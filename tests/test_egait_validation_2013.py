@@ -76,9 +76,10 @@ def test_get_gaitrite_parameters():
 
 
 class TestEgaitParameterValidation2013Dataset:
-    def test_index(self):
-        dataset = EgaitParameterValidation2013(data_folder=base_dir)
-        assert len(dataset) == 101
+    @pytest.mark.parametrize("include_bad_participants", [True, False])
+    def test_index(self, include_bad_participants):
+        dataset = EgaitParameterValidation2013(data_folder=base_dir, include_bad_data=include_bad_participants)
+        assert len(dataset) == 100 + int(include_bad_participants)
 
     def test_sampling_rate(self):
         dataset = EgaitParameterValidation2013(data_folder=base_dir)
