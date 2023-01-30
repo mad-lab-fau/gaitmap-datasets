@@ -11,7 +11,7 @@ import pandas as pd
 from scipy.spatial.transform import Rotation
 
 from gaitmap_datasets.utils.coordinate_transforms import flip_sensor
-from gaitmap_datasets.utils.egait_loading_helper import load_shimmer2_data, find_extended_calib_files
+from gaitmap_datasets.utils.egait_loading_helper import find_extended_calib_files, load_shimmer2_data
 
 CALIBRATION_FILE_NAMES = {
     "left_sensor": "A917.csv",

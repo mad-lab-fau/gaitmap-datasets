@@ -6,11 +6,7 @@ from pandas._testing import assert_frame_equal, assert_series_equal
 from gaitmap_datasets.egait_parameter_validation_2013.helper import CALIBRATION_FILE_NAMES
 from gaitmap_datasets.utils.consts import SF_ACC
 from gaitmap_datasets.utils.data_loading import load_bin_file
-from gaitmap_datasets.utils.egait_loading_helper import (
-    SHIMMER_DATA_LAYOUT,
-    load_compact_cal_matrix,
-    load_shimmer2_data,
-)
+from gaitmap_datasets.utils.egait_loading_helper import SHIMMER_DATA_LAYOUT, load_compact_cal_matrix, load_shimmer2_data
 
 HERE = Path(__file__).parent
 

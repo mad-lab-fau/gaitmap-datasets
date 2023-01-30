@@ -30,7 +30,7 @@ class DatasetsConfig(BaseSettings):
     sensor_position_comparison_2019: Optional[DirectoryPath]
     egait_segmentation_validation_2014: Optional[DirectoryPath]
     pyshoe_2019: Optional[DirectoryPath]
-    egait_addidas_2014: Optional[DirectoryPath]
+    egait_adidas_2014: Optional[DirectoryPath]
     stair_ambulation_healthy_2021: Optional[DirectoryPath]
 
     class Config:

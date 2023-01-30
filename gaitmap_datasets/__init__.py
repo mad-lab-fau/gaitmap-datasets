@@ -8,6 +8,7 @@ from gaitmap_datasets._config import (
     reset_config,
     set_config,
 )
+from gaitmap_datasets.egait_adidas_2014 import EgaitAdidas2014
 from gaitmap_datasets.egait_parameter_validation_2013 import EgaitParameterValidation2013
 from gaitmap_datasets.egait_segmentation_validation_2014 import EgaitSegmentationValidation2014
 from gaitmap_datasets.pyshoe_2019 import PyShoe2019Hallway, PyShoe2019Stairs, PyShoe2019Vicon
@@ -23,6 +24,7 @@ from gaitmap_datasets.stair_ambulation_healthy_2021 import (
 __all__ = [
     "EgaitSegmentationValidation2014",
     "EgaitParameterValidation2013",
+    "EgaitAdidas2014",
     "StairAmbulationHealthy2021PerTest",
     "StairAmbulationHealthy2021Full",
     "SensorPositionComparison2019Segmentation",
