@@ -37,4 +37,4 @@ __all__ = [
     "create_config_template",
     "get_dataset_path",
 ]
-__version__ = "0.7.0"
+__version__ = "0.8.0"
