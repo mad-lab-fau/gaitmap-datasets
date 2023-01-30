@@ -7,7 +7,7 @@ from gaitmap_datasets.egait_parameter_validation_2013.helper import CALIBRATION_
 from gaitmap_datasets.utils.consts import SF_ACC
 from gaitmap_datasets.utils.data_loading import load_bin_file
 from gaitmap_datasets.utils.egait_loading_helper import (
-    SHIMMER2_DATA_LAYOUT,
+    SHIMMER_DATA_LAYOUT,
     load_compact_cal_matrix,
     load_shimmer2_data,
 )
@@ -16,14 +16,14 @@ HERE = Path(__file__).parent
 
 
 def test_basic_data_loading():
-    data = load_bin_file(HERE / "egait_validation_2013_test_data/P115_E4_left.dat", SHIMMER2_DATA_LAYOUT)
+    data = load_bin_file(HERE / "egait_validation_2013_test_data/P115_E4_left.dat", SHIMMER_DATA_LAYOUT)
     # Reference data produced by the matlab import script
     reference_data = pd.read_csv(HERE / "egait_validation_2013_test_data/P115_E4_left.csv", header=0)
     assert_frame_equal(data.astype(int), reference_data.drop(columns=["n_samples"]))
 
 
 def test_calibration():
-    data = load_bin_file(HERE / "egait_validation_2013_test_data/P115_E4_left.dat", SHIMMER2_DATA_LAYOUT).astype(float)
+    data = load_bin_file(HERE / "egait_validation_2013_test_data/P115_E4_left.dat", SHIMMER_DATA_LAYOUT).astype(float)
     cal_matrix = load_compact_cal_matrix(HERE / "egait_validation_2013_test_data/A917.csv")
     calibrated_data = cal_matrix.calibrate_df(data, "a.u.", "a.u.")
     # Reference data produced by the matlab import script

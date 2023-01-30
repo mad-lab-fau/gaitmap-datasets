@@ -1,6 +1,8 @@
 """Helper to load data of the egait system (specifically the shimmer 2R system)."""
 import copy
+from collections import namedtuple
 from pathlib import Path
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -8,14 +10,18 @@ from imucal import FerrarisCalibrationInfo
 
 from gaitmap_datasets.utils.data_loading import load_bin_file
 
-SHIMMER2_DATA_LAYOUT = {
-    "acc_x": np.uint16,
-    "acc_y": np.uint16,
-    "acc_z": np.uint16,
-    "gyr_x": np.uint16,
-    "gyr_y": np.uint16,
-    "gyr_z": np.uint16,
+SHIMMER_DATA_LAYOUT = {
+    "acc_x": np.int16,
+    "acc_y": np.int16,
+    "acc_z": np.int16,
+    "gyr_x": np.int16,
+    "gyr_y": np.int16,
+    "gyr_z": np.int16,
 }
+
+extended_calib_file_paths = namedtuple("extended_calib_file_paths", ["acc", "gyr"])
+
+calib_file_paths = Union[Path, extended_calib_file_paths]
 
 
 def transform_shimmer2_axes(dataset: pd.DataFrame) -> pd.DataFrame:
@@ -49,15 +55,17 @@ def transform_shimmer2_axes(dataset: pd.DataFrame) -> pd.DataFrame:
 
 def calibrate_shimmer2_data(
     data: pd.DataFrame,
-    calibration_file_path: Path,
+    calibration_file_path: calib_file_paths,
 ) -> pd.DataFrame:
     """Calibrate shimmer2 data."""
-    if calibration_file_path.is_file():
+    if isinstance(calibration_file_path, extended_calib_file_paths):
+        cal_matrix = load_extended_calib(
+            acc_calib_path=calibration_file_path.acc, gyr_calib_path=calibration_file_path.gyr
+        )
+    elif isinstance(calibration_file_path, Path):
         cal_matrix = load_compact_cal_matrix(calibration_file_path)
-    elif calibration_file_path.is_dir():
-        cal_matrix = load_extended_calib(calibration_file_path)
     else:
-        raise ValueError("Calibration file does not exist.")
+        raise ValueError("Invalid calibration format.")
     data = cal_matrix.calibrate_df(data, "a.u.", "a.u.")
 
     return data
@@ -65,13 +73,19 @@ def calibrate_shimmer2_data(
 
 def load_shimmer2_data(
     data_path: Path,
-    calibration_file_path: Path,
+    calibration_file_path: calib_file_paths,
 ) -> pd.DataFrame:
     """Load shimmer2 data from a file."""
-    data = load_bin_file(data_path, SHIMMER2_DATA_LAYOUT)
+    data = load_bin_file(data_path, SHIMMER_DATA_LAYOUT)
     data = calibrate_shimmer2_data(data, calibration_file_path)
     data = transform_shimmer2_axes(data)
     return data
+
+
+def find_extended_calib_files(calib_folder: Path, sensor_id: str) -> extended_calib_file_paths:
+    acc_calib_path = next(calib_folder.glob(f"{sensor_id.upper()}_acc.csv"))
+    gyr_calib_path = next(calib_folder.glob(f"{sensor_id.upper()}_gyro.csv"))
+    return extended_calib_file_paths(acc=acc_calib_path, gyr=gyr_calib_path)
 
 
 def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:
@@ -95,7 +109,7 @@ def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:
     )
 
 
-def load_extended_calib(calib_folder: Path) -> FerrarisCalibrationInfo:
+def load_extended_calib(acc_calib_path: Path, gyr_calib_path: Path) -> FerrarisCalibrationInfo:
     """Convert calibration files in format *_acc.csv and *_gyr.csv into a FerrarisCalibrationInfo object.
 
     This calibration format is used by later iterations of the egait system.
@@ -103,9 +117,6 @@ def load_extended_calib(calib_folder: Path) -> FerrarisCalibrationInfo:
     preferred over the short calibration matrix.
     """
     # Each folder is a calibration
-
-    acc_calib_path = next(calib_folder.glob("*_acc.csv"))
-    gyr_calib_path = next(calib_folder.glob("*_gyro.csv"))
     acc_cal_phct = pd.read_csv(acc_calib_path, header=None)
     gyr_cal_phct = pd.read_csv(gyr_calib_path, header=None)
     imucal_cal = {
@@ -122,6 +133,7 @@ def load_extended_calib(calib_folder: Path) -> FerrarisCalibrationInfo:
         "from_gyr_unit": "a.u.",
     }
     imucal_cal = FerrarisCalibrationInfo(
-        **imucal_cal, comment=f"Date: {calib_folder.name}, Sensor Node: " f"{acc_calib_path.stem.split('_')[0]}"
+        **imucal_cal,
+        comment=f"Folder name: {acc_calib_path.parent.name}, Sensor Node:" f" {acc_calib_path.stem.split('_')[0]}",
     )
     return imucal_cal

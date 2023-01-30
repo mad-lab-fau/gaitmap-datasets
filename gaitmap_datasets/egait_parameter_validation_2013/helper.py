@@ -11,7 +11,7 @@ import pandas as pd
 from scipy.spatial.transform import Rotation
 
 from gaitmap_datasets.utils.coordinate_transforms import flip_sensor
-from gaitmap_datasets.utils.egait_loading_helper import load_shimmer2_data
+from gaitmap_datasets.utils.egait_loading_helper import load_shimmer2_data, find_extended_calib_files
 
 CALIBRATION_FILE_NAMES = {
     "left_sensor": "A917.csv",
@@ -21,6 +21,11 @@ CALIBRATION_FILE_NAMES = {
 ALTERNATIVE_CALIBRATION_FOLDER_NAMES = {
     "left_sensor": Path("A917/2015-01-01_00-01/"),
     "right_sensor": Path("A6DF/2015-01-01_00-01/"),
+}
+
+SENSOR_IDS = {
+    "left_sensor": "A917",
+    "right_sensor": "A6DF",
 }
 
 COORDINATE_SYSTEM_TRANSFORMATION = {  # egait_lateral_shimmer2r
@@ -76,6 +81,10 @@ def get_all_data_for_participant(
         data_path = _raw_data_folder(base_dir) / f"{participant_id}_E4_{foot}.dat"
         if use_alternative_calibrations:
             calibration_path = _alternative_calibration_folder(base_dir) / ALTERNATIVE_CALIBRATION_FOLDER_NAMES[sensor]
+            calibration_path = find_extended_calib_files(
+                calibration_path,
+                SENSOR_IDS[sensor],
+            )
         else:
             calibration_path = _calibration_folder(base_dir) / CALIBRATION_FILE_NAMES[sensor]
         data = load_shimmer2_data(data_path, calibration_path)
