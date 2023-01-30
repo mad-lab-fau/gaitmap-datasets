@@ -9,7 +9,7 @@ from typing import List, Literal, Optional, Tuple, TypedDict
 
 import pandas as pd
 
-from gaitmap_datasets.utils.c3d import load_c3d_data
+from gaitmap_datasets.utils.c3d_loading import load_c3d_data
 
 
 COORDINATE_SYSTEM_TRANSFORMATION_SH2R = {  # egait_lateral_shimmer2r
