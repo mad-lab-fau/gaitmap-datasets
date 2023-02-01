@@ -178,7 +178,7 @@ event_labels.head()
 # To avoid errors in potential conversions between the two domains (mocap/IMU), we provide the
 # `convert_with_padding` methods to convert the event list.
 # (To understand why the method is called `..._with_padding`, see the section below).
-event_labels_in_imu = datapoint.convert_with_padding(event_labels, from_time_axis="mocap", to_time_axis="imu")
+event_labels_in_imu = datapoint.convert_events_with_padding(event_labels, from_time_axis="mocap", to_time_axis="imu")
 event_labels_in_imu.head()
 
 # %%
@@ -193,8 +193,8 @@ norm_mocap_z = mocap_traj["l_fcc"].sub(mocap_traj["l_fcc"].iloc[0])["z"]
 gyr_y.plot(ax=axes[0])
 norm_mocap_z.plot(ax=axes[1])
 event_labels_in_mocap = event_labels
-event_labels_times = datapoint.convert_with_padding(event_labels, from_time_axis="mocap", to_time_axis="time")
-event_labels_in_imu = datapoint.convert_with_padding(event_labels, from_time_axis="mocap", to_time_axis="imu")
+event_labels_times = datapoint.convert_events_with_padding(event_labels, from_time_axis="mocap", to_time_axis="time")
+event_labels_in_imu = datapoint.convert_events_with_padding(event_labels, from_time_axis="mocap", to_time_axis="imu")
 for (i, s) in event_labels_times.iterrows():
     axes[0].axvspan(s["start"], s["end"], alpha=0.2, color="C1")
     axes[1].axvspan(s["start"], s["end"], alpha=0.2, color="C1")
@@ -284,7 +284,7 @@ segmented_stride_labels.head()
 # %%
 # However, to correctly transform it to the time domain, you need to manually add the padding time.
 # To avoid erros, we provide the `convert_with_padding` method that does this for you.
-segmented_stride_labels_time = datapoint.convert_with_padding(
+segmented_stride_labels_time = datapoint.convert_events_with_padding(
     segmented_stride_labels, from_time_axis="imu", to_time_axis="time"
 )
 segmented_stride_labels_time.head()
@@ -300,13 +300,13 @@ event_labels_in_mocap.head()
 
 # %%
 # In IMU samples with padding:
-event_labels_in_imu = datapoint.convert_with_padding(event_labels_in_mocap, from_time_axis="mocap", to_time_axis="imu")
+event_labels_in_imu = datapoint.convert_events_with_padding(event_labels_in_mocap, from_time_axis="mocap", to_time_axis="imu")
 event_labels_in_imu.head()
 
 # %%
 # And in time (seconds) with padding:
 # Below you can see that the first event is now after 4 seconds, indicating that the signal is correctly padded.
-event_labels_times = datapoint.convert_with_padding(event_labels_in_mocap, from_time_axis="mocap", to_time_axis="time")
+event_labels_times = datapoint.convert_events_with_padding(event_labels_in_mocap, from_time_axis="mocap", to_time_axis="time")
 event_labels_times.head()
 
 # %%

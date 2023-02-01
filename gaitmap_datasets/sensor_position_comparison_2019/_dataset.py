@@ -302,7 +302,7 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
         )
         return pd.DataFrame(tests, columns=["participant", "test"])
 
-    def convert_with_padding(
+    def convert_events_with_padding(
         self,
         events: pd.DataFrame,
         from_time_axis: Literal["mocap", "imu"],
