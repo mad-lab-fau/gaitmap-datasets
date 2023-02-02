@@ -1,4 +1,5 @@
 """General event detection helper."""
+from typing import Union, Dict, Literal, Tuple
 
 import numpy as np
 import pandas as pd
@@ -122,3 +123,94 @@ def convert_sampling_rates_event_list(
 
     # For all columns we simply convert to the new sampling rate and round to the nearest integer
     return (event_list / old_sampling_rate * new_sampling_rate).round().astype(int)
+
+
+def convert_segmented_stride_list(
+    stride_list: Union[pd.DataFrame, Dict[str, pd.DataFrame]], target_stride_type: Literal["min_vel", "ic"]
+) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
+    """Convert a segmented stride list with detected events into other types of stride lists.
+
+    During the conversion some strides might be removed.
+
+    Parameters
+    ----------
+    stride_list
+        Stride list to be converted
+    target_stride_type
+        The stride list type that should be converted to
+
+    Returns
+    -------
+    converted_stride_list
+        Stride list in the new format
+
+    """
+    stride_list_type = "single" if isinstance(stride_list, pd.DataFrame) else "multi"
+    if stride_list_type == "single":
+        return _segmented_stride_list_to_min_vel_single_sensor(stride_list, target_stride_type=target_stride_type)[0]
+    return {
+        k: _segmented_stride_list_to_min_vel_single_sensor(v, target_stride_type=target_stride_type)[0]
+        for k, v in stride_list.items()
+    }
+
+
+def _segmented_stride_list_to_min_vel_single_sensor(
+    stride_list: pd.DataFrame, target_stride_type: Literal["min_vel", "ic"]
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Convert a segmented stride list with detected events into other types of stride lists.
+
+    During the conversion some strides might be removed.
+    Note, this function does not check if the input is a proper stride list.
+
+    Parameters
+    ----------
+    stride_list
+        Stride list to be converted
+    target_stride_type
+        The stride list type that should be converted to
+
+    Returns
+    -------
+    converted_stride_list
+        Stride list in the new format
+    removed_strides
+        Strides that were removed during the conversion.
+        This stride list is still in the input format.
+
+    """
+    converted_stride_list = stride_list.copy()
+    converted_stride_list["old_start"] = converted_stride_list["start"]
+    converted_stride_list["old_end"] = converted_stride_list["end"]
+
+    # start of each stride is now the new start event
+    converted_stride_list["start"] = converted_stride_list[target_stride_type]
+    # end of each stride is now the start event of the next strides
+    # Breaks in the stride list will be filtered later
+    converted_stride_list["end"] = converted_stride_list[target_stride_type].shift(-1)
+    if target_stride_type == "min_vel":
+        if "ic" in converted_stride_list.columns:
+            # pre-ic of each stride is the ic in the current segmented stride
+            converted_stride_list["pre_ic"] = converted_stride_list["ic"]
+            # ic of each stride is the ic in the subsequent segmented stride
+            converted_stride_list["ic"] = converted_stride_list["ic"].shift(-1)
+        if "tc" in converted_stride_list.columns:
+            # tc of each stride is the tc in the subsequent segmented stride
+            converted_stride_list["tc"] = converted_stride_list["tc"].shift(-1)
+
+    elif target_stride_type == "ic" and "tc" in converted_stride_list.columns:
+        # As the ic occurs after the tc in the segmented stride, new tc is the tc of the next stride
+        converted_stride_list["tc"] = converted_stride_list["tc"].shift(-1)
+
+    # Find breaks in the stride list, which indicate the ends of individual gait sequences.
+    breaks = (converted_stride_list["old_end"] - converted_stride_list["old_start"].shift(-1)).fillna(0) != 0
+
+    # drop unneeded tmp columns
+    converted_stride_list = converted_stride_list.drop(["old_start", "old_end"], axis=1)
+
+    # Remove the last stride of each gait sequence as its end value is already part of the next gait sequence
+    converted_stride_list = converted_stride_list[~breaks]
+
+    # drop remaining nans (last list elements will get some nans by shift(-1) operation above)
+    converted_stride_list = converted_stride_list.dropna(how="any")
+
+    return converted_stride_list, stride_list[~stride_list.index.isin(converted_stride_list.index)]
