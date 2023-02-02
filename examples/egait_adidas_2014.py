@@ -101,10 +101,15 @@ imu_data.filter(like="gyr").plot(ax=ax1, legend=False)
 imu_data.filter(like="acc").plot(ax=ax2, legend=True)
 mocap_data[["heel_z"]].plot(ax=ax3)
 
+ax1.set_ylabel("Gyroscope [deg/s]")
+ax2.set_ylabel("Acc. [m/s^2]")
+ax3.set_ylabel("Pos. [m]")
+
 fig.show()
 
 # %%
-# For the strides that are withing the mocap volume manual stride labels based on the IMU data are available.
+# For the strides that are within the mocap volume, manually annotated stride labels based on the IMU data are
+# available.
 # They are provided in samples relative to the start of the IMU data stream.
 segmented_strides = trial.segmented_stride_list_
 segmented_strides[sensor]
@@ -125,7 +130,7 @@ trial.convert_events(segmented_strides, from_time_axis="imu", to_time_axis="time
 # This information is provided in samples relative to the start of the mocap data stream.
 # (Compare to the converted segmented strides above).
 mocap_events = trial.mocap_events_
-
+mocap_events[sensor]
 # %%
 # Like the segmented stride list, we can convert them to the same time axis as the data or IMU samples.
 trial.convert_events(mocap_events, from_time_axis="mocap", to_time_axis="time")[sensor]
@@ -147,6 +152,9 @@ for marker, event_name in zip(["o", "s", "*"], ["tc", "ic", "min_vel"]):
         ax=ax3, style=marker, label=event_name, markersize=3
     )
 
+ax1.set_ylabel("Gyroscope [deg/s]")
+ax2.set_ylabel("Acc. [m/s^2]")
+ax3.set_ylabel("Pos. [m]")
 
 fig.show()
 
@@ -177,7 +185,7 @@ mocap_min_vel_stride_list[sensor]
 # %%
 # Stride time is now calculated from the `pre_ic` to the `ic` event (compare `trial.mocap_parameters_[sensor]`).
 stride_time = mocap_min_vel_stride_list[sensor]["ic"] - mocap_min_vel_stride_list[sensor]["pre_ic"]
-stride_time
+stride_time / trial.mocap_sampling_rate_hz_
 
 # %%
 # As comparison the pre-calculated stride time:
