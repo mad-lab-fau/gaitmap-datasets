@@ -2,6 +2,9 @@ r"""
 EgaitAdidas2014 - Healthy Participants with MoCap reference
 ===========================================================
 
+This dataset contains data from healthy participants walking with different speed levels through a motion capture
+volume.
+The dataset can be used to benchmark the performance of spatial parameter estimation methods based on foot worn IMUs.
 
 General Information
 -------------------
@@ -46,6 +49,7 @@ In the following we will show how to interact with the dataset and how to make s
 #
 # First we create a simple instance of the dataset class.
 from gaitmap_datasets import EgaitAdidas2014
+from gaitmap_datasets.utils import convert_segmented_stride_list
 
 dataset = EgaitAdidas2014()
 dataset
@@ -115,15 +119,34 @@ trial.convert_events(segmented_strides, from_time_axis="imu", to_time_axis="moca
 trial.convert_events(segmented_strides, from_time_axis="imu", to_time_axis="time")[sensor]
 
 # %%
-# Below we plot the eventlist time converted event list into the plot from above
+# In addition to the segmented strides, we also provide a reference event list calculated based on the mocap data.
+# This has the same start and end per stride as the segmented strides, but has columns for the initial contact/heel
+# strike (ic), final contact/toe off (tc) and mid-stance (min_vel).
+# This information is provided in samples relative to the start of the mocap data stream.
+# (Compare to the converted segmented strides above).
+mocap_events = trial.mocap_events_
+
+# %%
+# Like the segmented stride list, we can convert them to the same time axis as the data or IMU samples.
+trial.convert_events(mocap_events, from_time_axis="mocap", to_time_axis="time")[sensor]
+
+# %%
+# Below we plot the time converted event list into the plot from above
+# In the mocap plot we also add the mocap derived gait events.
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True)
 imu_data.filter(like="gyr").plot(ax=ax1, legend=False)
 imu_data.filter(like="acc").plot(ax=ax2, legend=True)
 mocap_data[["heel_z"]].plot(ax=ax3)
-
 for ax in (ax1, ax2, ax3):
     for (i, s) in trial.convert_events(segmented_strides, from_time_axis="imu", to_time_axis="time")[sensor].iterrows():
         ax.axvspan(s["start"], s["end"], alpha=0.2, color="C1")
+
+# We plot the events in ax3
+for marker, event_name in zip(["o", "s", "*"], ["tc", "ic", "min_vel"]):
+    mocap_data[["heel_z"]].iloc[mocap_events[sensor][event_name]].rename(columns={"heel_z": event_name}).plot(
+        ax=ax3, style=marker, label=event_name, markersize=3
+    )
+
 
 fig.show()
 
@@ -133,15 +156,76 @@ fig.show()
 # These strides are defined based on the signal maximum in the `gyr_y` (i.e. `gyr_ml` axis).
 #
 # This definition is good for segmentation.
-# However, for calculation of spatial parameters, the authors of the dataset defined strides from midstance (i.e. the
+# However, for calculation of gait parameters, the authors of the dataset defined strides from midstance (i.e. the
 # `min_vel` point) to midstance of two consecutive strides.
 # In result, when looking at the parameters, there will be one stride less than the number of strides in the segmented
 # stride list.
-# TODO: Add a section about ground truth events
 trial.mocap_parameters_[sensor]
 
+# %%
+# To better understand how this works, we can convert the mocap events from their segmented stride list form into a
+# min_vel-stride list.
+# In this form, the start and the end of each stride is defined by the `min_vel` event.
+# In addition, a new `pre_ic` event is added.
+# This marks the ic of the previous stride.
+#
+# Overall, one less stride exists in the min_vel stride list than in the segmented stride list.
+# The `s_id` of the new stride list is based on the `s_id` of the segmented stride that contains the `pre_ic` event.
+mocap_min_vel_stride_list = convert_segmented_stride_list(mocap_events, target_stride_type="min_vel")
+mocap_min_vel_stride_list[sensor]
 
 # %%
+# Stride time is now calculated from the `pre_ic` to the `ic` event (compare `trial.mocap_parameters_[sensor]`).
+stride_time = mocap_min_vel_stride_list[sensor]["ic"] - mocap_min_vel_stride_list[sensor]["pre_ic"]
+stride_time
+
+# %%
+# As comparison the pre-calculated stride time:
+trial.mocap_parameters_[sensor]["stride_time"]
+
+# %%
+# Stride length is calculated as the displacement in the ground-plane between start and end (i.e. the two `min_vel`
+# events).
+starts = mocap_min_vel_stride_list[sensor]["start"]
+ends = mocap_min_vel_stride_list[sensor]["end"]
+stride_length_heel = (
+    (
+        mocap_data[["heel_x", "heel_y"]].iloc[ends].reset_index(drop=True)
+        - mocap_data[["heel_x", "heel_y"]].iloc[starts].reset_index(drop=True)
+    )
+    .pow(2)
+    .sum(axis=1)
+    .pow(0.5)
+)
+stride_length_heel
+
+# %%
+# As comparison the pre-calculated stride length:
+# Note that this stride-length differs slightly from the one calculated above, as the authors of the dataset provided
+# the average stride length over all available markers.
+trial.mocap_parameters_[sensor]["stride_length"]
+
+# %%
+# Usage as validation dataset
+# ---------------------------
+# To compare the reference parameters with the parameters of a IMU based algorithm, you should use the segmented
+# stride list as a starting point.
+# From there you can calculate gait events (e.g. ic) within these strides to compare temporal parameters.
+# Ideally store the events as a segmented stride list and then use the `convert_segmented_stride_list` function to
+# bring them in the same format used to calculate the reference parameters.
+#
+# When calculating spatial parameters, you should calculate your own IMU based min_vel points instead of using the
+# mocap derived ones.
+# These don't always align with real moments of no movement in the IMU data and hence might lead to issues with ZUPT
+# based algorithms.
+#
+# For algorithms that rely on calculations on the entire signal (i.e. not just the strides within the mocap volume),
+# keep in mind, that the amount of additional movement in the data varies from trial to trial.
+# Some trials just contain walking, others resting and walking, and some contain small jumps used as fallback
+# synchronization.
+# Hence, if you see unexpected results for specific trails, you might want to check the raw data.
+#
+#
 # Further Notes
 # -------------
 # In many cases clear drift in the IMU data is observed.

@@ -49,9 +49,10 @@ _SENSOR_SHORTHANDS_REVERSE = {v: k for k, v in _SENSOR_SHORTHANDS.items()}
 
 _MARKER_NAMES = ["".join(a) for a in product(["r_", "l_"], ["to_l", "to_m", "to_2", "cal_m", "cal_l", "hee"])]
 _MARKER_RENAMES = {"hee": "heel", "to_2": "toe_2", "to_m": "toe_m", "to_l": "toe_l"}
+_EVENT_RENAMES = {"MS": "min_vel", "HS": "ic", "TO": "tc"}
 # TODO: Add angle names
 _ANGLE_NAMES = ["".join(a) + "footangles" for a in product(["l", "r"], ["rear", "fore"])]
-_SENSOR_NAMES = Literal["shimmer2r", "shimmer3"]
+_SENSOR_NAMES = Literal["shimmer2r", "shimmer3"]  # pylint: disable=invalid-name
 
 
 # TODO: Change once decided on the final folder structure
@@ -64,6 +65,8 @@ def _calibration_folder(base_dir: Path) -> Path:
 
 
 class MetaDataRecord(TypedDict):
+    """Metadata record for a single test."""
+
     participant: str
     stride_length: Literal["low", "normal", "high"]
     stride_velocity: Literal["low", "normal", "high"]
@@ -224,6 +227,12 @@ def get_synced_stride_list(
             # The stride border for the mocap system are (for some reason) also provided at 204.8 Hz
             # To have them at the same frequency as the mocap data, we need transform them to 200 Hz
             strides *= 200 / 204.8
+
+        # We runtime check that the end of each stride is the start of the next stride
+        assert ((strides["start"] - strides["end"].shift(1)).dropna() == 0).all(), (
+            "Stride ends don't match stride " "starts."
+        )
+        assert (strides["end"] - strides["start"]).min() > 0, "Stride borders are not sorted"
         all_strides[foot_sensor] = strides
 
     assert len(all_strides) > 0, "No data found for this participant test combi. That should not happen"
@@ -310,3 +319,54 @@ def get_mocap_parameters(
 
     assert len(all_stride_paras) > 0, "No data found for this participant test combi. That should not happen"
     return all_stride_paras
+
+
+def get_mocap_events(
+    participant: str,
+    sensor: _SENSOR_NAMES,
+    stride_length: str,
+    stride_velocity: str,
+    repetition: str,
+    *,
+    base_dir: Optional[Path] = None,
+) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    """Get the events from the mocap system."""
+    stride_list = get_synced_stride_list(
+        participant, sensor, stride_length, stride_velocity, repetition, system="mocap", base_dir=base_dir
+    )
+    test_postfix = get_test_postfix(stride_length, stride_velocity, repetition)
+    data_folder = get_data_folder(participant, sensor, test_postfix, base_dir=base_dir)
+
+    final_stride_list = {}
+
+    for sensor_name, strides in stride_list.items():
+        foot = sensor_name.split("_")[0]
+        # All events are relative to the start of the stride.
+        # BUT, in the original dataset they accidentally interpreted the stride start with a sampling rate of 200 Hz
+        # when extracting the events from the raw marker trajectory.
+        # Hence, we need to correct for this.
+        #
+        # Note, that this did not impact the stride parameters provided with the dataset, as the calculation
+        # error was kept consistent throughout the calculations.
+        # However, to properly align the reported events with the mocap trajectories again, we need to correct
+        # this offset.
+        # We calculate it here and add it later.
+        offset = strides["start"] - strides["start"] * 200 / 204.8
+        events = {}
+        for event in ("MS", "TO", "HS"):
+            try:
+                event_file = next(data_folder.glob(f"*_{foot}_data_{event}.txt"))
+            except StopIteration:
+                # No data for this foot
+                continue
+            event_data = pd.read_csv(event_file, sep=",", skiprows=8, header=None)[0]
+            # The event data is also provided at 204.8 Hz
+            # Hence, we convert it to the mocap sampling rate
+            event_data *= 200 / 204.8
+            events[_EVENT_RENAMES[event]] = strides["start"] + event_data - offset
+        # We make some dummy checks:
+        assert all(strides["tc"] < strides["ic"])
+        assert all(strides["ic"] < strides["min_vel"])
+        assert all(strides["min_vel"] < strides["end"])
+        final_stride_list[sensor_name] = strides.assign(**events).round(0).astype(int)
+    return final_stride_list

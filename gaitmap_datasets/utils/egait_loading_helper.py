@@ -19,9 +19,9 @@ SHIMMER_DATA_LAYOUT = {
     "gyr_z": np.int16,
 }
 
-extended_calib_file_paths = namedtuple("extended_calib_file_paths", ["acc", "gyr"])
+ExtendedCalibFilePath = namedtuple("ExtendedCalibFilePath", ["acc", "gyr"])
 
-calib_file_paths = Union[Path, extended_calib_file_paths]
+CalibFilePath = Union[Path, ExtendedCalibFilePath]
 
 
 def transform_shimmer2_axes(dataset: pd.DataFrame) -> pd.DataFrame:
@@ -55,10 +55,10 @@ def transform_shimmer2_axes(dataset: pd.DataFrame) -> pd.DataFrame:
 
 def calibrate_shimmer_data(
     data: pd.DataFrame,
-    calibration_file_path: calib_file_paths,
+    calibration_file_path: CalibFilePath,
 ) -> pd.DataFrame:
     """Calibrate shimmer2 data."""
-    if isinstance(calibration_file_path, extended_calib_file_paths):
+    if isinstance(calibration_file_path, ExtendedCalibFilePath):
         cal_matrix = load_extended_calib(
             acc_calib_path=calibration_file_path.acc, gyr_calib_path=calibration_file_path.gyr
         )
@@ -73,7 +73,7 @@ def calibrate_shimmer_data(
 
 def load_shimmer2_data(
     data_path: Path,
-    calibration_file_path: calib_file_paths,
+    calibration_file_path: CalibFilePath,
 ) -> pd.DataFrame:
     """Load shimmer2 data from a file."""
     data = load_bin_file(data_path, SHIMMER_DATA_LAYOUT)
@@ -84,7 +84,7 @@ def load_shimmer2_data(
 
 def load_shimmer3_data(
     data_path: Path,
-    calibration_file_path: calib_file_paths,
+    calibration_file_path: CalibFilePath,
 ) -> pd.DataFrame:
     """Load shimmer3 data from a file."""
     data = load_bin_file(data_path, SHIMMER_DATA_LAYOUT)
@@ -92,10 +92,11 @@ def load_shimmer3_data(
     return data
 
 
-def find_extended_calib_files(calib_folder: Path, sensor_id: str) -> extended_calib_file_paths:
+def find_extended_calib_files(calib_folder: Path, sensor_id: str) -> ExtendedCalibFilePath:
+    """Find the correct calibration files required for the extended calibration format."""
     acc_calib_path = next(calib_folder.glob(f"{sensor_id.upper()}_acc.csv"))
     gyr_calib_path = next(calib_folder.glob(f"{sensor_id.upper()}_gyro.csv"))
-    return extended_calib_file_paths(acc=acc_calib_path, gyr=gyr_calib_path)
+    return ExtendedCalibFilePath(acc=acc_calib_path, gyr=gyr_calib_path)
 
 
 def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:

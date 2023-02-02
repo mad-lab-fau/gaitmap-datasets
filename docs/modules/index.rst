@@ -29,8 +29,19 @@ interface.
     PyShoe2019Hallway
     PyShoe2019Stairs
 
+General Utility Functions
+-------------------------
+.. currentmodule:: gaitmap_datasets.utils
+
+.. autosummary::
+   :toctree: generated
+   :template: function.rst
+
+    convert_segmented_stride_list
+
 Config API
 ----------
+.. currentmodule:: gaitmap_datasets
 
 .. autosummary::
    :toctree: generated
