@@ -47,6 +47,7 @@ individual dataset classes.
 | EgaitParameterValidation2013    | https://www.mad.tf.fau.de/research/activitynet/digital-biobank/ | Email to data owner (see info link) |
 | StairAmbulationHealthy2021      | https://osf.io/sgbw7/                                           | https://osf.io/download/5ueq6/      |
 | SensorPositionDataset2019       | https://zenodo.org/record/5747173                               | https://zenodo.org/record/5747173   |
+| EgaitAdidas2014                 | TBD                                                             | TBD                                 |
 
 ### External Datasets
 

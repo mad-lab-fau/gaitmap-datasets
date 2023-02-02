@@ -8,8 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Added
 
-- The `EGaitParameterValidation2013` dataset now has the option to exclude participant "P52", which appears to have 
+- The `EgaitParameterValidation2013` dataset now has the option to exclude participant "P52", which appears to have 
   non-sensical imu data.
+- The `EgaitAdidas2014` dataset was added.
+  The dataset is not publicly available yet, but will be soon and contains data from healthy participants walking
+  through a Vicon motion capture system.
+- A `convert_segmented_stride_list` was added to convert segmented event list to min_vel eventlists.
 
 ## Changed
 
