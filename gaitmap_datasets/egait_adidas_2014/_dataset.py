@@ -128,7 +128,7 @@ class EgaitAdidas2014(Dataset):
         self.assert_is_single(None, "segmented_stride_list_")
         return _apply_to_dict_dfs(
             get_synced_stride_list(*self.group, system="imu", base_dir=self._data_folder_path),
-            lambda k, v: v.round(0).astype(int),
+            lambda _, v: v.round(0).astype(int),
         )
 
     @property

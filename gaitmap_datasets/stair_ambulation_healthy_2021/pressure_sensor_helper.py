@@ -110,7 +110,7 @@ def _stride_list_to_min_vel_list(dataset_bf, segmented_stride_list, min_vel_sear
                 + gyr_ml_max_idx
                 + stride_start_end[0]
             )
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:  # noqa: BLE001
             print(f"Failed to detect min-vel for {stride_start_end} ({e})")
 
     # now we need to add "pre_min_vel" events for those strides who have no previous stride (aka strides which do not
@@ -243,7 +243,7 @@ class PressureEventDetection:
 
             # search for threshold crossings until we found exactly two crossings, gradually increase threshold in
             # "threshold_increment_kg" steps on the way
-            # if we don´t find two crossings until the threshold reaches max_threshold_kg the pressure event detection
+            # if we don`t find two crossings until the threshold reaches max_threshold_kg the pressure event detection
             # failed!
             while len(zero_crossings) != 2:
                 zero_crossings = np.where(np.diff(np.signbit(total_force - th)))[0]

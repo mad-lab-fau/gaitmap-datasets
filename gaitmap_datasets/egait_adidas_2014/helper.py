@@ -229,9 +229,9 @@ def get_synced_stride_list(
             strides *= 200 / 204.8
 
         # We runtime check that the end of each stride is the start of the next stride
-        assert ((strides["start"] - strides["end"].shift(1)).dropna() == 0).all(), (
-            "Stride ends don't match stride " "starts."
-        )
+        assert (
+            (strides["start"] - strides["end"].shift(1)).dropna() == 0
+        ).all(), "Stride ends don't match stride starts."
         assert (strides["end"] - strides["start"]).min() > 0, "Stride borders are not sorted"
         all_strides[foot_sensor] = strides
 

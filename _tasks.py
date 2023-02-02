@@ -16,7 +16,7 @@ def task_prepare_release():
     task_upload_docs()
     new_version = _get_poetry_version()
     subprocess.run(["git", "add", "."], shell=False, check=True)
-    subprocess.run(["git", "commit", "-m", "Release {}".format(new_version)], shell=False, check=True)
+    subprocess.run(["git", "commit", "-m", f"Release {new_version}"], shell=False, check=True)
 
 
 def task_docs():
@@ -54,7 +54,7 @@ def update_version_strings(file_path, new_version):
         f.write(
             re.sub(
                 version_regex,
-                lambda match: '{}{}"'.format(match.group(1), new_version),
+                lambda match: f'{match.group(1)}{new_version}"',
                 content,
             )
         )

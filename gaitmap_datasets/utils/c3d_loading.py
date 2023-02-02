@@ -19,7 +19,7 @@ def load_c3d_data(path: Union[Path, str], insert_nan: bool = True) -> pd.DataFra
         Otherwise, there are just 0 (?).
 
     """
-    with open(path, "rb") as handle:
+    with Path(path).open("rb") as handle:
         reader = c3d.Reader(handle)
         frames = []
 

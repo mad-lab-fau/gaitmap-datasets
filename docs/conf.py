@@ -36,7 +36,7 @@ project = info["name"]
 author = ", ".join(info["authors"])
 release = info["version"]
 
-copyright = "2022 - {}, MaD Lab, FAU".format(datetime.now().year)
+copyright = f"2022 - {datetime.now().year}, MaD Lab, FAU"
 
 # -- Copy the README and Changelog and fix image path --------------------------------------
 HERE = Path(__file__).parent
@@ -138,7 +138,7 @@ intersphinx_module_mapping = {
 user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:25.0) Gecko/20100101 Firefox/25.0"
 
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/{.major}".format(sys.version_info), None),
+    "python": (f"https://docs.python.org/{sys.version_info.major}", None),
     **intersphinx_module_mapping,
 }
 

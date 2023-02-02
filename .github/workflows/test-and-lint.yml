@@ -31,7 +31,7 @@ jobs:
 #        poetry run poe test
     - name: Linting
       run: |
-        poetry run poe check
+        poetry run poe ci_check
 #    - name: "Upload coverage to Codecov"
 #      uses: codecov/codecov-action@v2
 #      with:

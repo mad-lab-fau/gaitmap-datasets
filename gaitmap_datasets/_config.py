@@ -15,7 +15,7 @@ def json_config_settings_source(settings: BaseSettings) -> Dict[str, Any]:
         config_file = getattr(settings.__config__, "default_config_file", None)
         using_default = True
     try:
-        with open(config_file, encoding="utf8") as f:
+        with Path(config_file).open(encoding="utf8") as f:
             return json.load(f)["datasets"]
     except FileNotFoundError as e:
         if using_default:
@@ -44,8 +44,8 @@ class DatasetsConfig(BaseSettings):
         def customise_sources(
             cls,
             init_settings: SettingsSourceCallable,
-            env_settings: SettingsSourceCallable,  # pylint: disable=unused-argument
-            file_secret_settings: SettingsSourceCallable,  # pylint: disable=unused-argument
+            env_settings: SettingsSourceCallable,  # noqa: ARG003
+            file_secret_settings: SettingsSourceCallable,  # noqa: ARG003
         ) -> Tuple[SettingsSourceCallable, ...]:
             """Customize the sources."""
             return init_settings, json_config_settings_source
@@ -80,7 +80,7 @@ def set_config(config_obj_or_path: Union[str, Path, DatasetsConfig] = DatasetsCo
     elif isinstance(config_obj_or_path, DatasetsConfig):
         config_obj = config_obj_or_path
     else:
-        raise ValueError("Unknown config type.")
+        raise TypeError("Unknown config type.")
     _GLOBAL_CONFIG = config_obj
 
 
@@ -127,7 +127,7 @@ def create_config_template(path: Union[str, Path]):
     if path.exists():
         raise ValueError(f"Config file {path} already exists.")
 
-    with open(path, "w", encoding="utf8") as f:
+    with path.open("w", encoding="utf8") as f:
         json.dump({"datasets": {k: None for k in DatasetsConfig.__fields__}}, f, indent=4, sort_keys=True)
 
     print(f"Created config template at {path.resolve()}.")

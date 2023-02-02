@@ -20,7 +20,9 @@ HERE = Path(__file__).parent
 
 
 def test_get_all_participants():
-    assert len(get_all_participants(base_dir=base_dir)) == 101
+    assert (
+        len(get_all_participants(base_dir=base_dir)) == 100
+    )  # actually 101, but we exclude one participant by default
 
 
 def test_get_all_data_for_participant():

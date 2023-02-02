@@ -139,7 +139,7 @@ def flip_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Rota
     rotated_dataset = dataset.copy()
     original_cols = dataset.columns
 
-    for key in rotation_dict.keys():
+    for key in rotation_dict:
         rotated_dataset[key] = flip_sensor(dataset[key], rotation_dict[key], inplace=False)
 
     # Restore original order
@@ -173,7 +173,7 @@ def rotate_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Ro
     rotated_dataset = dataset.copy()
     original_cols = dataset.columns
 
-    for key in rotation_dict.keys():
+    for key in rotation_dict:
         rotated_dataset[key] = rotate_sensor(dataset[key], rotation_dict[key], inplace=False)
 
     # Restore original order

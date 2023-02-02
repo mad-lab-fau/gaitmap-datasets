@@ -38,7 +38,7 @@ def test_create_config_template(config_file_clean):
         assert config_path.exists()
         content = json.load(open(config_path))
         assert "datasets" in content
-        assert len(content["datasets"]) == 5
+        assert len(content["datasets"]) == 6
 
         # We just check that we don't get an error when loading the config.
         set_config(config_path)

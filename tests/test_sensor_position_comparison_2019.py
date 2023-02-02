@@ -46,7 +46,7 @@ def test_get_mocap_data(snapshot):
 
     mocap_data = _convert_to_flat_str_index(mocap_data) * 1000
 
-    snapshot.assert_match(mocap_data.describe(), name=f"example_mocap_summary")
+    snapshot.assert_match(mocap_data.describe(), name="example_mocap_summary")
 
 
 def test_get_data(snapshot):
@@ -68,7 +68,7 @@ def test_get_data(snapshot):
 
     imudata = _convert_to_flat_str_index(imudata)
 
-    snapshot.assert_match(imudata.describe(), name=f"example_imu_summary")
+    snapshot.assert_match(imudata.describe(), name="example_imu_summary")
 
 
 class TestDatasetCommon:

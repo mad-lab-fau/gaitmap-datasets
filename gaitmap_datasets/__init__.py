@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Methods to access the open source gait datasets of the MaD-Lab."""
 from gaitmap_datasets._config import (
     DatasetsConfig,

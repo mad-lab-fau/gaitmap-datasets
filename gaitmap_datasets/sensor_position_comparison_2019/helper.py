@@ -16,44 +16,44 @@ from typing_extensions import Literal
 from gaitmap_datasets.utils.c3d_loading import load_c3d_data
 from gaitmap_datasets.utils.coordinate_transforms import flip_dataset, rotation_from_angle
 
-COORDINATE_TRANSFORMATION_DICT = dict(
-    qualisis_lateral_nilspodv1={
+COORDINATE_TRANSFORMATION_DICT = {
+    "qualisis_lateral_nilspodv1": {
         # [[+y -> +x], [+z -> +y], [+x -> +z]]
         "left_sensor": [[0, 1, 0], [0, 0, 1], [1, 0, 0]],
         # [[-y -> +x], [-z -> +y], [+x -> +z]]
         "right_sensor": [[0, -1, 0], [0, 0, -1], [1, 0, 0]],
     },
-    qualisis_medial_nilspodv1={
+    "qualisis_medial_nilspodv1": {
         # [[-y -> +x], [-z -> +y], [+x -> +z]]
         "left_sensor": [[0, -1, 0], [0, 0, -1], [1, 0, 0]],
         # [[+y -> +x], [+z -> +y], [+x -> +z]]
         "right_sensor": [[0, 1, 0], [0, 0, 1], [1, 0, 0]],
     },
-    qualisis_instep_nilspodv1={
+    "qualisis_instep_nilspodv1": {
         # [[-x -> +x], [-y -> +y], [+z -> +z]]
         "left_sensor": [[-1, 0, 0], [0, -1, 0], [0, 0, 1]],
         # [[-x -> +x], [-y -> +y], [+z -> +z]]
         "right_sensor": [[-1, 0, 0], [0, -1, 0], [0, 0, 1]],
     },
-    qualisis_cavity_nilspodv1={
+    "qualisis_cavity_nilspodv1": {
         # [[-x -> +x], [-y -> +y], [+z -> +z]]
         "left_sensor": [[-1, 0, 0], [0, -1, 0], [0, 0, 1]],
         # [[-x -> +x], [-y -> +y], [+z -> +z]]
         "right_sensor": [[-1, 0, 0], [0, -1, 0], [0, 0, 1]],
     },
-    qualisis_heel_nilspodv1={
+    "qualisis_heel_nilspodv1": {
         # [[-z -> +x], [+y -> +y], [+x -> +z]]
         "left_sensor": [[0, 0, -1], [0, 1, 0], [1, 0, 0]],
         # [[-z -> +x], [+y -> +y], [+x -> +z]]
         "right_sensor": [[0, 0, -1], [0, 1, 0], [1, 0, 0]],
     },
-    qualisis_insole_nilspodv1={
+    "qualisis_insole_nilspodv1": {
         # [[+y -> +x], [-x -> +y], [+z -> +z]]
         "left_sensor": [[0, 1, 0], [-1, 0, 0], [0, 0, 1]],
         # [[-y -> +x], [+x -> +y], [+z -> +z]]
         "right_sensor": [[0, -1, 0], [1, 0, 0], [0, 0, 1]],
     },
-)
+}
 
 
 def get_data_folder(data_folder=None, data_subfolder=True):
@@ -86,8 +86,7 @@ def get_all_participants(include_wrong_recording: bool = False, data_folder=None
 def get_all_tests(participant_id: str, data_folder=None):
     """Iterate over all tests of a participant."""
     tests = get_metadata_participant(participant_id, data_folder=data_folder)["mocap_test_start"].keys()
-    for k in tests:
-        yield k
+    yield from tests
 
 
 def get_participant_folder(participant_id: str, data_folder=None) -> Path:

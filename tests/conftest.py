@@ -3,7 +3,7 @@ import pytest
 from tests._regression_utils import PyTestSnapshotTest
 
 
-@pytest.fixture
+@pytest.fixture()
 def snapshot(request):
     with PyTestSnapshotTest(request) as snapshot_test:
         yield snapshot_test

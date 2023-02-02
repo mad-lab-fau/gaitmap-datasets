@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Type, Union
 
 import pytest
@@ -47,7 +46,7 @@ def test_get_segmented_stride_list():
     )
     assert len(segmented_stride_list) == 2
     assert list(segmented_stride_list.keys()) == ["left_sensor", "right_sensor"]
-    for k, v in segmented_stride_list.items():
+    for _k, v in segmented_stride_list.items():
         assert v.columns.tolist() == ["start", "end", "type", "z_level"]
 
 

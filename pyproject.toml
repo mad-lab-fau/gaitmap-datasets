@@ -27,18 +27,16 @@ pydantic = "^1.10.4"
 poethepoet = "^0.14.0"
 pytest = "^7.2.0"
 pytest-cov = "^4.0.0"
-ipykernel = "^6.15.0"
 numpydoc = "^1.4.0"
 recommonmark = "^0.7.1"
 memory-profiler = "^0.60.0"
 matplotlib = "^3.5.2"
 toml = "^0.10.2"
-prospector = "^1.8.3"
 black = "^22.10.0"
-isort = "^5.10.1"
 Sphinx = "^5.3.0"
 sphinx-gallery = "^0.11.1"
 pydata-sphinx-theme = "^0.12.0"
+ruff = "^0.0.235"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -64,21 +62,124 @@ exclude = '''
 )
 '''
 
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 120
-skip_gitignore = true
+[tool.ruff]
+line-length = 120
+update-check = true
+target-version = "py38"
+
+select = [
+    # pyflakes
+    "F",
+    # pycodestyle
+    "E",
+    "W",
+    # mccabe
+    "C90",
+    # isort
+    "I",
+    # pydocstyle
+    "D",
+    # pyupgrade
+    "UP",
+    # pep8-naming
+    "N",
+    # flake8-blind-except
+    "BLE",
+    # flake8-2020
+    "YTT",
+    # flake8-builtins
+    "A",
+    # flake8-comprehensions
+    "C4",
+    # flake8-debugger
+    "T10",
+    # flake8-errmsg
+    "EM",
+    # flake8-implicit-str-concat
+    "ISC",
+    # flake8-pytest-style
+    "PT",
+    # flake8-return
+    "RET",
+    # flake8-simplify
+    "SIM",
+    # flake8-unused-arguments
+    "ARG",
+    # pandas-vet
+    "PD",
+    # pygrep-hooks
+    "PGH",
+    # flake8-bugbear
+    "B",
+    # flake8-quotes
+    "Q",
+    # pylint
+    "PL",
+    # flake8-pie
+    "PIE",
+    # flake8-type-checking
+    "TCH",
+    # tryceratops
+    "TRY",
+    # flake8-use-pathlib
+    "PTH",
+    "RUF"
+]
+
+ignore = [
+    # controversial
+    "B006",
+    # controversial
+    "B008",
+    "B010",
+    # Magic constants
+    "PLR2004",
+    # Strings in error messages
+    "EM101",
+    "EM102",
+    "EM103",
+    # Multiline docstring summary
+    "D213",
+    # Varaibles before return
+    "RET504",
+    # Abstract raise into inner function
+    "TRY301",
+    # Use type-checking block
+    "TCH001",
+    "TCH002",
+    "TCH003",
+    # df as varaible name
+    "PD901",
+    # melt over stack
+    "PD013"
+]
+
+
+exclude = [
+    "doc/sphinxext/*.py",
+    "doc/build/*.py",
+    "doc/temp/*.py",
+    ".eggs/*.py",
+    "examples"
+]
+
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.pyupgrade]
+# Preserve types, even if a file imports `from __future__ import annotations`.
+keep-runtime-typing = true
 
 
 [tool.poe.tasks]
 _format_black = "black ."
-_format_isort = "isort ."
-format = { sequence = ["_format_black", "_format_isort"], help = "Format all files." }
-lint = { cmd = "prospector", help = "Lint all files with Prospector." }
+_format_ruff = "ruff . --fix-only --exit-zero"
+format = ["_format_black", "_format_ruff", "_format_black"]
+lint = { cmd = "ruff gaitmap_datasets --fix", help = "Lint all files with ruff." }
 _check_black = "black . --check"
-_check_isort = "isort . --check"
-check = { sequence = ["_check_black", "_check_isort", "lint"], help = "Check all potential format and linting issues." }
+_lint_ci = "ruff gaitmap_datasets --format=github"
+ci_check = { sequence = ["_check_black", "_lint_ci"], help = "Check all potential format and linting issues." }
 test = { cmd = "pytest --cov=gaitmap_datasets --cov-report=term-missing --cov-report=xml", help = "Run Pytest with coverage." }
 version = { script = "_tasks:task_update_version()" }
 docs = { script = "_tasks:task_docs()" }

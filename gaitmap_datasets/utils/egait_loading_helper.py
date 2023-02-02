@@ -65,7 +65,7 @@ def calibrate_shimmer_data(
     elif isinstance(calibration_file_path, Path):
         cal_matrix = load_compact_cal_matrix(calibration_file_path)
     else:
-        raise ValueError("Invalid calibration format.")
+        raise TypeError("Invalid calibration format.")
     data = cal_matrix.calibrate_df(data, "a.u.", "a.u.")
 
     return data
@@ -104,20 +104,21 @@ def load_compact_cal_matrix(path: Path) -> FerrarisCalibrationInfo:
     cal_matrix = np.genfromtxt(path, delimiter=",")
     plus_g = cal_matrix[0]
     minus_g = cal_matrix[1]
-    b_a = (plus_g + minus_g) / 2
-    K_a = np.eye(3) * (plus_g - minus_g) / 2  # pylint: disable=invalid-name
-    K_a /= 9.81  # convert to m/s^2  # pylint: disable=invalid-name
-    R_a = np.eye(3)  # pylint: disable=invalid-name
-    b_g = cal_matrix[2]
+    imucal_cal = {
+        "b_a": (plus_g + minus_g) / 2,
+        "K_a": np.eye(3) * (plus_g - minus_g) / 2 / 9.81,
+        "R_a": np.eye(3),
+        "b_g": cal_matrix[2],
+        "K_g": np.eye(3) * 2.731,  # 2.731 is the digital conversion factor for the gyro
+        "R_g": np.eye(3),
+        "K_ga": np.zeros((3, 3)),
+        "acc_unit": "m/s^2",
+        "gyr_unit": "deg/s",
+        "from_acc_unit": "a.u.",
+        "from_gyr_unit": "a.u.",
+    }
 
-    # 2.731 is the digital conversion factor for the gyro
-    K_g = np.eye(3) * 2.731  # pylint: disable=invalid-name
-    R_g = np.eye(3)  # pylint: disable=invalid-name
-    K_ga = np.zeros((3, 3))  # pylint: disable=invalid-name
-
-    return FerrarisCalibrationInfo(
-        b_a=b_a, K_a=K_a, R_a=R_a, b_g=b_g, K_g=K_g, R_g=R_g, K_ga=K_ga, from_acc_unit="a.u.", from_gyr_unit="a.u."
-    )
+    return FerrarisCalibrationInfo(**imucal_cal)
 
 
 def load_extended_calib(acc_calib_path: Path, gyr_calib_path: Path) -> FerrarisCalibrationInfo:
@@ -145,6 +146,6 @@ def load_extended_calib(acc_calib_path: Path, gyr_calib_path: Path) -> FerrarisC
     }
     imucal_cal = FerrarisCalibrationInfo(
         **imucal_cal,
-        comment=f"Folder name: {acc_calib_path.parent.name}, Sensor Node:" f" {acc_calib_path.stem.split('_')[0]}",
+        comment=f"Folder name: {acc_calib_path.parent.name}, Sensor Node: {acc_calib_path.stem.split('_')[0]}",
     )
     return imucal_cal

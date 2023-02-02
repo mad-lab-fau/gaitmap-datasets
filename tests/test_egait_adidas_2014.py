@@ -15,7 +15,7 @@ HERE = Path(__file__).parent
 
 def test_get_all_participants():
     p_t = get_all_participants_and_tests(base_dir=base_dir)
-    participants = list(set(c["participant"] for c in p_t))
+    participants = list({c["participant"] for c in p_t})
     assert len(participants) == 20
 
 

@@ -56,7 +56,7 @@ def get_all_participants_and_tests(
 
     for test_list in all_test_list:
         participant = test_list.parent.parent.name
-        with open(test_list, "r", encoding="utf8") as f:
+        with test_list.open(encoding="utf8") as f:
             test_data = json.load(f)
         test_data.pop("part_1_transition", None)
         part = test_list.parent.name
@@ -74,7 +74,7 @@ def get_all_participants_and_tests(
 
 def get_participant_metadata(participant_folder_name: str, *, base_dir: Optional[Path] = None) -> Dict[str, Any]:
     """Get the metadata of a participant."""
-    with open((_participant_subfolder(base_dir) / participant_folder_name / "metadata.json"), encoding="utf8") as f:
+    with (_participant_subfolder(base_dir) / participant_folder_name / "metadata.json").open(encoding="utf8") as f:
         metadata = json.load(f)
     return metadata
 
@@ -105,7 +105,8 @@ def get_all_data_for_participant(
             session = session.align_to_syncregion()
     # apply ferraris calibration on imu data
     session.calibrate_imu(
-        session.find_closest_calibration(folder=_calibration_folder(base_dir), filter_cal_type="ferraris"), inplace=True
+        session.find_closest_calibration(folder=_calibration_folder(base_dir), filter_cal_type="ferraris"),
+        inplace=True,  # noqa: PD002
     )
     session_df = session.data_as_df(concat_df=True)
 
@@ -129,7 +130,7 @@ def get_all_data_for_participant(
                 base_dir=base_dir,
             )
             calibrated_data = pd.DataFrame(
-                calibrated_data, columns=[f"{p}_force" for p in metadata["fsr_ids"][s].keys()]
+                calibrated_data, columns=[f"{p}_force" for p in metadata["fsr_ids"][s]]
             ).assign(total_force=lambda df_: df_.sum(axis=1))
             all_calibrated_pressure_data[s] = calibrated_data
 
