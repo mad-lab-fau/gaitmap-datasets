@@ -31,7 +31,6 @@ In the following we will show how to interact with the dataset and how to make s
 # %%
 # .. warning:: For this example to work, you need to have a global config set containing the path to the dataset.
 #              Check the `README.md` for more information.
-from pathlib import Path
 
 import pandas as pd
 

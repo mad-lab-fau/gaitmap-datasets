@@ -12,7 +12,11 @@ from scipy.spatial.transform import Rotation
 
 from gaitmap_datasets.utils.c3d_loading import load_c3d_data
 from gaitmap_datasets.utils.coordinate_transforms import flip_sensor
-from gaitmap_datasets.utils.egait_loading_helper import find_extended_calib_files, load_shimmer2_data
+from gaitmap_datasets.utils.egait_loading_helper import (
+    find_extended_calib_files,
+    load_shimmer2_data,
+    load_shimmer3_data,
+)
 
 COORDINATE_SYSTEM_TRANSFORMATION_SH2R = {  # egait_lateral_shimmer2r
     # [[-y -> +x], [+z -> +y], [-x -> +z]]
@@ -21,14 +25,24 @@ COORDINATE_SYSTEM_TRANSFORMATION_SH2R = {  # egait_lateral_shimmer2r
     "right_sensor": [[0, 1, 0], [0, 0, -1], [-1, 0, 0]],
 }
 
-COORDINATE_SYSTEM_TRANSFORMATION_SH3 = (  # egait_lateral_shimmer3
-    {
-        # [[-x -> +x], [-z -> +y], [-y -> +z]]
-        "left_sensor": [[-1, 0, 0], [0, 0, -1], [0, -1, 0]],
-        # [[+x -> +x], [+z -> +y], [-y -> +z]]
-        "right_sensor": [[1, 0, 0], [0, 0, 1], [0, -1, 0]],
-    },
-)
+COORDINATE_SYSTEM_TRANSFORMATION_SH3 = {  # egait_lateral_shimmer3
+    # [[-x -> +x], [-z -> +y], [-y -> +z]]
+    "left_sensor": [[-1, 0, 0], [0, 0, -1], [0, -1, 0]],
+    # [[+x -> +x], [+z -> +y], [-y -> +z]]
+    "right_sensor": [[1, 0, 0], [0, 0, 1], [0, -1, 0]],
+}
+
+_PARAMETER_RENAMES = {
+    "StrideLength": "stride_length",
+    "StrideTime": "stride_time",
+    "StanceTime": "stance_time",
+    "SwingTime": "swing_time",
+    "maxTC": "max_toe_clearance",
+    "maxHC": "max_heel_clearance",
+    "heelStrikeAngle": "ic_angle",
+    "toeOffAngle": "tc_angle",
+    "maxLatSwing": "max_lateral_excursion",
+}
 
 _SENSOR_SHORTHANDS = {"shimmer2r": "sh2", "shimmer3": "sh3"}
 _SENSOR_SHORTHANDS_REVERSE = {v: k for k, v in _SENSOR_SHORTHANDS.items()}
@@ -103,7 +117,7 @@ def get_mocap_data_for_participant_and_test(
     repetition: str,
     *,
     base_dir: Optional[Path] = None,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> Tuple[Dict[str, pd.DataFrame], pd.DataFrame]:
     """Get all mocap data for a participant."""
     test_postfix = get_test_postfix(stride_length, stride_velocity, repetition)
     mocap_data = load_c3d_data(
@@ -112,6 +126,7 @@ def get_mocap_data_for_participant_and_test(
     )
     marker_data = mocap_data[_MARKER_NAMES].copy()
     marker_data.columns = pd.MultiIndex.from_tuples(_transform_marker_names(*name) for name in marker_data.columns)
+    marker_data = {k: marker_data[k] for k in marker_data.columns.get_level_values(0)}
     angle_data = mocap_data[_ANGLE_NAMES].copy()
     return marker_data, angle_data
 
@@ -124,7 +139,7 @@ def get_all_data_for_participant_and_test(
     repetition: str,
     *,
     base_dir: Optional[Path] = None,
-) -> pd.DataFrame:
+) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get all data for a participant."""
     test_postfix = get_test_postfix(stride_length, stride_velocity, repetition)
     data_folder = get_data_folder(participant, sensor, test_postfix, base_dir=base_dir)
@@ -147,18 +162,14 @@ def get_all_data_for_participant_and_test(
                 sensor_data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION_SH2R[foot_sensor])
             )
         else:
-            raise NotImplementedError("Only shimmer2r is supported")
+            sensor_data = load_shimmer3_data(dat_file, calibration_path)
+            sensor_data = flip_sensor(
+                sensor_data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION_SH3[foot_sensor])
+            )
 
         all_data[foot_sensor] = sensor_data
     assert len(all_data) > 0, "No data found for this participant test combi. That should not happen"
-    if len(all_data) == 2:
-        assert len(all_data["left_sensor"]) == len(all_data["right_sensor"]), (
-            "Unequal data lengths. This should not " "happen, as data is synced."
-        )
-    return pd.concat(
-        all_data,
-        axis=1,
-    )
+    return all_data
 
 
 def get_synced_stride_list(
@@ -200,7 +211,7 @@ def get_synced_stride_list(
 
 
 @lru_cache(maxsize=1)
-def get_mocap_offset(
+def get_mocap_offset_s(
     participant: str,
     sensor: _SENSOR_NAMES,
     stride_length: str,
@@ -211,8 +222,12 @@ def get_mocap_offset(
     mocap_sampling_rate: float,
     *,
     base_dir: Optional[Path] = None,
-) -> float:
-    """Get all data for a participant."""
+) -> Dict[Literal["left_sensor", "right_sensor"], float]:
+    """Get the offset between the mocap and the imu recording.
+
+    This offset might be different for the two feet, as the IMU sensors don't perfectly start their recording at the
+    same time.
+    """
     mocap_strides = get_synced_stride_list(
         participant, sensor, stride_length, stride_velocity, repetition, system="mocap", base_dir=base_dir
     )
@@ -223,7 +238,7 @@ def get_mocap_offset(
         "Data found for different feet. This should not happen.\n"
         f"{participant, sensor, stride_length, stride_velocity, repetition}"
     )
-    offsets = []
+    offsets = {}
     for foot in ["left_sensor", "right_sensor"]:
         try:
             m_strides = mocap_strides[foot] / mocap_sampling_rate
@@ -238,6 +253,38 @@ def get_mocap_offset(
 
         offset = i_strides["start"] - m_strides["start"]
         assert len(set(offset)) == 1
-        offsets.append(offset.iloc[0])
-    assert set(offsets) == {offsets[0]}
-    return offsets[0]
+        offsets[foot] = offset.iloc[0]
+    return offsets
+
+
+def get_mocap_parameters(
+    participant: str,
+    sensor: _SENSOR_NAMES,
+    stride_length: str,
+    stride_velocity: str,
+    repetition: str,
+    *,
+    base_dir: Optional[Path] = None,
+) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    test_postfix = get_test_postfix(stride_length, stride_velocity, repetition)
+    data_folder = get_data_folder(participant, sensor, test_postfix, base_dir=base_dir)
+    all_stride_paras = {}
+
+    for foot in ["left", "right"]:
+        foot_sensor = foot + "_sensor"
+        try:
+            stride_para_file = next(data_folder.glob(f"*_{foot}_data_strideParameters.txt"))
+        except StopIteration:
+            # No data for this foot
+            continue
+        stride_paras = (
+            pd.read_csv(stride_para_file, sep=",", skiprows=8, header=0)
+            .rename(columns=_PARAMETER_RENAMES)
+            .rename_axis("s_id")
+        )
+        # All cm values need to be converted to m
+        stride_paras[["stride_length", "max_toe_clearance", "max_heel_clearance"]] /= 100
+        all_stride_paras[foot_sensor] = stride_paras
+
+    assert len(all_stride_paras) > 0, "No data found for this participant test combi. That should not happen"
+    return all_stride_paras

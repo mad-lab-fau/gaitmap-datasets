@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `EGaitParameterValidation2013` dataset now has the option to exclude participant "P52", which appears to have 
   non-sensical imu data.
 
+## Changed
+
+- The method `convert_with_padding` of the `SensorPositionComparison2019` dataset is now called 
+  `convert_events_with_padding`.
+
 ## [0.8.0] - 2023-30-01
 
 ### Added
