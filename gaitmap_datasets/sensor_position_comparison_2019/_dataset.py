@@ -308,7 +308,7 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
         from_time_axis: Literal["mocap", "imu"],
         to_time_axis: Literal["mocap", "imu", "time"],
     ):
-        """Convert the time/sample values of mocap and IMU events into other time domains.
+        """Convert the time/sample values of mocap and IMU events/stride lists into other time domains.
 
         This method will use the respective sampling rates and the padding of the IMU data to convert the time/sample.
 

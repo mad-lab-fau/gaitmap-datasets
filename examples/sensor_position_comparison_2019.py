@@ -300,13 +300,17 @@ event_labels_in_mocap.head()
 
 # %%
 # In IMU samples with padding:
-event_labels_in_imu = datapoint.convert_events_with_padding(event_labels_in_mocap, from_time_axis="mocap", to_time_axis="imu")
+event_labels_in_imu = datapoint.convert_events_with_padding(
+    event_labels_in_mocap, from_time_axis="mocap", to_time_axis="imu"
+)
 event_labels_in_imu.head()
 
 # %%
 # And in time (seconds) with padding:
 # Below you can see that the first event is now after 4 seconds, indicating that the signal is correctly padded.
-event_labels_times = datapoint.convert_events_with_padding(event_labels_in_mocap, from_time_axis="mocap", to_time_axis="time")
+event_labels_times = datapoint.convert_events_with_padding(
+    event_labels_in_mocap, from_time_axis="mocap", to_time_axis="time"
+)
 event_labels_times.head()
 
 # %%
