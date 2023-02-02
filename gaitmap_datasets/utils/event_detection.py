@@ -1,5 +1,5 @@
 """General event detection helper."""
-from typing import Union, Dict, Literal, Tuple
+from typing import Dict, Literal, Tuple, Union
 
 import numpy as np
 import pandas as pd

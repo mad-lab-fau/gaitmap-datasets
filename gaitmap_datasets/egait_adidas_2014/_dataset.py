@@ -1,6 +1,6 @@
 """The core tpcp Dataset class for the Egait Parameter Validation Dataset."""
 from pathlib import Path
-from typing import Callable, Dict, List, Literal, Optional, Union
+from typing import Callable, Dict, List, Literal, Optional, TypeVar, Union
 
 import pandas as pd
 from joblib import Memory
@@ -11,16 +11,17 @@ from gaitmap_datasets.egait_adidas_2014.helper import (
     get_all_data_for_participant_and_test,
     get_all_participants_and_tests,
     get_mocap_data_for_participant_and_test,
+    get_mocap_events,
     get_mocap_offset_s,
     get_mocap_parameters,
     get_synced_stride_list,
 )
 from gaitmap_datasets.utils.event_detection import convert_sampling_rates_event_list
 
+DictOfDfs = TypeVar("DictOfDfs", bound=Dict[str, pd.DataFrame])
 
-def _apply_to_dict_dfs(
-    dict_of_dfs: Dict[str, pd.DataFrame], function: Callable[[str, pd.DataFrame], pd.DataFrame]
-) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
+
+def _apply_to_dict_dfs(dict_of_dfs: DictOfDfs, function: Callable[[str, pd.DataFrame], pd.DataFrame]) -> DictOfDfs:
     if isinstance(dict_of_dfs, dict):
         return {k: function(k, v) for k, v in dict_of_dfs.items()}
     raise TypeError(f"Expected dict, got {type(dict_of_dfs)}")
@@ -59,7 +60,8 @@ class EgaitAdidas2014(Dataset):
     @property
     def sampling_rate_hz(self) -> float:
         """Get the sampling rate of the IMUs."""
-        if self.group.sensor == "shimmer3":
+        self.assert_is_single("sensor", "sampling_rate_hz")
+        if self[0].group.sensor == "shimmer3":
             return 204.8
         return 102.4
 
@@ -124,13 +126,22 @@ class EgaitAdidas2014(Dataset):
         If you need the stride list in seconds, or in mocap samples use the `convert_event_list` method of this class.
         """
         self.assert_is_single(None, "segmented_stride_list_")
-        return get_synced_stride_list(*self.group, system="imu", base_dir=self._data_folder_path)
+        return _apply_to_dict_dfs(
+            get_synced_stride_list(*self.group, system="imu", base_dir=self._data_folder_path),
+            lambda k, v: v.round(0).astype(int),
+        )
 
     @property
     def mocap_parameters_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Stride parameters extracted from the mocap system."""
         self.assert_is_single(None, "mocap_parameters_")
         return get_mocap_parameters(*self.group, base_dir=self._data_folder_path)
+
+    @property
+    def mocap_events_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+        """Stride events extracted from the mocap system."""
+        self.assert_is_single(None, "mocap_events_")
+        return get_mocap_events(*self.group, base_dir=self._data_folder_path)
 
     def convert_events(
         self,
