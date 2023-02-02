@@ -53,7 +53,7 @@ def transform_shimmer2_axes(dataset: pd.DataFrame) -> pd.DataFrame:
     return dataset
 
 
-def calibrate_shimmer2_data(
+def calibrate_shimmer_data(
     data: pd.DataFrame,
     calibration_file_path: calib_file_paths,
 ) -> pd.DataFrame:
@@ -77,8 +77,18 @@ def load_shimmer2_data(
 ) -> pd.DataFrame:
     """Load shimmer2 data from a file."""
     data = load_bin_file(data_path, SHIMMER_DATA_LAYOUT)
-    data = calibrate_shimmer2_data(data, calibration_file_path)
+    data = calibrate_shimmer_data(data, calibration_file_path)
     data = transform_shimmer2_axes(data)
+    return data
+
+
+def load_shimmer3_data(
+    data_path: Path,
+    calibration_file_path: calib_file_paths,
+) -> pd.DataFrame:
+    """Load shimmer3 data from a file."""
+    data = load_bin_file(data_path, SHIMMER_DATA_LAYOUT)
+    data = calibrate_shimmer_data(data, calibration_file_path)
     return data
 
 

@@ -216,7 +216,7 @@ class TestMocapDataset:
         mock_stride_list = pd.DataFrame([{"start": 0, "end": 100}])
 
         # Convertion to time
-        converted = dataset.convert_with_padding(mock_stride_list, from_time_axis="imu", to_time_axis="time")
+        converted = dataset.convert_events_with_padding(mock_stride_list, from_time_axis="imu", to_time_axis="time")
         assert converted.iloc[0]["start"] == -padding_s
 
         assert converted.iloc[0]["end"] == (100 - dataset.data_padding_imu_samples) / dataset.sampling_rate_hz
@@ -224,7 +224,7 @@ class TestMocapDataset:
         assert converted.iloc[0]["end"] - converted.iloc[0]["start"] == 100 / dataset.sampling_rate_hz
 
         # Convertion to mocap
-        converted = dataset.convert_with_padding(mock_stride_list, from_time_axis="imu", to_time_axis="mocap")
+        converted = dataset.convert_events_with_padding(mock_stride_list, from_time_axis="imu", to_time_axis="mocap")
         assert converted.iloc[0]["start"] == -np.round(
             dataset.data_padding_imu_samples / dataset.sampling_rate_hz * dataset.mocap_sampling_rate_hz_
         )
@@ -243,7 +243,7 @@ class TestMocapDataset:
         mock_event_list = pd.DataFrame([{"start": 0, "end": 100, "ic": 60, "tc": 80}])
 
         # Conversion to time (completely independent of padding)
-        converted = dataset.convert_with_padding(mock_event_list, from_time_axis="mocap", to_time_axis="time")
+        converted = dataset.convert_events_with_padding(mock_event_list, from_time_axis="mocap", to_time_axis="time")
         assert converted.iloc[0]["start"] == 0
 
         assert converted.iloc[0]["end"] == 100 / dataset.mocap_sampling_rate_hz_
@@ -253,7 +253,7 @@ class TestMocapDataset:
         assert converted.iloc[0]["end"] - converted.iloc[0]["start"] == 100 / dataset.mocap_sampling_rate_hz_
 
         # Conversion to imu
-        converted = dataset.convert_with_padding(mock_event_list, from_time_axis="mocap", to_time_axis="imu")
+        converted = dataset.convert_events_with_padding(mock_event_list, from_time_axis="mocap", to_time_axis="imu")
         assert converted.iloc[0]["start"] == dataset.data_padding_imu_samples
         assert converted.iloc[0]["end"] == dataset.data_padding_imu_samples + np.round(
             100 / dataset.mocap_sampling_rate_hz_ * dataset.sampling_rate_hz
