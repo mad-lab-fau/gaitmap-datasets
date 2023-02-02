@@ -365,8 +365,9 @@ def get_mocap_events(
             event_data *= 200 / 204.8
             events[_EVENT_RENAMES[event]] = strides["start"] + event_data - offset
         # We make some dummy checks:
-        assert all(strides["tc"] < strides["ic"])
-        assert all(strides["ic"] < strides["min_vel"])
-        assert all(strides["min_vel"] < strides["end"])
-        final_stride_list[sensor_name] = strides.assign(**events).round(0).astype(int)
+        combined_stride_list = strides.assign(**events).round(0).astype(int)
+        assert all(combined_stride_list["tc"] < combined_stride_list["ic"])
+        assert all(combined_stride_list["ic"] < combined_stride_list["min_vel"])
+        assert all(combined_stride_list["min_vel"] < combined_stride_list["end"])
+        final_stride_list[sensor_name] = combined_stride_list
     return final_stride_list
