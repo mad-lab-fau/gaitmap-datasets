@@ -242,7 +242,7 @@ fig.show()
 
 # %%
 # Data padding
-# ************
+# ------------
 # One issue that you might run into when working with the mocap version of the dataset is that the start of the test
 # (which is used to cut the signal) is right  at the beginning of the movement.
 # This means for algorithms that require a certain resting period (e.g. to do a gravity alignment) might not work well.
