@@ -19,12 +19,11 @@ from gaitmap_datasets.utils.event_detection import convert_sampling_rates_event_
 
 
 def _apply_to_dict_dfs(
-    dict_or_df: Union[pd.DataFrame, Dict[str, pd.DataFrame]], function: Callable[[str, pd.DataFrame], pd.DataFrame]
+    dict_of_dfs: Dict[str, pd.DataFrame], function: Callable[[str, pd.DataFrame], pd.DataFrame]
 ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
-    if isinstance(dict_or_df, dict):
-        return {k: function(k, v) for k, v in dict_or_df.items()}
-    else:
-        return function(dict_or_df)
+    if isinstance(dict_of_dfs, dict):
+        return {k: function(k, v) for k, v in dict_of_dfs.items()}
+    raise TypeError(f"Expected dict, got {type(dict_of_dfs)}")
 
 
 class EgaitAdidas2014(Dataset):
@@ -87,13 +86,14 @@ class EgaitAdidas2014(Dataset):
         self.assert_is_single(None, "data")
         data = self.memory.cache(get_all_data_for_participant_and_test)(*self.group, base_dir=self._data_folder_path)
         mocap_offset = self.mocap_offset_s_
-        final_data = {}
-        for sensor, sensor_data in data.items():
-            sensor_data.index /= self.sampling_rate_hz
-            sensor_data.index -= mocap_offset[sensor]
-            sensor_data.index.name = "time [s]"
-            final_data[sensor] = sensor_data
-        return final_data
+
+        def convert_index(sensor, df):
+            df.index /= self.sampling_rate_hz
+            df.index -= mocap_offset[sensor]
+            df.index.name = "time [s]"
+            return df
+
+        return _apply_to_dict_dfs(data, convert_index)
 
     def _get_mocap_data(self):
         return self.memory.cache(get_mocap_data_for_participant_and_test)(*self.group, base_dir=self._data_folder_path)
@@ -109,12 +109,13 @@ class EgaitAdidas2014(Dataset):
         """
         self.assert_is_single(None, "marker_position_")
         marker_position = self._get_mocap_data()[0]
-        final_marker_position = {}
-        for k, v in marker_position.items():
-            v.index /= self.mocap_sampling_rate_hz_
-            v.index.name = "time [s]"
-            final_marker_position[k] = v
-        return final_marker_position
+
+        def convert_index(_, df):
+            df.index /= self.mocap_sampling_rate_hz_
+            df.index.name = "time [s]"
+            return df
+
+        return _apply_to_dict_dfs(marker_position, convert_index)
 
     @property
     def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
