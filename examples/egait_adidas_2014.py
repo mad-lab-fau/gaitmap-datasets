@@ -141,7 +141,6 @@ fig.show()
 trial.mocap_parameters_[sensor]
 
 
-
 # %%
 # Further Notes
 # -------------

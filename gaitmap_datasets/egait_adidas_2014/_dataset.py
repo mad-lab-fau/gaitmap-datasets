@@ -1,6 +1,6 @@
 """The core tpcp Dataset class for the Egait Parameter Validation Dataset."""
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Union, Callable
+from typing import Callable, Dict, List, Literal, Optional, Union
 
 import pandas as pd
 from joblib import Memory
@@ -44,7 +44,12 @@ class EgaitAdidas2014(Dataset):
 
     @property
     def mocap_offset_s_(self) -> Dict[Literal["left_sensor", "right_sensor"], float]:
-        """Get the offset of the mocap data."""
+        """Get the offset of the mocap data.
+
+        This is the time difference between the start of the IMU data and the start of the Mocap data.
+        Usually there is no need for this, as the time axis of the IMU and Mocap data is synced, when loading them
+        using this dataset.
+        """
         return get_mocap_offset_s(
             *self.group,
             imu_sampling_rate=self.sampling_rate_hz,
@@ -73,7 +78,12 @@ class EgaitAdidas2014(Dataset):
 
     @property
     def data(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-        """Get the imu data."""
+        """Get the imu data.
+
+        The time axis is synced to the mocap data, so that the start of the mocap data is t=0 s.
+        In result, the first timestamps of the IMU data will be negative (as they are before the start of the mocap
+        data).
+        """
         self.assert_is_single(None, "data")
         data = self.memory.cache(get_all_data_for_participant_and_test)(*self.group, base_dir=self._data_folder_path)
         mocap_offset = self.mocap_offset_s_
@@ -89,14 +99,14 @@ class EgaitAdidas2014(Dataset):
         return self.memory.cache(get_mocap_data_for_participant_and_test)(*self.group, base_dir=self._data_folder_path)
 
     @property
-    def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-        """Get the segmented stride list in samples relative to the IMU start."""
-        self.assert_is_single(None, "segmented_stride_list_")
-        return get_synced_stride_list(*self.group, system="imu", base_dir=self._data_folder_path)
-
-    @property
     def marker_position_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-        """Get the marker position."""
+        """Get the marker position.
+
+        This provides the marker positions for all marker recorded by the vicon motion capture system.
+        We use the start of the mocap recording as t=0 s.
+        Note, that the mocap data likely has nan values at the start and end of the recording, as the markers are not
+        within the capture volume.
+        """
         self.assert_is_single(None, "marker_position_")
         marker_position = self._get_mocap_data()[0]
         final_marker_position = {}
@@ -105,6 +115,15 @@ class EgaitAdidas2014(Dataset):
             v.index.name = "time [s]"
             final_marker_position[k] = v
         return final_marker_position
+
+    @property
+    def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+        """Get the segmented stride list in samples relative to the IMU start.
+
+        If you need the stride list in seconds, or in mocap samples use the `convert_event_list` method of this class.
+        """
+        self.assert_is_single(None, "segmented_stride_list_")
+        return get_synced_stride_list(*self.group, system="imu", base_dir=self._data_folder_path)
 
     @property
     def mocap_parameters_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
@@ -118,10 +137,21 @@ class EgaitAdidas2014(Dataset):
         from_time_axis: Literal["mocap", "imu"],
         to_time_axis: Literal["mocap", "imu", "time"],
     ):
+        """Convert the time/sample values of mocap and IMU events/stride lists into other time domains.
+
+        This method will make sure
+
+        ... warning::
+            This method will only work, if the provided samples follow the padding conventions used in this class!
+            This means if the events are in samples, they need to be relative to the start of their respective system.
+            If the values are in seconds, they need to be relative to the start of the mocap data.
+
+        """
         if not isinstance(events, dict):
-            raise TypeError("The events always need to be a dict of form `sensor_name: event_df`. "
-                            "This is required, as we need to know, which foot the data belongs to, to do some "
-                            "conversions properly.")
+            raise TypeError(
+                "The events always need to be a dict of form `sensor_name: event_df`. "
+                "This is required, as we need to know, which foot the data belongs to, to do some conversions properly."
+            )
         if from_time_axis == to_time_axis:
             return events.copy()
 
@@ -131,7 +161,8 @@ class EgaitAdidas2014(Dataset):
                     events,
                     lambda name, df: convert_sampling_rates_event_list(
                         df, self.mocap_sampling_rate_hz_, self.sampling_rate_hz
-                    ) + int(round(self.mocap_offset_s_[name] / self.sampling_rate_hz)),
+                    )
+                    + int(round(self.mocap_offset_s_[name] / self.sampling_rate_hz)),
                 )
             if to_time_axis == "time":
                 return _apply_to_dict_dfs(events, lambda _, df: df / self.mocap_sampling_rate_hz_)
@@ -141,7 +172,9 @@ class EgaitAdidas2014(Dataset):
                 return _apply_to_dict_dfs(
                     events,
                     lambda name, df: convert_sampling_rates_event_list(
-                        df - int(round(self.mocap_offset_s_[name] / self.sampling_rate_hz)), self.sampling_rate_hz, self.mocap_sampling_rate_hz_
+                        df - int(round(self.mocap_offset_s_[name] / self.sampling_rate_hz)),
+                        self.sampling_rate_hz,
+                        self.mocap_sampling_rate_hz_,
                     ),
                 )
             if to_time_axis == "time":
