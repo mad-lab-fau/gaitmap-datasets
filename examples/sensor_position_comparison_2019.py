@@ -3,11 +3,13 @@ SensorPositionComparison2019 - Full mocap reference data set with 6 sensors per 
 ====================================================================================
 We provide 2 versions of the dataset:
 
-SensorPositionComparison2019Segmentation: In this dataset no Mocap ground truth is provided and the IMU data is not cut to
+SensorPositionComparison2019Segmentation:
+    In this dataset no Mocap ground truth is provided and the IMU data is not cut to
     the individual gait test, but just a single recording for all participants exists with all tests (including
     failed ones) and movement between the tests.
     This can be used for stride segmentation tasks, as we hand-labeled all stride-start-end events in these recordings
-SensorPositionComparison2019Mocap: In this dataset the data is cut into the individual tests.
+SensorPositionComparison2019Mocap:
+    In this dataset the data is cut into the individual tests.
     This means 7 data segments exist per participants.
     For each of these segments full synchronised motion capture reference is provided.
 
