@@ -72,6 +72,7 @@ class MetaDataRecord(TypedDict):
 
 
 def get_all_participants_and_tests(*, base_dir: Optional[Path] = None) -> List[MetaDataRecord]:
+    """Get all participant and sensor/test combinations."""
     all_values = []
     for f in sorted(_raw_data_folder(base_dir).rglob("*.c3d")):
         participant_id, sensor, stride_length, stride_velocity, repetition = f.name.split("_")
@@ -94,11 +95,13 @@ def get_data_folder(
     *,
     base_dir: Optional[Path] = None,
 ) -> Path:
+    """Get the data folder for a given participant and sensor/test combination."""
     base_folder = _raw_data_folder(base_dir)
     return base_folder / f"subj{participant}" / _SENSOR_SHORTHANDS[sensor] / test_postfix
 
 
 def get_test_postfix(stride_length: str, stride_velocity: str, repetition: str) -> str:
+    """Get the postifix for a specific test, used in many file names."""
     return f"{stride_length}_{stride_velocity}_0{repetition}"
 
 
@@ -118,7 +121,14 @@ def get_mocap_data_for_participant_and_test(
     *,
     base_dir: Optional[Path] = None,
 ) -> Tuple[Dict[str, pd.DataFrame], pd.DataFrame]:
-    """Get all mocap data for a participant."""
+    """Get all mocap data for a participant.
+
+    The dataset contains marker data and angle data.
+    We load both, but only use the marker data for now.
+
+    Marker data is returned as a dictionary, even-though the marker data is synchronized, to have it in the same
+    structure as the IMU data.
+    """
     test_postfix = get_test_postfix(stride_length, stride_velocity, repetition)
     mocap_data = load_c3d_data(
         get_data_folder(participant, sensor, test_postfix, base_dir=base_dir)
@@ -140,7 +150,11 @@ def get_all_data_for_participant_and_test(
     *,
     base_dir: Optional[Path] = None,
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-    """Get all data for a participant."""
+    """Get all IMU data for participant - test combination.
+
+    The data is not synchronized, hence we return a dictionary.
+    Note, that in many cases data from only one foot is available.
+    """
     test_postfix = get_test_postfix(stride_length, stride_velocity, repetition)
     data_folder = get_data_folder(participant, sensor, test_postfix, base_dir=base_dir)
     all_data = {}
@@ -182,7 +196,13 @@ def get_synced_stride_list(
     system: Literal["mocap", "imu"] = "imu",
     base_dir: Optional[Path] = None,
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-    """Get all data for a participant."""
+    """Get the stride lists for one of the two systems.
+
+    The dataset provides separate files for the IMU and the mocap stride borders.
+    However, they are identical, just the samples are converted between the two systems.
+    We only use the IMU stride list in the end, but we need to be able to load the mocap stride list to calculate the
+    offset between the two systems.
+    """
     test_postfix = get_test_postfix(stride_length, stride_velocity, repetition)
     data_folder = get_data_folder(participant, sensor, test_postfix, base_dir=base_dir)
     all_strides = {}
@@ -227,6 +247,7 @@ def get_mocap_offset_s(
 
     This offset might be different for the two feet, as the IMU sensors don't perfectly start their recording at the
     same time.
+    Hence, we return a dictionary with the offsets for each foot.
     """
     mocap_strides = get_synced_stride_list(
         participant, sensor, stride_length, stride_velocity, repetition, system="mocap", base_dir=base_dir
@@ -266,6 +287,7 @@ def get_mocap_parameters(
     *,
     base_dir: Optional[Path] = None,
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    """Get the stride parameters from the mocap system."""
     test_postfix = get_test_postfix(stride_length, stride_velocity, repetition)
     data_folder = get_data_folder(participant, sensor, test_postfix, base_dir=base_dir)
     all_stride_paras = {}
