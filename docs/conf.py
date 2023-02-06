@@ -40,9 +40,9 @@ copyright = f"2022 - {datetime.now().year}, MaD Lab, FAU"
 
 # -- Copy the README and Changelog and fix image path --------------------------------------
 HERE = Path(__file__).parent
-with (HERE.parent / "README.md").open() as f:
+with (HERE.parent / "README.rst").open() as f:
     out = f.read()
-with (HERE / "README.md").open("w+") as f:
+with (HERE / "README.rst").open("w+") as f:
     f.write(out)
 
 with (HERE.parent / "CHANGELOG.md").open() as f:
