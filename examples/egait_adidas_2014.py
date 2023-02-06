@@ -236,7 +236,7 @@ trial.mocap_parameters_[sensor]["stride_length"]
 #
 # Further Notes
 # -------------
-# In many cases clear drift in the IMU data is observed.
+# In many cases clear drift in the Mocap data is observed.
 # The authors of the dataset corrected that drift before calculating the reference parameters using a linear drift
 # model.
 # For further information see the two papers using the dataset [1]_ and [2]_.
