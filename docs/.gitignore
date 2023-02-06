@@ -1,4 +1,5 @@
 modules/generated
 auto_examples
 /README.md
+/README.rst
 /CHANGELOG.md

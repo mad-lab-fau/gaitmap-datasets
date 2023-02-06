@@ -7,7 +7,7 @@ gaitmap-datasets Docu Overview
    :maxdepth: 1
    :caption: Content:
 
-   Getting Started <README.md>
+   Getting Started <README.rst>
    guides/index.rst
    modules/index.rst
    auto_examples/index.rst
