@@ -8,7 +8,7 @@ authors = [
     "Liv Herzer <liv.herzer@gmx.de>"
 ]
 license = "MIT"
-readme = "README.md"
+readme = "README.rst"
 homepage = "https://github.com/mad-lab-fau/gaitmap-datasets"
 repository = "https://github.com/mad-lab-fau/gaitmap-datasets"
 

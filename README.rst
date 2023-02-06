@@ -177,7 +177,8 @@ Therefore, the tests can only be run locally and not on the CI server.
 
 To run them locally, make sure you completed the dataset setup (see above) then run `poe test`.
 
-### Documentation (build instructions)
+Documentation (build instructions)
+++++++++++++++++++++++++++++++++++
 
 As the docs need the datasets to be available, we can not build them automatically on RTD.
 Instead, we host the docs via github pages.
@@ -195,9 +196,9 @@ After that you can run `poe docs` to build the docs and then `poe upload_docs` t
 branch.
 We will always just update a single commit on the gh-pages branch to keep the effective file size small.
 
-**WARNING:** Don't delete the `docs/_build` folder manually or by running the sphinx make file!
-This will delete the submodule and might cause issues.
-The `poe` task is configured to clean all relevant files in the `docs/_build` folder before each run.
+.. warning:: Don't delete the `docs/_build` folder manually or by running the sphinx make file!
+             This will delete the submodule and might cause issues.
+             The `poe` task is configured to clean all relevant files in the `docs/_build` folder before each run.
 
 After an update of the documentation, you will see that you also need to make a commit in the main repo, as the commit 
 hash of the docs submodule has changed.
