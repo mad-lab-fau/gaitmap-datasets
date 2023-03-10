@@ -36,10 +36,10 @@ class DatasetsConfig:
         using_default = config_file == _DEFAULT_CONFIG_FILE
         try:
             with Path(config_file).open(encoding="utf8") as f:
-                return DatasetsConfig(**{k: Path(v) if v else v for k, v in json.load(f)["datasets"].items()})
+                return cls(**{k: Path(v) if v else v for k, v in json.load(f)["datasets"].items()})
         except FileNotFoundError as e:
             if using_default:
-                return DatasetsConfig()
+                return cls()
             raise ValueError(f"Config file {config_file} not found.") from e
 
 
