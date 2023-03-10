@@ -21,7 +21,6 @@ imucal = ">=2.3.0"
 nilspodlib = ">=3.6.0"
 scipy = ">=1.8.1"
 c3d = "^0.5.1"
-pydantic = "^1.10.4"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.14.0"

@@ -1,60 +1,49 @@
 """Utils to manage the configuration of the datasets path."""
 import json
+from dataclasses import dataclass, fields
 from pathlib import Path
-from typing import Any, ClassVar, Dict, Optional, Tuple, Union
+from typing import Optional, Union
 
-from pydantic import BaseSettings, DirectoryPath
-from pydantic.env_settings import SettingsSourceCallable
+from typing_extensions import Self
 
-
-def json_config_settings_source(settings: BaseSettings) -> Dict[str, Any]:
-    """Get config data from json file."""
-    config_file = getattr(settings.__config__, "config_file", None)
-    using_default = False
-    if config_file is None:
-        config_file = getattr(settings.__config__, "default_config_file", None)
-        using_default = True
-    try:
-        with Path(config_file).open(encoding="utf8") as f:
-            return json.load(f)["datasets"]
-    except FileNotFoundError as e:
-        if using_default:
-            return {}
-        raise ValueError(f"Config file {config_file} not found.") from e
+_GLOBAL_CONFIG: Optional["DatasetsConfig"] = None
+_DEFAULT_CONFIG_FILE = (Path(__file__).parent.parent / ".datasets.dev.json").resolve()
 
 
-class DatasetsConfig(BaseSettings):
+@dataclass
+class DatasetsConfig:
     """Configuration class for the dataset paths."""
 
-    egait_parameter_validation_2013: Optional[DirectoryPath]
-    sensor_position_comparison_2019: Optional[DirectoryPath]
-    egait_segmentation_validation_2014: Optional[DirectoryPath]
-    pyshoe_2019: Optional[DirectoryPath]
-    egait_adidas_2014: Optional[DirectoryPath]
-    stair_ambulation_healthy_2021: Optional[DirectoryPath]
+    egait_parameter_validation_2013: Optional[Path] = None
+    sensor_position_comparison_2019: Optional[Path] = None
+    egait_segmentation_validation_2014: Optional[Path] = None
+    pyshoe_2019: Optional[Path] = None
+    egait_adidas_2014: Optional[Path] = None
+    stair_ambulation_healthy_2021: Optional[Path] = None
 
-    class Config:
-        """The config."""
+    def __post_init__(self):
+        for field in fields(self):
+            value = getattr(self, field.name)
+            if value is not None:
+                value = Path(value)
+                if not value.is_dir():
+                    raise ValueError(f"Path {value} for {field.name} is not a directory.")
+                setattr(self, field.name, value)
 
-        config_file: ClassVar[str]
-        default_config_file: ClassVar[str] = (Path(__file__).parent.parent / ".datasets.dev.json").resolve()
-        validate_assignment = True
-
-        @classmethod
-        def customise_sources(
-            cls,
-            init_settings: SettingsSourceCallable,
-            env_settings: SettingsSourceCallable,  # noqa: ARG003
-            file_secret_settings: SettingsSourceCallable,  # noqa: ARG003
-        ) -> Tuple[SettingsSourceCallable, ...]:
-            """Customize the sources."""
-            return init_settings, json_config_settings_source
+    @classmethod
+    def from_json(cls, config_file: Union[Path, str] = _DEFAULT_CONFIG_FILE) -> Self:
+        """Get config data from json file."""
+        using_default = config_file == _DEFAULT_CONFIG_FILE
+        try:
+            with Path(config_file).open(encoding="utf8") as f:
+                return DatasetsConfig(**{k: Path(v) if v else v for k, v in json.load(f)["datasets"].items()})
+        except FileNotFoundError as e:
+            if using_default:
+                return DatasetsConfig()
+            raise ValueError(f"Config file {config_file} not found.") from e
 
 
-_GLOBAL_CONFIG: Optional[DatasetsConfig] = None
-
-
-def set_config(config_obj_or_path: Union[str, Path, DatasetsConfig] = DatasetsConfig()):
+def set_config(config_obj_or_path: Union[str, Path, DatasetsConfig] = _DEFAULT_CONFIG_FILE):
     """Set the global config object containing configured paths for the datasets.
 
     This allows you to set a global configuration that is automatically used by the dataset classes.
@@ -75,8 +64,7 @@ def set_config(config_obj_or_path: Union[str, Path, DatasetsConfig] = DatasetsCo
     if _GLOBAL_CONFIG is not None:
         raise ValueError("Config is already set!")
     if isinstance(config_obj_or_path, (str, Path)):
-        DatasetsConfig.Config.config_file = Path(config_obj_or_path)
-        config_obj = DatasetsConfig()
+        config_obj = DatasetsConfig.from_json(config_obj_or_path)
     elif isinstance(config_obj_or_path, DatasetsConfig):
         config_obj = config_obj_or_path
     else:
@@ -128,7 +116,7 @@ def create_config_template(path: Union[str, Path]):
         raise ValueError(f"Config file {path} already exists.")
 
     with path.open("w", encoding="utf8") as f:
-        json.dump({"datasets": {k: None for k in DatasetsConfig.__fields__}}, f, indent=4, sort_keys=True)
+        json.dump({"datasets": {k.name: None for k in fields(DatasetsConfig)}}, f, indent=4, sort_keys=True)
 
     print(f"Created config template at {path.resolve()}.")
 
