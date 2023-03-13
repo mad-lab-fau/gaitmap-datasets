@@ -10,7 +10,7 @@ _GLOBAL_CONFIG: Optional["DatasetsConfig"] = None
 _DEFAULT_CONFIG_FILE = (Path(__file__).parent.parent / ".datasets.dev.json").resolve()
 
 
-@dataclass
+@dataclass(frozen=True)
 class DatasetsConfig:
     """Configuration class for the dataset paths."""
 
@@ -31,7 +31,7 @@ class DatasetsConfig:
                 setattr(self, field.name, value)
 
     @classmethod
-    def from_json(cls, config_file: Union[Path, str] = _DEFAULT_CONFIG_FILE) -> Self:
+    def from_json_file(cls, config_file: Union[Path, str] = _DEFAULT_CONFIG_FILE) -> Self:
         """Get config data from json file."""
         using_default = config_file == _DEFAULT_CONFIG_FILE
         try:
@@ -64,7 +64,7 @@ def set_config(config_obj_or_path: Union[str, Path, DatasetsConfig] = _DEFAULT_C
     if _GLOBAL_CONFIG is not None:
         raise ValueError("Config is already set!")
     if isinstance(config_obj_or_path, (str, Path)):
-        config_obj = DatasetsConfig.from_json(config_obj_or_path)
+        config_obj = DatasetsConfig.from_json_file(config_obj_or_path)
     elif isinstance(config_obj_or_path, DatasetsConfig):
         config_obj = config_obj_or_path
     else:
