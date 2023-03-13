@@ -28,7 +28,7 @@ class DatasetsConfig:
                 value = Path(value)
                 if not value.is_dir():
                     raise ValueError(f"Path {value} for {field.name} is not a directory.")
-                setattr(self, field.name, value)
+                object.__setattr__(self, field.name, value)
 
     @classmethod
     def from_json_file(cls, config_file: Union[Path, str] = _DEFAULT_CONFIG_FILE) -> Self:
