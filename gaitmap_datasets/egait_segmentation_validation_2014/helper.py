@@ -87,7 +87,7 @@ def get_all_participants(*, base_dir: Optional[Path] = None) -> List[Tuple[str, 
                 if file_name.is_file():
                     participant_id = _extract_participant_id(file_name.name, test)
                     all_participants.append((cohort, test, participant_id))
-    return sorted(list(set(all_participants)))
+    return sorted(set(all_participants))
 
 
 def get_all_data_for_participant(
