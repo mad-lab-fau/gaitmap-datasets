@@ -72,13 +72,13 @@ def get_data_stairs(trial: Tuple[str, str, str], *, base_dir: Path) -> Tuple[pd.
 def get_all_vicon_trials(base_dir: Path):
     """Get all vicon trials."""
     data_path = Path(base_dir) / VICON_SUBFOLDER
-    yield from tuple(f.stem for f in data_path.glob("*.mat"))
+    yield from tuple(f.stem for f in sorted(data_path.glob("*.mat")))
 
 
 def get_all_hallway_trials(base_dir: Path):
     """Get all hallway trials."""
     data_path = Path(base_dir) / HALLWAY_SUBFOLDER
-    for f in data_path.rglob("processed_data.mat"):
+    for f in sorted(data_path.rglob("processed_data.mat")):
         # Participant, trial_type, trial_number
         yield f"p{f.parent.parent.name}", f.parent.parent.parent.name, f.parent.name
 
@@ -86,7 +86,7 @@ def get_all_hallway_trials(base_dir: Path):
 def get_all_stairs_trials(base_dir: Path):
     """Get all stairs trials."""
     data_path = Path(base_dir) / STAIRS_SUBFOLDER
-    for f in data_path.rglob("processed_data.mat"):
+    for f in sorted(data_path.rglob("processed_data.mat")):
         # direction, trial
         first_direction = f.parent.name.split("-")[-2]
         n_levels = f.parent.name.split("-")[-1]

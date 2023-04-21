@@ -43,7 +43,7 @@ def _calibration_folder(base_dir: Path) -> Path:
 def get_all_participants(*, base_dir: Path) -> List[str]:
     """Get the folder names of all participants."""
     # TODO: Rename healthy folder
-    return [f.name for f in _participant_subfolder(base_dir).glob("subject_*")]
+    return [f.name for f in sorted(_participant_subfolder(base_dir).glob("subject_*"))]
 
 
 @lru_cache(maxsize=1)
@@ -51,7 +51,7 @@ def get_all_participants_and_tests(
     *, base_dir: Optional[Path] = None
 ) -> Dict[str, Dict[str, Dict[str, Union[int, Literal["part_1", "part_2"]]]]]:
     """Get a dictionary containing all test information for all participants."""
-    all_test_list = _participant_subfolder(base_dir).rglob("test_list.json")
+    all_test_list = sorted(_participant_subfolder(base_dir).rglob("test_list.json"))
     all_test_per_participant = {}
 
     for test_list in all_test_list:
