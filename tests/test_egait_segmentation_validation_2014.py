@@ -9,7 +9,7 @@ from gaitmap_datasets.egait_segmentation_validation_2014 import EgaitSegmentatio
 from gaitmap_datasets.egait_segmentation_validation_2014.helper import (
     get_all_data_for_participant,
     get_all_participants,
-    get_segmented_stride_list,
+    get_original_segmented_stride_list,
 )
 from gaitmap_datasets.utils.consts import SF_COLS
 
@@ -42,7 +42,7 @@ def test_get_data():
 def test_get_segmented_stride_list():
     # We test loading for **all** participants, because there are too many werid things that we need to check for
     for cohort, test, participant_id in get_all_participants(base_dir=base_dir):
-        stride_list = get_segmented_stride_list(participant_id, cohort, test, base_dir=base_dir)
+        stride_list = get_original_segmented_stride_list(participant_id, cohort, test, base_dir=base_dir)
         assert list(stride_list.keys()) == ["left_sensor", "right_sensor"]
         for sensor in ["left_sensor", "right_sensor"]:
             if sensor == "right_sensor" and (cohort, test, participant_id) == ("control", "free_walk", "GA214026"):
@@ -100,15 +100,15 @@ class TestDataset:
 
         # This is a participant, with missing data:
         subset = dataset.get_subset(participant="GA214026")
-        assert len(subset.segmented_stride_list_) == 1
+        assert len(subset.segmented_stride_list_original_) == 1
 
         # This is a participant, without missing data:
         subset = dataset.get_subset(participant="GA214030")
-        stride_list = subset.segmented_stride_list_
+        stride_list = subset.segmented_stride_list_original_
 
         assert len(stride_list) == 2
 
-        reference_data = get_segmented_stride_list("GA214030", "control", "free_walk", base_dir=base_dir)
+        reference_data = get_original_segmented_stride_list("GA214030", "control", "free_walk", base_dir=base_dir)
 
         for sensor in ["left_sensor", "right_sensor"]:
             assert_frame_equal(stride_list[sensor], reference_data[sensor])

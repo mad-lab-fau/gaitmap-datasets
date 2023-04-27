@@ -35,6 +35,11 @@ def _reference_stride_borders_folder(base_dir: Path, cohort: Cohorts, test: Test
     return base_dir / f"{_cohort_rename_dict[cohort]}s_GoldStandard_StrideBorders{_test_rename_dict[test]}"
 
 
+def _new_reference_stride_borders_folder(base_dir: Path) -> Path:
+    """Return the relative path to the reference stride borders subfolder."""
+    return base_dir / "new_annotations"
+
+
 def _calibration_folder(base_dir: Path) -> Path:
     """Return the relative path to the imu-calibration subfolder."""
     return base_dir / "calibrationFiles"
@@ -113,10 +118,10 @@ def get_all_data_for_participant(
     return all_data
 
 
-def get_segmented_stride_list(
+def get_original_segmented_stride_list(
     participant_id: str, cohort: Cohorts, test: Tests, *, base_dir: Optional[Path] = None
 ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-    """Get the list of all strides for a participant."""
+    """Get the list of all strides originally distributed with the dataset for a participant."""
     stride_borders = {}
     stride_segmentation_folder = _reference_stride_borders_folder(base_dir, cohort, test)
     segmentation_files = _find_files_for_participant(stride_segmentation_folder, participant_id)
@@ -133,4 +138,23 @@ def get_segmented_stride_list(
             .rename(columns={"Start": "start", "End": "end"})
             .rename_axis(index="s_id")
         )
+    return stride_borders
+
+
+def get_segmented_stride_list(
+    participant_id: str, cohort: Cohorts, test: Tests, *, base_dir: Optional[Path] = None
+) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    """Get the list of all strides for a participant."""
+    stride_segmentation_folder = _new_reference_stride_borders_folder(base_dir)
+    segmentation_file = stride_segmentation_folder / f"{cohort}_{test}_{participant_id}_strides.csv"
+    try:
+        stride_borders = pd.read_csv(segmentation_file, index_col="s_id")
+    except FileNotFoundError as e:
+        raise RuntimeError(
+            "Could not find the folder for the new stride annotations. "
+            f"Make sure they exist! ({stride_segmentation_folder})\n"
+            "If you don't have this folder in your dataset, it could be that you are using an old version. "
+            "In this case, we recommend contacting the data owner to receive the new annotations."
+        ) from e
+    stride_borders = {k: v.drop("sensor", axis=1) for k, v in stride_borders.groupby("sensor")}
     return stride_borders

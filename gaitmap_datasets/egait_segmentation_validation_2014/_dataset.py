@@ -10,6 +10,7 @@ from gaitmap_datasets._config import get_dataset_path
 from gaitmap_datasets.egait_segmentation_validation_2014.helper import (
     get_all_data_for_participant,
     get_all_participants,
+    get_original_segmented_stride_list,
     get_segmented_stride_list,
 )
 
@@ -64,14 +65,29 @@ class EgaitSegmentationValidation2014(Dataset):
 
     @property
     def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
-        """Get the segmented stride list."""
+        """Get the segmented stride list with all strides labeled (straight, stairs, turns).
+
+        This stride list differes from the stride list originally distributed with the dataset.
+        It was generated later by relabling all strides, and not just the straight strides.
+        """
         self.assert_is_single(None, "segmented_stride_list_")
         (
             cohort,
             test,
             participant,
         ) = self.group
-        stride_list = get_segmented_stride_list(participant, cohort, test, base_dir=self._data_folder_path)
+        return get_segmented_stride_list(participant, cohort, test, base_dir=self._data_folder_path)
+
+    @property
+    def segmented_stride_list_original_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+        """Get the original segmented stride list provided with the dataset."""
+        self.assert_is_single(None, "segmented_stride_list_original_")
+        (
+            cohort,
+            test,
+            participant,
+        ) = self.group
+        stride_list = get_original_segmented_stride_list(participant, cohort, test, base_dir=self._data_folder_path)
         # For one participant the data from one sensor is missing.
         # For the output, we ignore it and not include it in the output.
         return {k: v for k, v in stride_list.items() if v is not None}
