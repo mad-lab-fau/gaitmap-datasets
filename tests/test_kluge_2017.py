@@ -8,7 +8,7 @@ def test_number_valid_strides():
     dataset = Kluge2017()
     per_dp = [sum(len(v) for v in dp.mocap_events_.values()) for dp in dataset]
 
-    assert sum(per_dp) == 1166
+    assert sum(per_dp) == 1380
 
 
 class TestInterleaveFootEvents:
