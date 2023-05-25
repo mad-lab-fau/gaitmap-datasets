@@ -20,6 +20,7 @@ class DatasetsConfig:
     pyshoe_2019: Optional[Path] = None
     egait_adidas_2014: Optional[Path] = None
     stair_ambulation_healthy_2021: Optional[Path] = None
+    kluge_2017: Optional[Path] = None
 
     def __post_init__(self):
         for field in fields(self):
