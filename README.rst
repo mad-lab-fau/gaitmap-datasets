@@ -58,10 +58,10 @@ MaD-Lab Dataset
      - Info Link
      - Download
    * - EgaitSegmentationValidation2014
-     - https://www.mad.tf.fau.de/research/activitynet/digital-biobank/
+     - https://www.mad.tf.fau.de/research/datasets/#collapse_18
      - Email to data owner (see info link)
    * - EgaitParameterValidation2013
-     - https://www.mad.tf.fau.de/research/activitynet/digital-biobank/
+     - https://www.mad.tf.fau.de/research/datasets/#collapse_18
      - Email to data owner (see info link)
    * - StairAmbulationHealthy2021
      - https://osf.io/sgbw7/
@@ -72,6 +72,9 @@ MaD-Lab Dataset
    * - EgaitAdidas2014
      - TBD
      - TBD
+   * Kluge2017
+     - https://www.mad.tf.fau.de/research/datasets/#collapse_13
+     - Email to data owner (see info link)
 
 External Datasets
 ++++++++++++++++++
