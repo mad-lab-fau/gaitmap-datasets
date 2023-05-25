@@ -234,8 +234,8 @@ def get_all_data_for_recording(
 
     # IMU data
     imu_data = {}
-    for foot_data in all_data_for_measurement["sensor_data"][()]:
-        foot_data = foot_data[()]
+    for foot_data_raw in all_data_for_measurement["sensor_data"][()]:
+        foot_data = foot_data_raw[()]
         foot_sensor = SENSOR_RENAMING_DICT[foot_data["sensorPosition"]]
         # NOTE: The data file contains an "offset" field, but this offset is already applied to the data.
         sensor_data = (
@@ -310,6 +310,6 @@ def get_all_data_for_recording(
     return AllData(
         imu_data=imu_data,
         marker_positions=marker_positions,
-        reference_events={name: group for name, group in reference_events.groupby("foot")},
+        reference_events=dict(reference_events.groupby("foot")),
         tests_start_end=tests_start_end,
     )
