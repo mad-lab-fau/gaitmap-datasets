@@ -105,7 +105,7 @@ sensor = "l_insole"
 fig, axes = plt.subplots(2, 1, sharex=True, figsize=(10, 5))
 imu_data[sensor].filter(like="gyr").plot(ax=axes[0])
 imu_data[sensor].filter(like="acc").plot(ax=axes[1])
-for (i, s) in datapoint.segmented_stride_list_["left"].iterrows():
+for i, s in datapoint.segmented_stride_list_["left"].iterrows():
     s /= datapoint.sampling_rate_hz
     axes[0].axvspan(s["start"], s["end"], alpha=0.2, color="C1")
     axes[1].axvspan(s["start"], s["end"], alpha=0.2, color="C1")
@@ -197,7 +197,7 @@ norm_mocap_z.plot(ax=axes[1])
 event_labels_in_mocap = event_labels
 event_labels_times = datapoint.convert_events_with_padding(event_labels, from_time_axis="mocap", to_time_axis="time")
 event_labels_in_imu = datapoint.convert_events_with_padding(event_labels, from_time_axis="mocap", to_time_axis="imu")
-for (i, s) in event_labels_times.iterrows():
+for i, s in event_labels_times.iterrows():
     axes[0].axvspan(s["start"], s["end"], alpha=0.2, color="C1")
     axes[1].axvspan(s["start"], s["end"], alpha=0.2, color="C1")
 axes[0].scatter(

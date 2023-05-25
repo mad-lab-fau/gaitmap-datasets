@@ -151,7 +151,7 @@ for style, (i, e) in zip(styles, events.T.iterrows()):
     e = e.dropna()
     axs[0].plot(e, imu_data[foot]["gyr_y"].loc[e.to_numpy()].to_numpy(), style, label=i, markersize=8)
     axs[1].plot(e, pressure_data[foot]["total_force"].loc[e.to_numpy()].to_numpy(), style, markersize=8)
-for (i, s) in segmented_stride_list[foot].iterrows():
+for i, s in segmented_stride_list[foot].iterrows():
     s /= datapoint.sampling_rate_hz
     axs[0].axvline(s["start"], color="k", linestyle="--")
     axs[0].axvline(s["end"], color="k", linestyle="--")
@@ -215,7 +215,7 @@ _, axs = plt.subplots(nrows=3, figsize=(10, 10), sharex=True)
 imu_data[foot].filter(like="gyr").plot(ax=axs[0])
 imu_data[foot].filter(like="acc").plot(ax=axs[1])
 baro_data[foot].plot(ax=axs[2])
-for (i, s) in subset.test_list.iterrows():
+for i, s in subset.test_list.iterrows():
     s /= subset.sampling_rate_hz
     axs[0].axvspan(s["start"], s["end"], color="k", alpha=0.2)
     axs[1].axvspan(s["start"], s["end"], color="k", alpha=0.2)

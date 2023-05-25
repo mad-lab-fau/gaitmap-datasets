@@ -143,7 +143,7 @@ imu_data.filter(like="gyr").plot(ax=ax1, legend=False)
 imu_data.filter(like="acc").plot(ax=ax2, legend=True)
 mocap_data[["heel_z"]].plot(ax=ax3)
 for ax in (ax1, ax2, ax3):
-    for (i, s) in trial.convert_events(segmented_strides, from_time_axis="imu", to_time_axis="time")[sensor].iterrows():
+    for i, s in trial.convert_events(segmented_strides, from_time_axis="imu", to_time_axis="time")[sensor].iterrows():
         ax.axvspan(s["start"], s["end"], alpha=0.2, color="C1")
 
 # We plot the events in ax3

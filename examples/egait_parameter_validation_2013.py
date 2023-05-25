@@ -61,7 +61,7 @@ foot = "right_sensor"
 imu_data[foot].filter(like="acc").plot(ax=axs[0])
 imu_data[foot].filter(like="gyr").plot(ax=axs[1])
 
-for (i, s) in segmented_stride_list[foot].iterrows():
+for i, s in segmented_stride_list[foot].iterrows():
     s /= subset.sampling_rate_hz
     axs[0].axvline(s["start"], color="k", linestyle="--")
     axs[0].axvline(s["end"], color="k", linestyle="--")
@@ -108,7 +108,7 @@ mock_gait_events["ic"] = mock_gait_events["start"] + (mock_gait_events["end"] - 
 _, ax = plt.subplots(1, 1)
 imu_data[foot].filter(like="gyr").plot(ax=ax)
 
-for (i, s) in segmented_stride_list[foot].iterrows():
+for i, s in segmented_stride_list[foot].iterrows():
     s /= subset.sampling_rate_hz
     ax.axvline(s["start"], color="k", linestyle="--")
     ax.axvline(s["end"], color="k", linestyle="--")
@@ -130,7 +130,7 @@ new_stride_list
 _, ax = plt.subplots(1, 1)
 imu_data[foot].filter(like="gyr").plot(ax=ax)
 
-for (i, s) in new_stride_list.iterrows():
+for i, s in new_stride_list.iterrows():
     s /= subset.sampling_rate_hz
     ax.axvline(s["start"], color="r", linestyle="--")
     ax.axvline(s["end"], color="r", linestyle="--")

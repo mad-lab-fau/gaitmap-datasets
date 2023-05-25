@@ -72,7 +72,7 @@ def plot_strides(imu_data, segmented_stride_list):
     imu_data[foot].filter(like="acc").plot(ax=axs[0])
     imu_data[foot].filter(like="gyr").plot(ax=axs[1])
 
-    for (i, s) in segmented_stride_list[foot].iterrows():
+    for i, s in segmented_stride_list[foot].iterrows():
         s /= free_walk.sampling_rate_hz
         for ax in axs:
             ax.axvline(s["start"], color="k", linestyle="--")

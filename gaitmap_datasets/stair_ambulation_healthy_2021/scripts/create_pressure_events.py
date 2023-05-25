@@ -36,7 +36,6 @@ from gaitmap_datasets.stair_ambulation_healthy_2021.pressure_sensor_helper impor
 from gaitmap_datasets.utils.coordinate_transforms import convert_to_fbf
 
 if __name__ == "__main__":
-
     # Get path from commandline argument
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_path", type=Path, required=True)

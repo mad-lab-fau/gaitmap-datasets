@@ -168,7 +168,6 @@ def convert_segmented_stride_list_to_min_vel_list(
     """Convert segmented stride list to min_vel list by detecting mid-stance events based on the Gyro data."""
     min_vel_list = {}
     for sensor in ["left_sensor", "right_sensor"]:
-
         min_vel_list_single_sensor = _stride_list_to_min_vel_list(
             dataset_bf[sensor], segmented_stride_list[sensor], min_vel_search_window_sec, sampling_rate_hz
         )
