@@ -1,3 +1,4 @@
+"""Some helper functions for handling numpy arrays."""
 import numpy as np
 
 

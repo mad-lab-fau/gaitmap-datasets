@@ -122,6 +122,7 @@ gait_events
 
 import matplotlib.pyplot as plt
 
+
 def plot_with_marker():
     fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, sharex=True, figsize=(10, 6))
     fig.suptitle(f"{slow_walk.group} - {foot} foot")
@@ -145,7 +146,9 @@ def plot_with_marker():
         stride_time = stride_mocap / slow_walk.mocap_sampling_rate_hz
         stride_imu = (stride_time * slow_walk.sampling_rate_hz).round().astype(int)
 
-        for ax, plot_data in zip((ax1, ax2, ax3), (imu_data["gyr_y"], imu_data["acc_x"], mocap_data[("ankle", "pos_z")])):
+        for ax, plot_data in zip(
+            (ax1, ax2, ax3), (imu_data["gyr_y"], imu_data["acc_x"], mocap_data[("ankle", "pos_z")])
+        ):
             # Plot the stride as a vertical span
             ax.axvspan(stride_time.start, stride_time.end, alpha=0.2, edgecolor="black")
 
@@ -161,6 +164,7 @@ def plot_with_marker():
     ax3.legend()
 
     return fig, (ax1, ax2, ax3)
+
 
 plot_with_marker()
 plt.tight_layout()
