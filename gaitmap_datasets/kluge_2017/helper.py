@@ -39,7 +39,8 @@ SENSOR_AXIS_RENAMING_DICT = {
 }
 
 
-def interleave_foot_events(starts: pd.Series, foot_names: Tuple[str, str] = ("L", "R")) -> pd.Series:
+def _interleave_foot_events(starts: pd.Series, foot_names: Tuple[str, str] = ("L", "R")) -> pd.Series:
+    """Map the hs of the opposite foot to the stride of the other foot it occurred in."""
     opposite_starts = {}
 
     foot_0_starts = starts.loc[foot_names[0]]
@@ -86,7 +87,9 @@ def intersect_strides(strides: pd.DataFrame, interval_starts: Sequence[float], i
     order.
     """
     interval_per_event = (
-        pd.cut(strides[["start", "end"]].stack(), pd.IntervalIndex.from_arrays(interval_starts, interval_ends))
+        pd.cut(  # noqa: PD010
+            strides[["start", "end"]].stack(), pd.IntervalIndex.from_arrays(interval_starts, interval_ends)
+        )
         .unstack()
         .T
     )
@@ -94,7 +97,7 @@ def intersect_strides(strides: pd.DataFrame, interval_starts: Sequence[float], i
     return strides[((interval_per_event.nunique() == 1) & ~(interval_per_event.isna().any())).loc[strides.index]]
 
 
-def marker_axis_renaming(marker_axis: str) -> Union[str, Tuple[str, str, str]]:
+def _marker_axis_renaming(marker_axis: str) -> Union[str, Tuple[str, str, str]]:
     if marker_axis == "Time":
         return "time after start [s]"
 
@@ -117,6 +120,8 @@ def marker_axis_renaming(marker_axis: str) -> Union[str, Tuple[str, str, str]]:
 
 
 class AllData(NamedTuple):
+    """Representing all data from a single participant and repetition."""
+
     imu_data: Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]
     marker_positions: pd.DataFrame
     reference_events: Dict[Literal["left", "right"], pd.DataFrame]
@@ -190,7 +195,7 @@ def get_all_data_for_recording(
             columns=all_data_for_measurement["camera_data"][()]["columnNames"],
         )
         .drop(columns=["L_Foot_Ground_Angle", "R_Foot_Ground_Angle"])
-        .rename(columns=marker_axis_renaming)
+        .rename(columns=_marker_axis_renaming)
         .iloc[1:-1]
         .set_index("time after start [s]")
     )
@@ -245,7 +250,7 @@ def get_all_data_for_recording(
 
     # Reference Events
     reference_events = (
-        pd.DataFrame(all_data_for_measurement["camera_events"]["Gait_Events"][()][()][0])
+        pd.DataFrame(all_data_for_measurement["camera_events"]["Gait_Events"][()][()][0])  # noqa: PD010
         .dropna(subset=["Reference_HS"])
         .assign(foot=lambda df_: df_["Name"].str.split("_").str[0].replace({"L": "left", "R": "right"}))
         .assign(event=lambda df_: df_["Name"].str.split("_").str[1])
@@ -272,7 +277,7 @@ def get_all_data_for_recording(
     # For reference checking, we also add the start of the stride of the opposite foot that happened during the stance
     # phase of the current foot
     reference_events = reference_events.sort_values(["start"])
-    reference_events["start_opposite"] = interleave_foot_events(reference_events["start"], ("left", "right"))
+    reference_events["start_opposite"] = _interleave_foot_events(reference_events["start"], ("left", "right"))
 
     # New we do validity checks
     # Check 1: All events need to be present (no nans)

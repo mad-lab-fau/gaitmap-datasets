@@ -1,7 +1,7 @@
 import pandas as pd
 
 from gaitmap_datasets.kluge_2017 import Kluge2017
-from gaitmap_datasets.kluge_2017.helper import interleave_foot_events
+from gaitmap_datasets.kluge_2017.helper import _interleave_foot_events
 
 
 def test_number_valid_strides():
@@ -19,7 +19,7 @@ class TestInterleaveFootEvents:
 
         expected = events.copy().shift(-1)
 
-        result = interleave_foot_events(events, ("left", "right"))
+        result = _interleave_foot_events(events, ("left", "right"))
 
         pd.testing.assert_series_equal(result, expected, check_names=False)
 
@@ -34,6 +34,6 @@ class TestInterleaveFootEvents:
         expected = events.copy().shift(-1)
         expected.iloc[[1, 2]] = pd.NA
 
-        result = interleave_foot_events(events, ("left", "right"))
+        result = _interleave_foot_events(events, ("left", "right"))
 
         pd.testing.assert_series_equal(result, expected, check_names=False)
