@@ -35,7 +35,7 @@ black = "^22.10.0"
 Sphinx = "^5.3.0"
 sphinx-gallery = "^0.11.1"
 pydata-sphinx-theme = "^0.12.0"
-ruff = "^0.0.235"
+ruff = "^0.0.270"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -63,7 +63,6 @@ exclude = '''
 
 [tool.ruff]
 line-length = 120
-update-check = true
 target-version = "py38"
 
 select = [
@@ -150,7 +149,11 @@ ignore = [
     # df as varaible name
     "PD901",
     # melt over stack
-    "PD013"
+    "PD013",
+    # I like long messages
+    "TRY003",
+    # To many arguments
+    "PLR0913"
 ]
 
 
@@ -166,16 +169,11 @@ exclude = [
 [tool.ruff.pydocstyle]
 convention = "numpy"
 
-[tool.ruff.pyupgrade]
-# Preserve types, even if a file imports `from __future__ import annotations`.
-keep-runtime-typing = true
-
-
 [tool.poe.tasks]
 _format_black = "black ."
 _format_ruff = "ruff . --fix-only --exit-zero"
 format = ["_format_black", "_format_ruff", "_format_black"]
-lint = { cmd = "ruff gaitmap_datasets --fix", help = "Lint all files with ruff." }
+lint = { cmd = "ruff gaitmap_datasets", help = "Lint all files with ruff." }
 _check_black = "black . --check"
 _lint_ci = "ruff gaitmap_datasets --format=github"
 ci_check = { sequence = ["_check_black", "_lint_ci"], help = "Check all potential format and linting issues." }

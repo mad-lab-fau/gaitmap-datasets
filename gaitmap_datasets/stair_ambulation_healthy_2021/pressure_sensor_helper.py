@@ -21,8 +21,8 @@ def load_fsr_calibration_data_from_path(path: Path):
 
     # TODO: This can likely be made much more efficient
     # bin data in 0.5kg steps and average measurements within those bins (bins form 0.5kg to 20kg)
-    for weight in np.arange(40) + 1:
-        weight = weight * 500
+    for weight_raw in np.arange(40) + 1:
+        weight = weight_raw * 500
         res = (
             calib_data_df[(calib_data_df["weight"] >= weight - 250) & (calib_data_df["weight"] <= weight + 250)]
             .mean()

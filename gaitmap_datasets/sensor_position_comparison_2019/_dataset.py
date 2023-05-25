@@ -1,12 +1,11 @@
 """The core tpcp Dataset class for the Stair Postion Comparison dataset."""
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Union
 
 import pandas as pd
 from joblib import Memory
 from tpcp import Dataset
-from typing_extensions import Literal
 
 from gaitmap_datasets._config import get_dataset_path
 from gaitmap_datasets.sensor_position_comparison_2019.helper import (

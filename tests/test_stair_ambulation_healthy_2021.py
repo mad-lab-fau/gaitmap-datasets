@@ -36,8 +36,8 @@ def test_get_all_tests():
 
     assert len(all_tests) == 20
     assert all(p.startswith("subject_") for p in all_tests)
-    assert all([len(t) == 28 for t in all_tests.values()])
-    assert all([list(t.keys()) == ["start", "end", "part"] for tests in all_tests.values() for t in tests.values()])
+    assert all(len(t) == 28 for t in all_tests.values())
+    assert all(list(t.keys()) == ["start", "end", "part"] for tests in all_tests.values() for t in tests.values())
 
 
 def test_get_segmented_stride_list():

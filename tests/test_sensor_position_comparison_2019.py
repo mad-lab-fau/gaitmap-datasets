@@ -25,7 +25,7 @@ def test_get_all_participants(include_failed):
 def test_get_participant_metadata():
     metadata = h.get_metadata_participant("4d91", data_folder=base_dir)
     assert metadata["age"] == 28
-    assert all([k in metadata for k in ["age", "bmi", "height", "weight", "shoe_size", "sensors"]])
+    assert all(k in metadata for k in ["age", "bmi", "height", "weight", "shoe_size", "sensors"])
 
 
 def test_get_all_tests():

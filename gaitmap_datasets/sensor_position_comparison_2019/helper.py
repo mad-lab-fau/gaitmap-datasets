@@ -3,7 +3,7 @@
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 import numpy as np
 import pandas as pd
@@ -11,7 +11,6 @@ from imucal.management import CalibrationWarning
 from nilspodlib import SyncedSession
 from nilspodlib.exceptions import CorruptedPackageWarning, LegacyWarning, SynchronisationWarning
 from scipy.spatial.transform import Rotation
-from typing_extensions import Literal
 
 from gaitmap_datasets.utils.c3d_loading import load_c3d_data
 from gaitmap_datasets.utils.coordinate_transforms import flip_dataset, rotation_from_angle

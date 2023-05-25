@@ -60,7 +60,7 @@ def set_config(config_obj_or_path: Union[str, Path, DatasetsConfig] = _DEFAULT_C
         To create a config file, you can use the `create_config_file` function.
 
     """
-    global _GLOBAL_CONFIG  # pylint: disable=global-statement
+    global _GLOBAL_CONFIG  # noqa: PLW0603
     if _GLOBAL_CONFIG is not None:
         raise ValueError("Config is already set!")
     if isinstance(config_obj_or_path, (str, Path)):
@@ -77,7 +77,7 @@ def reset_config():
 
     Afterwards you can use `set_config` to set a new config (e.g. to change the config file during runtime).
     """
-    global _GLOBAL_CONFIG  # pylint: disable=global-statement
+    global _GLOBAL_CONFIG  # noqa: PLW0603
     _GLOBAL_CONFIG = None
 
 

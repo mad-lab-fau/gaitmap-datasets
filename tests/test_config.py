@@ -7,7 +7,7 @@ import pytest
 from gaitmap_datasets import config, create_config_template, reset_config, set_config
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def config_file_clean():
     """Clean up the config file."""
     reset_config()
