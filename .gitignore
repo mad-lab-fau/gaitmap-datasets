@@ -242,3 +242,5 @@ docs/_build/*
 .python-version
 
 .datasets.dev.json
+
+_debug
