@@ -312,6 +312,6 @@ def get_all_data_for_recording(
     return AllData(
         imu_data=imu_data,
         marker_positions=marker_positions,
-        reference_events=dict(reference_events.groupby("foot")),
+        reference_events={k: v for k, v in reference_events.groupby("foot")},
         tests_start_end=tests_start_end,
     )
