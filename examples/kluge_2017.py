@@ -69,7 +69,9 @@ imu_data
 # Then let's also load the marker position data.
 # As all markers trajectories have the same length, this is just a simple pandas DataFrame, with the foot as the
 # top-most column level.
-# We can see that we get position, velocity and acceleration data for three points on the foot.
+# We can see that we get position, velocity and acceleration data for the ankle and the tip of the foot.
+# Note that these trajectories are from "actual" markers, but virtual markers defined by the biomechanical model fitted
+# by the SIMI system.
 #
 # Many values in the dataframe will be NaN, as the mocap system only tracks the foot for a short period of time.
 mocap_data = slow_walk.marker_position_[foot]
@@ -176,7 +178,7 @@ ax3.set_xlim(53, 61)
 plt.show()
 
 # %%
-# We can see that all the gait events ovvure in order and roughly line up with the expected signal regions in the IMU
+# We can see that all the gait events occur in order and roughly line up with the expected signal regions in the IMU
 # signal.
 # We can also see that the z-axis of the ankle marker is drifting over the course of each walk.
 # This is because the mocap system is not calibrated level to the floor.
@@ -193,3 +195,5 @@ plt.show()
 #    However, keep in mind that the mocap system only covers the middle part of each walk.
 #    This means that when comparing aggregated values (in particular measures of variance) using all detected strides in
 #    the IMU signal might result in a biased comparison.
+# 3. When calculating spatial parameters, we recommend the use of the ankle trajectory, as it is the most stable
+#    trajectory.

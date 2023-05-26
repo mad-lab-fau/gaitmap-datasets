@@ -200,6 +200,8 @@ def get_all_data_for_recording(
         .set_index("time after start [s]")
     )
     marker_positions.columns = pd.MultiIndex.from_tuples(marker_positions.columns, names=["foot", "marker", "metric"])
+    # We don't select the `foot` marker. According to Felix this is not important and was calculated differently.
+    marker_positions = marker_positions.loc[:, pd.IndexSlice[:, ["ankle", "foot_tip"]]]
 
     # Tracking available
     # Tracking of the trajectories is only avalibale for some regions of the signal.
@@ -310,6 +312,6 @@ def get_all_data_for_recording(
     return AllData(
         imu_data=imu_data,
         marker_positions=marker_positions,
-        reference_events=dict(reference_events.groupby("foot")),
+        reference_events={k: v for k, v in reference_events.groupby("foot")},
         tests_start_end=tests_start_end,
     )
