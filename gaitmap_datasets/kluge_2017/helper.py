@@ -131,7 +131,7 @@ class AllData(NamedTuple):
 @lru_cache(maxsize=1)
 def get_data(base_dir: Path):
     """Load the single matlab file from the given path."""
-    mat_data = sio.loadmat(str(base_dir / "raw_data_export_py.mat"), squeeze_me=True)["rawdata"]
+    mat_data = sio.loadmat(str(base_dir / "raw_data_export.mat"), squeeze_me=True)["rawdata"]
     return {r[0]: r for r in mat_data}
 
 
@@ -288,9 +288,6 @@ def get_all_data_for_recording(
     start_is_smallest = reference_events.min(axis=1) == reference_events["start"]
     end_is_largest = reference_events.max(axis=1) == reference_events["end"]
     reference_events = reference_events[start_is_smallest & end_is_largest]
-    # Check 3: No stride duration is longer than 2 seconds
-    stride_duration = reference_events["end"] - reference_events["start"]
-    reference_events = reference_events[stride_duration < 2]
 
     # Remove all events outside the regions tracked by the camera
     reference_events = reference_events.groupby("foot", group_keys=False).apply(

@@ -112,7 +112,7 @@ plt.show()
 # Each stride starts and ends with a heel strike/initial contact (IC) of the same foot.
 # The `HS` event provided with the stride is the start event.
 # In addition, we have the toe-off (TO), the heel-off (HO).
-# The terminal contact (TC) is either the TO or the HO depending which event occurs last.
+# The terminal contact (TC) is either the TO or the HO depending on which event occurs last.
 #
 # All events are provided as samples in the Mocap data.
 

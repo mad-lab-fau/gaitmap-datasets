@@ -74,7 +74,7 @@ MaD-Lab Dataset
      - TBD
    * - Kluge2017
      - https://www.mad.tf.fau.de/research/datasets/#collapse_13
-     - Email to data owner (see info link)
+     - https://osf.io/cfb7e/
 
 External Datasets
 ++++++++++++++++++
