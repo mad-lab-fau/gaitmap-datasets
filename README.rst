@@ -72,7 +72,7 @@ MaD-Lab Dataset
    * - EgaitAdidas2014
      - TBD
      - TBD
-   * Kluge2017
+   * - Kluge2017
      - https://www.mad.tf.fau.de/research/datasets/#collapse_13
      - Email to data owner (see info link)
 
