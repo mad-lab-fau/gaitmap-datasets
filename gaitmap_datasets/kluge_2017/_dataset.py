@@ -102,6 +102,24 @@ class Kluge2017(Dataset):
         return data_per_test
 
     @property
+    def marker_position_per_stride_(self):
+        self.assert_is_single(None, "marker_position_per_stride_")
+        trajectory = self.marker_position_
+        mocap_events = self.mocap_events_
+
+        per_stride_trajectory = {}
+        for foot, events in mocap_events.items():
+            output_per_foot = {}
+            data = trajectory[foot]
+            for s_id, stride in events.iterrows():
+                # This cuts out the n+1 samples for each stride.
+                # The first sample is the value before the stride started.
+                # This is the equivalent to the "initial" position/orientation
+                output_per_foot[s_id] = data.iloc[int(stride["start"]) : int(stride["end"] + 1)].reset_index(drop=True)
+            per_stride_trajectory[foot] = pd.concat(output_per_foot, names=["s_id", "sample"])
+        return per_stride_trajectory
+
+    @property
     def mocap_events_(self):
         self.assert_is_single(None, "stride_event_list_")
         _, participant, repetition, test = self.group
@@ -109,7 +127,7 @@ class Kluge2017(Dataset):
         test_start, test_end = all_data.tests_start_end.loc[test] * self.mocap_sampling_rate_hz
 
         return {
-            k: (intersect_strides(v, [test_start], [test_end]) - test_start).astype(int)
+            k: (intersect_strides(v, [test_start], [test_end]) - test_start).astype(int).reset_index("foot", drop=True)
             for k, v in all_data.reference_events.items()
         }
 

@@ -188,6 +188,26 @@ plt.show()
 # In case parameters like foot-clearance are calculated, this needs to be taken into account.
 
 # %%
+# Spatial Parameters
+# ------------------
+# In case you want to caluclate spatial parameters based on the trajectories and events, you can use the
+# `marker_position_per_stride_` property.
+# It provides the marker information per stride, making it easy to calculate various parameters
+per_stride = slow_walk.marker_position_per_stride_[foot]
+per_stride
+
+# %%
+# To extract the information of a single stride (e.g. stride_ist 55), we can use the `loc` method.
+stride_54 = per_stride.loc[54]
+stride_54
+
+# %%
+fig, ax = plt.subplots()
+stride_54["ankle"].filter(like="pos_").plot(ax=ax)
+
+fig.show()
+
+# %%
 # Further Notes
 # -------------
 # 1. When applying a train test split on the data, remember that some participants have multiple recordings.

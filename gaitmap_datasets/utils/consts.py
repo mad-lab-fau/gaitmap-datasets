@@ -32,3 +32,7 @@ FSF_FBF_CONVERSION_RIGHT = {
     "gyr_y": (-1, "gyr_ml"),
     "gyr_z": (1, "gyr_si"),
 }
+
+
+#: The default names of the Position columns in the global frame
+GF_POS = ["pos_x", "pos_y", "pos_z"]
