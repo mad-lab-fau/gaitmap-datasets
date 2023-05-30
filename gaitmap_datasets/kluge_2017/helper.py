@@ -12,11 +12,11 @@ from gaitmap_datasets.utils.array_handling import bool_array_to_start_end_array
 from gaitmap_datasets.utils.consts import SF_ACC
 from gaitmap_datasets.utils.coordinate_transforms import flip_sensor
 
-COORDINATE_SYSTEM_TRANSFORMATION_SH3 = {  # egait_lateral_shimmer3
-    # [[-x -> +x], [-z -> +y], [-y -> +z]]
+COORDINATE_SYSTEM_TRANSFORMATION_KLUGE_AFTER_LOADED = {
+    # [[+x -> -x], [+z -> y], [+y -> -z]]
     "left_sensor": [[-1, 0, 0], [0, 0, -1], [0, -1, 0]],
-    # [[+x -> +x], [+z -> +y], [-y -> +z]]
-    "right_sensor": [[1, 0, 0], [0, 0, 1], [0, -1, 0]],
+    # [[+x -> -x], [+z -> y], [+y -> -z]]
+    "right_sensor": [[-1, 0, 0], [0, 0, -1], [0, -1, 0]],
 }
 
 MOCAP_SAMPLING_RATE_HZ = 100.0
@@ -246,7 +246,9 @@ def get_all_data_for_recording(
             .iloc[1:-1]
             .set_index("time after start [s]")
         )
-        sensor_data = flip_sensor(sensor_data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION_SH3[foot_sensor]))
+        sensor_data = flip_sensor(
+            sensor_data, Rotation.from_matrix(COORDINATE_SYSTEM_TRANSFORMATION_KLUGE_AFTER_LOADED[foot_sensor])
+        )
         sensor_data.loc[:, SF_ACC] *= 9.81  # The data is in g, we convert to m/s^2
         imu_data[foot_sensor] = sensor_data
 

@@ -21,8 +21,11 @@ walk-through.
 
 The eGait system in the dataset used the Shimmer 3 sensors using a sampling rate of 102.4 Hz.
 For the data loaded using the dataset class, we adjust the coordinate system as shown in the figure below.
+While the sensor configuration is identical to other Shimmer 3 datasets, the coordiante system of the exported data
+was already rotated to align both feets.
+Hence, we need to perform a different coordinate transformation than for the other datasets:
 
-.. figure:: /images/coordinate_systems/coordinate_transform_shimmer3_lateral_eGait.svg
+.. figure:: /images/coordinate_systems/coordinate_transform_kluge_2017.svg
     :alt: coordinate system definition
     :figclass: align-center
 
@@ -60,7 +63,7 @@ slow_walk
 # Let's have a look at the raw IMU data.
 # This is a dictionary with the sensor name as key and a pandas DataFrame as value.
 # Note that the index is the time in seconds already aligned with the mocap data.
-foot = "left"
+foot = "right"
 
 imu_data = slow_walk.data[f"{foot}_sensor"]
 imu_data
