@@ -129,7 +129,7 @@ def get_original_segmented_stride_list(
         if file_path is None:
             stride_borders[sensor] = None
             continue
-        stride_borders[sensor] = (
+        tmp = (
             pd.read_csv(
                 file_path,
                 skiprows=8,
@@ -138,6 +138,10 @@ def get_original_segmented_stride_list(
             .rename(columns={"Start": "start", "End": "end"})
             .rename_axis(index="s_id")
         )
+        # for some reason some strides have negative durations, which is obviously wrong.
+        # We will just drop them.
+        tmp = tmp[tmp["end"] > tmp["start"]]
+        stride_borders[sensor] = tmp
     return stride_borders
 
 
