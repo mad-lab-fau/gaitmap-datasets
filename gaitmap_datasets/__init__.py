@@ -40,4 +40,4 @@ __all__ = [
     "create_config_template",
     "get_dataset_path",
 ]
-__version__ = "0.12.0"
+__version__ = "0.13.0"

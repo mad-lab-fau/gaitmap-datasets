@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) (+ the Migration Guide),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.13.0] - 2023-07-13
 
 ### Fixed
 - The egait segmentation validation dataset contained strides that had negative duration.
@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### Changed
-- Config files are frozen now
+- Config files are[CHANGELOG.md](CHANGELOG.md) frozen now
 
 ## [0.10.0] - 2023-03-10
 
