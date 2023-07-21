@@ -147,7 +147,7 @@ def plot_with_marker():
 
     # Plot the gait events
     for i, (_, stride_mocap) in enumerate(gait_events.iterrows()):
-        stride_time = stride_mocap / slow_walk.mocap_sampling_rate_hz
+        stride_time = stride_mocap / slow_walk.mocap_sampling_rate_hz_
         stride_imu = (stride_time * slow_walk.sampling_rate_hz).round().astype(int)
 
         for ax, plot_data in zip(

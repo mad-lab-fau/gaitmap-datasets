@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - For two participants of the EgaitAddidas2014 dataset the offset between the systems was for some reason not consistent
   across all strides. We decided to ignore this, but warn the user about it.
 
+### Changed
+
+- The `mocap_sampling_rate_hz` method of the Kluge2017 dataset is now called `mocap_sampling_rate_hz_` 
+  (with trailing underscore) to be consistent with the other datasets.
+
 ### Added
 
 - SensorPositionComparison2019 now has a method to get the marker trajectories per stride. 

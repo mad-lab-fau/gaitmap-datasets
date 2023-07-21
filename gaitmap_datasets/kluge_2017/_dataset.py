@@ -64,7 +64,7 @@ class Kluge2017(Dataset):
         return IMU_SAMPLING_RATE_HZ
 
     @property
-    def mocap_sampling_rate_hz(self) -> float:
+    def mocap_sampling_rate_hz_(self) -> float:
         """Get the sampling rate of the IMUs."""
         return MOCAP_SAMPLING_RATE_HZ
 
@@ -124,7 +124,7 @@ class Kluge2017(Dataset):
         self.assert_is_single(None, "stride_event_list_")
         _, participant, repetition, test = self.group
         all_data = self._get_all_data_for_recording_cached(participant, repetition)
-        test_start, test_end = all_data.tests_start_end.loc[test] * self.mocap_sampling_rate_hz
+        test_start, test_end = all_data.tests_start_end.loc[test] * self.mocap_sampling_rate_hz_
 
         return {
             k: (intersect_strides(v, [test_start], [test_end]) - test_start).astype(int).reset_index("foot", drop=True)
