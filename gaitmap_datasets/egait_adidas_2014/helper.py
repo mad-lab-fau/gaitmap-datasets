@@ -2,6 +2,7 @@
 
 These are the logic behind the dataset implementation, but can also be used independently.
 """
+import warnings
 from functools import lru_cache
 from itertools import product
 from pathlib import Path
@@ -203,6 +204,8 @@ def get_synced_stride_list(
 
     The dataset provides separate files for the IMU and the mocap stride borders.
     However, they are identical, just the samples are converted between the two systems.
+    (with the exception of two strides (004 shimmer2r high low 2 left and 013 shimmer2r low low 3 right).
+
     We only use the IMU stride list in the end, but we need to be able to load the mocap stride list to calculate the
     offset between the two systems.
     """
@@ -282,7 +285,17 @@ def get_mocap_offset_s(
         )
 
         offset = i_strides["start"] - m_strides["start"]
-        assert len(set(offset)) == 1
+        if len(set(offset)) > 1:
+            # For some reason the offset is not the same for all strides in two cases.
+            # There the end of the second stride/start of the third strides seems to be different between the two
+            # systems.
+            # We warn the user about this, but provide the first offset.
+            warnings.warn(
+                f"For the trial ({participant, sensor, stride_length, stride_velocity, repetition, foot}) the offset "
+                "between the mocap and the imu system is not the same for all strides. "
+                "This is a known issue and we decided to ignore the IMU based ground truth for this trial.",
+                stacklevel=2,
+            )
         offsets[foot] = offset.iloc[0]
     return offsets
 

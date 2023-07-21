@@ -126,9 +126,12 @@ class EgaitAdidas2014(Dataset):
         If you need the stride list in seconds, or in mocap samples use the `convert_event_list` method of this class.
         """
         self.assert_is_single(None, "segmented_stride_list_")
-        return _apply_to_dict_dfs(
-            get_synced_stride_list(*self.group, system="imu", base_dir=self._data_folder_path),
-            lambda _, v: v.round(0).astype(int),
+        # Note, we load the mocap stride list here and convert the samples, as there are some inconsistencies in the
+        # provided stride lists and we decided to trust the mocap stride list.
+        return self.convert_events(
+            get_synced_stride_list(*self.group, system="mocap", base_dir=self._data_folder_path),
+            from_time_axis="mocap",
+            to_time_axis="imu",
         )
 
     @property
@@ -148,7 +151,7 @@ class EgaitAdidas2014(Dataset):
         events: Dict[str, pd.DataFrame],
         from_time_axis: Literal["mocap", "imu"],
         to_time_axis: Literal["mocap", "imu", "time"],
-    ):
+    ) -> Dict[str, pd.DataFrame]:
         """Convert the time/sample values of mocap and IMU events/stride lists into other time domains.
 
         This method will make sure
@@ -174,7 +177,7 @@ class EgaitAdidas2014(Dataset):
                     lambda name, df: convert_sampling_rates_event_list(
                         df, self.mocap_sampling_rate_hz_, self.sampling_rate_hz
                     )
-                    + int(round(self.mocap_offset_s_[name] / self.sampling_rate_hz)),
+                    + int(round(self.mocap_offset_s_[name] * self.sampling_rate_hz)),
                 )
             if to_time_axis == "time":
                 return _apply_to_dict_dfs(events, lambda _, df: df / self.mocap_sampling_rate_hz_)
@@ -184,7 +187,7 @@ class EgaitAdidas2014(Dataset):
                 return _apply_to_dict_dfs(
                     events,
                     lambda name, df: convert_sampling_rates_event_list(
-                        df - int(round(self.mocap_offset_s_[name] / self.sampling_rate_hz)),
+                        df - int(round(self.mocap_offset_s_[name] * self.sampling_rate_hz)),
                         self.sampling_rate_hz,
                         self.mocap_sampling_rate_hz_,
                     ),

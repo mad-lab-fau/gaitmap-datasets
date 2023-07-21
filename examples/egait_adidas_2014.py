@@ -28,7 +28,7 @@ For both IMUs we unify the coordinate system on loading as shown below:
 
 Participants where instructed to walk with a specific stride length and velocity to create more variation in the
 data.
-For each trial only a couple strides were recorded withing the motion capture system.
+For each trial only a couple strides were recorded within the motion capture system.
 The IMU data contains the entire recording.
 This additional data can contain just some additional strides or entire different movements depending on the trial.
 We recommend inspecting the specific trial in case of issues.

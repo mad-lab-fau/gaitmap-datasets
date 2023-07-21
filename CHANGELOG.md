@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) (+ the Migration Guide),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.0] - unreleased
+
+### Fixed
+
+- The convert event methods for the EgaitAddidas2014 dataset had a bug that the offset was not taken into account 
+  correctly.
+- For two participants of the EgaitAddidas2014 dataset the offset between the systems was for some reason not consistent
+  across all strides. We decided to ignore this, but warn the user about it.
+
 ## [0.13.0] - 2023-07-13
 
 ### Fixed

@@ -6,6 +6,7 @@ from gaitmap_datasets import EgaitAdidas2014, config
 from gaitmap_datasets.egait_adidas_2014.helper import (
     get_all_participants_and_tests,
     get_mocap_data_for_participant_and_test,
+    get_synced_stride_list,
 )
 
 base_dir = config().egait_adidas_2014
@@ -77,3 +78,37 @@ class TestDataset:
             offset = trial.mocap_offset_s_[sensor] * trial.sampling_rate_hz
             # All values should be larger than the mocap offset, as all values are within the mocap data
             assert (data[sensor] > offset).all().all()
+
+    def test_load_all(self):
+        dataset = EgaitAdidas2014(data_folder=base_dir)
+        with pytest.warns(UserWarning) as w:
+            for p in dataset:
+                assert len(p.data) > 0
+                assert len(p.segmented_stride_list_) > 0
+        assert len(w) == 2
+
+    def test_stride_list_conversion(self):
+        dataset = EgaitAdidas2014(data_folder=base_dir)[3]
+
+        strides_mocap = get_synced_stride_list(*dataset.group, system="mocap", base_dir=dataset._data_folder_path)
+        strides_imu = get_synced_stride_list(*dataset.group, system="imu", base_dir=dataset._data_folder_path)
+        converted_mocap_to_imu = dataset.convert_events(strides_mocap, from_time_axis="mocap", to_time_axis="imu")
+        converted_imu_to_mocap = dataset.convert_events(strides_imu, from_time_axis="imu", to_time_axis="mocap")
+
+        for sensor in ["left_sensor", "right_sensor"]:
+            assert converted_mocap_to_imu[sensor].equals(strides_imu[sensor])
+            assert converted_imu_to_mocap[sensor].equals(strides_mocap[sensor].round(0).astype(int))
+
+    def test_stride_list_conversion_roundtrip(self):
+        dataset = EgaitAdidas2014(data_folder=base_dir)[3]
+
+        stride_list = dataset.segmented_stride_list_
+        roundtrip = dataset.convert_events(
+            dataset.convert_events(stride_list, from_time_axis="imu", to_time_axis="mocap"),
+            from_time_axis="mocap",
+            to_time_axis="imu",
+        )
+
+        for sensor in ["left_sensor", "right_sensor"]:
+            # The first sample should be 0, as it marks the start of the mocap data
+            assert stride_list[sensor].equals(roundtrip[sensor])
