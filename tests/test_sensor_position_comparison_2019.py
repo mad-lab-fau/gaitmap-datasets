@@ -269,3 +269,10 @@ class TestMocapDataset:
         assert converted.iloc[0]["end"] - converted.iloc[0]["start"] == np.round(
             100 / dataset.mocap_sampling_rate_hz_ * dataset.sampling_rate_hz
         )
+
+    def test_marker_position_per_stride_(self):
+        dataset = SensorPositionComparison2019Mocap(data_folder=base_dir)[0]
+        marker_position_per_stride = dataset.marker_position_per_stride_
+        for marker_per_foot in marker_position_per_stride.values():
+            assert isinstance(marker_per_foot, pd.DataFrame)
+            assert marker_per_foot.index.names == ["s_id", "sample"]

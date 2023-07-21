@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - For two participants of the EgaitAddidas2014 dataset the offset between the systems was for some reason not consistent
   across all strides. We decided to ignore this, but warn the user about it.
 
+### Added
+
+- SensorPositionComparison2019 now has a method to get the marker trajectories per stride. 
+
 ## [0.13.0] - 2023-07-13
 
 ### Fixed

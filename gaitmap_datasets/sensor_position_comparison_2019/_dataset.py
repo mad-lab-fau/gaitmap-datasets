@@ -293,6 +293,24 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
         df.index.name = "time after start [s]"
         return df
 
+    @property
+    def marker_position_per_stride_(self):
+        self.assert_is_single(None, "marker_position_per_stride_")
+        trajectory = self.marker_position_
+        mocap_events = self.mocap_events_
+
+        per_stride_trajectory = {}
+        for foot, events in mocap_events.items():
+            output_per_foot = {}
+            data = trajectory.filter(regex=f"{foot[0]}_.*")
+            for s_id, stride in events.iterrows():
+                # This cuts out the n+1 samples for each stride.
+                # The first sample is the value before the stride started.
+                # This is the equivalent to the "initial" position/orientation
+                output_per_foot[s_id] = data.iloc[int(stride["start"]) : int(stride["end"] + 1)].reset_index(drop=True)
+            per_stride_trajectory[foot] = pd.concat(output_per_foot, names=["s_id", "sample"], axis=0)
+        return per_stride_trajectory
+
     def create_index(self) -> pd.DataFrame:
         tests = (
             (p, t)
