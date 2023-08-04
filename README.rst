@@ -70,8 +70,8 @@ MaD-Lab Dataset
      - https://zenodo.org/record/5747173
      - https://zenodo.org/record/5747173
    * - EgaitAdidas2014
-     - TBD
-     - TBD
+     - https://osf.io/qjm8y/
+     - https://osf.io/download/hfeqn
    * - Kluge2017
      - https://www.mad.tf.fau.de/research/datasets/#collapse_13
      - https://osf.io/cfb7e/
