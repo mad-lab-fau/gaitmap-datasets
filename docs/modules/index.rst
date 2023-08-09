@@ -25,6 +25,7 @@ interface.
     StairAmbulationHealthy2021Full
     SensorPositionComparison2019Segmentation
     SensorPositionComparison2019Mocap
+    Kluge2017
     PyShoe2019Vicon
     PyShoe2019Hallway
     PyShoe2019Stairs
