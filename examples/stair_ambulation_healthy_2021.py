@@ -18,9 +18,9 @@ On loading the transform the coordinate systems of the foot-mounted IMUs to the 
 
 We provide two `tpcp.Dataset` classes to access the data:
 
-1. :class:`gaitmap_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021PerTest`: This class allows to access
+1. :class:`~gaitmap_datasets.StairAmbulationHealthy2021PerTest`: This class allows to access
    all data and events for each of the performed gait tests individually.
-2. :class:`gaitmap_datasets.stair_ambulation_healthy_2021.StairAmbulationHealthy2021Full`: This class allows to access the
+2. :class:`~gaitmap_datasets.StairAmbulationHealthy2021Full`: This class allows to access the
    entire recordings for each participant (two recordings per participant) independently of the performed gait tests.
 
 In the following we will show the usage of both classes and the data that is contained within.
@@ -31,7 +31,7 @@ In the following we will show the usage of both classes and the data that is con
 #
 # StairAmbulationHealthy2021PerTest
 # =================================
-# First we can simple create an instance of the dataset class and directly see the contained data points.
+# First we can simply create an instance of the dataset class and directly see the contained data points.
 # Note, that we will enable the loading of all available data (pressure, baro, and hip sensor).
 # You might want to disable that, to reduce the RAM usage and speed up the data loading.
 from joblib import Memory
