@@ -1,3 +1,8 @@
+.. image:: ./docs/_static/logo/datasets_logo_with_text.png
+   :height: 150px
+
+|
+
 .. image:: https://img.shields.io/pypi/v/gaitmap-datasets
    :target: https://pypi.org/project/gaitmap-datasets/
 .. image:: https://img.shields.io/badge/docs-online-green
@@ -24,6 +29,9 @@ All datasets APIs are built using the
 `tpcp.Dataset <https://tpcp.readthedocs.io/en/latest/modules/generated/dataset/tpcp.Dataset.html#tpcp.Dataset>`_
 interface.
 For available datasets see the table below.
+
+This package is part of the gaitmap ecosystem.
+`Learn more <https://gaitmap.readthedocs.io/en/latest/source/user_guide/gaitmap_ecosystem.html>`_
 
 Usage
 -----

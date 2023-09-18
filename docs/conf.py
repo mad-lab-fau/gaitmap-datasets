@@ -42,6 +42,7 @@ copyright = f"2022 - {datetime.now().year}, MaD Lab, FAU"
 HERE = Path(__file__).parent
 with (HERE.parent / "README.rst").open() as f:
     out = f.read()
+out = out.replace("./docs/_static/logo/datasets_logo_with_text.png", "./_static/logo/datasets_logo_with_text.png")
 with (HERE / "README.rst").open("w+") as f:
     f.write(out)
 
@@ -112,6 +113,9 @@ add_function_parentheses = False
 #
 # Activate the theme.
 html_theme = "pydata_sphinx_theme"
+html_favicon = "_static/logo/datasets.ico"
+html_logo = "_static/logo/datasets_logo.png"
+
 html_theme_options = {
     "github_url": URL,
     "show_prev_next": False,
@@ -120,7 +124,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ["_static"]
+html_static_path = ["_static"]
 
 # -- Options for extensions --------------------------------------------------
 # Intersphinx
@@ -162,4 +166,3 @@ linkcode_resolve = make_linkcode_resolve(
     "gaitmap_datasets",
     "https://github.com/mad-lab-fau/gaitmap-datasets/blob/{revision}/{package}/{path}#L{lineno}",
 )
-
