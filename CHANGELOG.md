@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Dataset classes now expose a `download(...)` entry point. Automatic downloads are available for
+  `EgaitAdidas2014`, `StairAmbulationHealthy2021Full`, `StairAmbulationHealthy2021PerTest`,
+  `SensorPositionComparison2019Segmentation`, and `SensorPositionComparison2019Mocap`.
+- Datasets without automatic download support now raise dataset-specific instructions that explain how to obtain the
+  data manually.
+
 ### Changed
 
 - The supported Python range is now explicitly `3.9` to `3.13`. Python `3.14` is not declared as supported yet,
