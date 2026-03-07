@@ -125,12 +125,12 @@ convention = "numpy"
 docstring-code-format = true
 
 [tool.poe.tasks]
-_format = "ruff format ."
-_auto_fix = "ruff check . --fix-only --show-fixes --exit-zero"
+_format = "ruff format gaitmap_datasets tests _tasks.py docs/__init__.py docs/conf.py docs/sphinxext"
+_auto_fix = "ruff check gaitmap_datasets tests _tasks.py docs/__init__.py docs/conf.py docs/sphinxext --fix-only --show-fixes --exit-zero"
 format = ["_auto_fix", "_format"]
 lint = { cmd = "ruff check gaitmap_datasets", help = "Lint all files with ruff." }
 _lint_ci = "ruff check gaitmap_datasets --output-format=github"
-_check_format = "ruff format . --check"
+_check_format = "ruff format gaitmap_datasets tests _tasks.py docs/__init__.py docs/conf.py docs/sphinxext --check"
 ci_check = { sequence = ["_check_format", "_lint_ci"], help = "Check all potential format and linting issues." }
 test = { cmd = "pytest --cov=gaitmap_datasets --cov-report=term-missing --cov-report=xml", help = "Run Pytest with coverage." }
 version = { script = "_tasks:task_update_version()", help = "Bump version in all relevant places." }
