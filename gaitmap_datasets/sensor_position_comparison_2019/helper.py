@@ -283,7 +283,7 @@ def align_coordinates(multi_sensor_data: pd.DataFrame):
         if "_" not in s:
             continue
         foot, pos = s.split("_")
-        rot = COORDINATE_TRANSFORMATION_DICT.get(f"qualisis_{pos}_nilspodv1", None)
+        rot = COORDINATE_TRANSFORMATION_DICT.get(f"qualisis_{pos}_nilspodv1")
         if not rot:
             continue
         rotations[s] = Rotation.from_matrix(rot[f"{feet[foot]}_sensor"])

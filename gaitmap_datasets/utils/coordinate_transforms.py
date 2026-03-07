@@ -134,7 +134,7 @@ def flip_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Rota
     """
     rotation_dict = rotation
     if not isinstance(rotation_dict, dict):
-        rotation_dict = {k: rotation for k in dataset.columns.unique(level=0)}
+        rotation_dict = dict.fromkeys(dataset.columns.unique(level=0), rotation)
 
     rotated_dataset = dataset.copy()
     original_cols = dataset.columns
@@ -168,7 +168,7 @@ def rotate_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Ro
     """
     rotation_dict = rotation
     if not isinstance(rotation_dict, dict):
-        rotation_dict = {k: rotation for k in dataset.columns.unique(level=0)}
+        rotation_dict = dict.fromkeys(dataset.columns.unique(level=0), rotation)
 
     rotated_dataset = dataset.copy()
     original_cols = dataset.columns

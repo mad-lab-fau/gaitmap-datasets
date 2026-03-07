@@ -1,4 +1,5 @@
 """Utils to manage the configuration of the datasets path."""
+
 import json
 from dataclasses import dataclass, fields
 from pathlib import Path
@@ -146,7 +147,7 @@ def get_dataset_path(dataset_name: str) -> Path:
         "3. Create a json config file containing the required paths (see `create_config_template`) and set it as the "
         "global config: `gaitmap_datasets.set_config(path_to_config)`\n"
         "4. If you are currently developing the package, you can create a `.datasets.dev.json` file in the "
-        "root of the package (`poe create_dev_config`)."
+        "root of the package (`uv run poe create_dev_config`)."
         "This file will be automatically loaded if no other config is set.\n\n"
         "If you already have a done one of the above steps, double check the spelling of the dataset name in your "
         "config."

@@ -1,8 +1,10 @@
 """A set of helpers to load the dataset."""
+
+from collections.abc import Sequence
 from functools import lru_cache
 from itertools import product
 from pathlib import Path
-from typing import Dict, Literal, NamedTuple, Sequence, Tuple, Union
+from typing import Dict, Literal, NamedTuple, Tuple, Union
 
 import pandas as pd
 import scipy.io as sio

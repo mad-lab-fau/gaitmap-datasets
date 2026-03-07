@@ -4,10 +4,10 @@ from pathlib import Path
 
 import pytest
 
-from gaitmap_datasets import config, create_config_template, reset_config, set_config
+from gaitmap_datasets import DatasetsConfig, config, create_config_template, reset_config, set_config
 
 
-@pytest.fixture()
+@pytest.fixture
 def config_file_clean():
     """Clean up the config file."""
     reset_config()
@@ -38,7 +38,7 @@ def test_create_config_template(config_file_clean):
         assert config_path.exists()
         content = json.load(open(config_path))
         assert "datasets" in content
-        assert len(content["datasets"]) == 6
+        assert len(content["datasets"]) == len(DatasetsConfig.__dataclass_fields__)
 
         # We just check that we don't get an error when loading the config.
         set_config(config_path)

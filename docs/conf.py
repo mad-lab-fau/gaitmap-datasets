@@ -29,11 +29,11 @@ URL = "https://github.com/mad-lab-fau/gaitmap-datasets"
 
 # -- Project information -----------------------------------------------------
 
-# Info from poetry config:
-info = toml.load("../pyproject.toml")["tool"]["poetry"]
+# Info from project config:
+info = toml.load("../pyproject.toml")["project"]
 
 project = info["name"]
-author = ", ".join(info["authors"])
+author = ", ".join(author["name"] for author in info["authors"])
 release = info["version"]
 
 copyright = f"2022 - {datetime.now().year}, MaD Lab, FAU"
@@ -65,7 +65,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.githubpages",
     "sphinx_gallery.gen_gallery",
-    "recommonmark",
+    "myst_parser",
 ]
 
 # this is needed for some reason...
@@ -81,7 +81,7 @@ if os.environ.get("NO_MATHJAX"):
     mathjax_path = ""
 else:
     extensions.append("sphinx.ext.mathjax")
-    mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/" "tex-chtml.js"
+    mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
 
 autodoc_default_options = {"members": True, "inherited-members": True, "special_members": True}
 # autodoc_typehints = 'description'  # Does not work as expected. Maybe try at future date again

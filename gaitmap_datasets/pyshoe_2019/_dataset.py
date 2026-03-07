@@ -1,4 +1,5 @@
 """The core tpcp dataset classes for the pyshoe dataset."""
+
 from pathlib import Path
 from typing import List, Optional, Union
 
@@ -39,7 +40,7 @@ class PyShoe2019Vicon(Dataset):
         data_folder: Optional[Union[str, Path]] = None,
         *,
         groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None
+        subset_index: Optional[pd.DataFrame] = None,
     ):
         self.data_folder = data_folder
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)
@@ -109,7 +110,7 @@ class PyShoe2019Hallway(Dataset):
         data_folder: Optional[Union[str, Path]] = None,
         *,
         groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None
+        subset_index: Optional[pd.DataFrame] = None,
     ):
         self.data_folder = data_folder
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)
@@ -189,7 +190,7 @@ class PyShoe2019Stairs(Dataset):
         data_folder: Optional[Union[str, Path]] = None,
         *,
         groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None
+        subset_index: Optional[pd.DataFrame] = None,
     ):
         self.data_folder = data_folder
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)

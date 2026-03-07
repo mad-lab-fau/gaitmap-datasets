@@ -22,6 +22,7 @@ Run the script as follows:
 python -m gaitmap_datasets.stair_ambulation_healthy_2021.scripts.create_pressure_events --data_path="..."
 ```
 """
+
 import argparse
 from pathlib import Path
 

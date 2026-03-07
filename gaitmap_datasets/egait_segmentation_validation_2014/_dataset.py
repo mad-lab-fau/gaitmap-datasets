@@ -1,4 +1,5 @@
 """The core tpcp Dataset class for the Egait Stride Segementation Validation Dataset."""
+
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Union
 
@@ -25,7 +26,7 @@ class EgaitSegmentationValidation2014(Dataset):
         exclude_incomplete_participants: bool = False,
         memory: Memory = Memory(None),
         groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None
+        subset_index: Optional[pd.DataFrame] = None,
     ):
         self.exclude_incomplete_participants = exclude_incomplete_participants
         self.data_folder = data_folder

@@ -106,7 +106,7 @@ def get_all_data_for_participant(
     # apply ferraris calibration on imu data
     session.calibrate_imu(
         session.find_closest_calibration(folder=_calibration_folder(base_dir), filter_cal_type="ferraris"),
-        inplace=True,  # noqa: PD002
+        inplace=True,
     )
     session_df = session.data_as_df(concat_df=True)
 

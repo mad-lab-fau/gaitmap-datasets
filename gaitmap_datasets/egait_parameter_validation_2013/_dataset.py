@@ -1,4 +1,5 @@
 """The core tpcp Dataset class for the Egait Parameter Validation Dataset."""
+
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Union
 
@@ -42,7 +43,7 @@ class EgaitParameterValidation2013(Dataset):
         use_alternative_calibrations: bool = True,
         memory: Memory = Memory(None),
         groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None
+        subset_index: Optional[pd.DataFrame] = None,
     ):
         self.data_folder = data_folder
         self.include_bad_data = include_bad_data

@@ -7,8 +7,8 @@
    :target: https://pypi.org/project/gaitmap-datasets/
 .. image:: https://img.shields.io/badge/docs-online-green
    :target: https://mad-lab-fau.github.io/gaitmap-datasets
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-   :target: https://github.com/psf/black
+.. image:: https://img.shields.io/badge/lint-ruff-46a758.svg
+   :target: https://github.com/astral-sh/ruff
 .. image:: https://img.shields.io/pypi/dm/gaitmap-datasets
    :target: https://pypi.org/project/gaitmap-datasets/
 
@@ -158,13 +158,14 @@ Then you can set the global config for gaitmap-datsets to point to the config fi
 Dev setup
 ---------
 
-First clone the repo and install the dependencies using `poetry` (note this project only supports poetry >=1.2).
+First clone the repo, install Python 3.9 or newer, and install
+`uv <https://docs.astral.sh/uv/>`_.
 
 .. code-block:: bash
 
     git clone https://github.com/mad-lab-fau/gaitmap-datasets.git
     cd gaitmap-datasets
-    poetry install
+    uv sync --group dev
 
 
 Downloading and linking datasets
@@ -173,7 +174,7 @@ Downloading and linking datasets
 The datasets are not included in the package, and you need to download them manually (see above).
 Store the datasets you need in whatever folder you like.
 
-Then run `poetry run poe create_dev_config`.
+Then run `uv run poe create_dev_config`.
 This should create a `.datasets.dev.json` file in the root of the repo.
 Modify this file to point to the folders of the respective datasets.
 
@@ -186,7 +187,7 @@ The `/tests` directory contains a set of tests to check the functionality of the
 However, most tests rely on the existence of the respective datasets in certain folders outside the library.
 Therefore, the tests can only be run locally and not on the CI server.
 
-To run them locally, make sure you completed the dataset setup (see above) then run `poe test`.
+To run them locally, make sure you completed the dataset setup (see above) then run `uv run poe test`.
 
 Documentation (build instructions)
 ++++++++++++++++++++++++++++++++++
@@ -203,7 +204,7 @@ Hence, before you attempt to build the docs, you need to initialize the submodul
 
     git submodule update --init --recursive
 
-After that you can run `poe docs` to build the docs and then `poe upload_docs` to push the changes to the gh-pages
+After that you can run `uv run poe docs` to build the docs and then `uv run poe upload_docs` to push the changes to the gh-pages
 branch.
 We will always just update a single commit on the gh-pages branch to keep the effective file size small.
 
@@ -214,5 +215,5 @@ We will always just update a single commit on the gh-pages branch to keep the ef
 After an update of the documentation, you will see that you also need to make a commit in the main repo, as the commit 
 hash of the docs submodule has changed.
 
-To make sure you don't forget to update the docs, the `poe prepare_release` task will also build and upload the docs 
-automatically.
+To make sure you don't forget to update the docs, the `uv run poe prepare_release` task will also build and upload the
+docs automatically.

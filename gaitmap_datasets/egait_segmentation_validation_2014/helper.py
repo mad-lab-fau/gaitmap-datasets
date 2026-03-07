@@ -2,6 +2,7 @@
 
 These are the logic behind the dataset implementation, but can also be used independently.
 """
+
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Tuple
 
@@ -55,7 +56,7 @@ def _get_sensor_node(stride_segmentation_file_path: Path) -> str:
 def _extract_participant_id(file_name: str, test: Tests) -> str:
     """Extract the participant id from the file name."""
     if test == "4x10m":
-        return file_name.split("_")[0].upper()
+        return file_name.split("_", maxsplit=1)[0].upper()
     if test == "free_walk":
         for foot in ["left", "right"]:
             if f"{foot}foot" in file_name.lower():

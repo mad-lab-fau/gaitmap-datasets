@@ -1,4 +1,5 @@
 """Methods to access the open source gait datasets of the MaD-Lab."""
+
 from gaitmap_datasets._config import (
     DatasetsConfig,
     config,
@@ -22,22 +23,22 @@ from gaitmap_datasets.stair_ambulation_healthy_2021 import (
 )
 
 __all__ = [
-    "EgaitSegmentationValidation2014",
-    "EgaitParameterValidation2013",
+    "DatasetsConfig",
     "EgaitAdidas2014",
-    "StairAmbulationHealthy2021PerTest",
-    "StairAmbulationHealthy2021Full",
-    "SensorPositionComparison2019Segmentation",
-    "SensorPositionComparison2019Mocap",
-    "PyShoe2019Vicon",
+    "EgaitParameterValidation2013",
+    "EgaitSegmentationValidation2014",
+    "Kluge2017",
     "PyShoe2019Hallway",
     "PyShoe2019Stairs",
-    "Kluge2017",
-    "DatasetsConfig",
-    "set_config",
-    "reset_config",
+    "PyShoe2019Vicon",
+    "SensorPositionComparison2019Mocap",
+    "SensorPositionComparison2019Segmentation",
+    "StairAmbulationHealthy2021Full",
+    "StairAmbulationHealthy2021PerTest",
     "config",
     "create_config_template",
     "get_dataset_path",
+    "reset_config",
+    "set_config",
 ]
 __version__ = "0.14.0"

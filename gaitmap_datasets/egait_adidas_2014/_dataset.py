@@ -1,4 +1,5 @@
 """The core tpcp Dataset class for the Egait Parameter Validation Dataset."""
+
 from pathlib import Path
 from typing import Callable, Dict, List, Literal, Optional, TypeVar, Union
 
@@ -174,10 +175,10 @@ class EgaitAdidas2014(Dataset):
             if to_time_axis == "imu":
                 return _apply_to_dict_dfs(
                     events,
-                    lambda name, df: convert_sampling_rates_event_list(
-                        df, self.mocap_sampling_rate_hz_, self.sampling_rate_hz
-                    )
-                    + int(round(self.mocap_offset_s_[name] * self.sampling_rate_hz)),
+                    lambda name, df: (
+                        convert_sampling_rates_event_list(df, self.mocap_sampling_rate_hz_, self.sampling_rate_hz)
+                        + int(round(self.mocap_offset_s_[name] * self.sampling_rate_hz))
+                    ),
                 )
             if to_time_axis == "time":
                 return _apply_to_dict_dfs(events, lambda _, df: df / self.mocap_sampling_rate_hz_)
