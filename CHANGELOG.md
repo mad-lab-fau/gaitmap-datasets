@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The minimum supported `tpcp` version is now `2.0`.
 - `nilspodlib` is now required at `>=4.1.2`, which restores a clean dependency setup for Python `3.9`.
 - The `c3d` requirement now allows `0.6+`, which lets the resolver use current NumPy `2.x` releases where supported.
+- Dataset classes now validate their configured root folders earlier and raise dataset-specific error messages when the
+  selected path does not match the expected folder structure.
 
 ### Development
 
