@@ -8,24 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Updated the `tpcp` dependency floor to `>=2.0` and aligned the package metadata and CI with Python 3.9+ while
-  keeping Python 3.9 supported.
-- Updated the `nilspodlib` dependency to `>=4.1.2` and removed the temporary Python-version-specific workaround that
-  was only needed before the Python 3.9 compatibility fix in `nilspodlib`.
-- Relaxed the `c3d` dependency cap so the resolver can use `c3d>=0.6` and newer NumPy versions where supported.
-- Limited the declared Python support range to `<3.14`, because the current `imucal` release chain does not yet
-  support Python 3.14.
+- The supported Python range is now explicitly `3.9` to `3.13`. Python `3.14` is not declared as supported yet,
+  because the current `imucal` release chain does not support it.
+- The minimum supported `tpcp` version is now `2.0`.
+- `nilspodlib` is now required at `>=4.1.2`, which restores a clean dependency setup for Python `3.9`.
+- The `c3d` requirement now allows `0.6+`, which lets the resolver use current NumPy `2.x` releases where supported.
 
 ### Development
 
-- Migrated repository development tooling from Poetry to `uv`, including dependency management, lockfile handling,
-  task execution, and GitHub Actions publishing/linting workflows.
-- Switched the package build backend from `hatchling` to `uv_build`.
-- Moved the package to a `src/` layout to match the `uv_build` configuration and keep import resolution explicit.
-- Removed upper version bounds from the development dependencies and refreshed the lockfile against current compatible
-  releases.
-- Added a repo-specific Claude release workflow skill for the `uv`-based release process and the manual `gh-pages`
-  docs publish step used by this repository.
+- The development workflow now uses `uv` for environment management, locking, task execution, and package builds.
+- The package now uses a `src/` layout and `uv_build`.
+- Development dependency upper bounds were removed and the lockfile was refreshed against current compatible releases.
 
 ## [0.14.0] - 2023-07-21
 
