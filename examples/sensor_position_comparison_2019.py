@@ -39,6 +39,9 @@ All other sensor transformations are shown at the end of this document.
 # .. warning:: For this example to work, you need to have a global config set containing the path to the dataset.
 #              Check the `README.md` for more information.
 #
+#              If you don't have the dataset yet, you can download it via
+#              `SensorPositionComparison2019Segmentation.download("/path/to/base_folder")`.
+#
 # SensorPositionComparison2019Segmentation
 # ========================================
 # This version of the dataset contains one recording per participant with all tests and movement between the tests.

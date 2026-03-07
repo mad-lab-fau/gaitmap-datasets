@@ -29,6 +29,9 @@ In the following we will show the usage of both classes and the data that is con
 # .. warning:: For this example to work, you need to have a global config set containing the path to the dataset.
 #              Check the `README.md` for more information.
 #
+#              If you don't have the dataset yet, you can download it via
+#              `StairAmbulationHealthy2021PerTest.download("/path/to/base_folder")`.
+#
 # StairAmbulationHealthy2021PerTest
 # =================================
 # First we can simply create an instance of the dataset class and directly see the contained data points.

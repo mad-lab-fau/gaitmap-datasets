@@ -8,6 +8,7 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
+from gaitmap_datasets._download import download_and_extract_osf_zip
 from gaitmap_datasets.egait_adidas_2014.helper import (
     get_all_data_for_participant_and_test,
     get_all_participants_and_tests,
@@ -30,6 +31,15 @@ def _apply_to_dict_dfs(dict_of_dfs: DictOfDfs, function: Callable[[str, pd.DataF
 
 class EgaitAdidas2014(Dataset):
     """Egait dataset with Mocap reference recorded in 2014."""
+
+    @staticmethod
+    def download(base_path: Union[str, Path]) -> Path:
+        """Download the dataset and return the extracted dataset path."""
+        return download_and_extract_osf_zip(
+            base_path,
+            dataset_name=Path(__file__).parent.name,
+            download_url="https://osf.io/download/hfeqn/",
+        )
 
     def __init__(
         self,

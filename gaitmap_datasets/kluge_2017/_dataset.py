@@ -8,6 +8,7 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets import get_dataset_path
+from gaitmap_datasets._download import raise_manual_download_error
 from gaitmap_datasets.kluge_2017.helper import (
     IMU_SAMPLING_RATE_HZ,
     MOCAP_SAMPLING_RATE_HZ,
@@ -33,6 +34,18 @@ class Kluge2017(Dataset):
     subset_index
         `tpcp` internal parameters.
     """
+
+    @staticmethod
+    def download(_base_path: Union[str, Path]) -> Path:
+        """Raise an error explaining how to obtain the dataset manually."""
+        raise_manual_download_error(
+            "Kluge2017",
+            "Automatic download is not implemented yet.\n"
+            "Please download the dataset files manually from https://osf.io/cfb7e/ and place them into a dataset "
+            "folder.\n"
+            "The folder should contain at least `raw_data_export.mat`, `subjects.csv`, and "
+            "`stride_parameters.csv`, then pass that folder to `Kluge2017(...)`.",
+        )
 
     data_folder: Optional[Union[str, Path]]
     memory: Memory
