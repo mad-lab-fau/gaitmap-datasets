@@ -8,6 +8,7 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
+from gaitmap_datasets._download import download_and_extract_zip
 from gaitmap_datasets.sensor_position_comparison_2019.helper import (
     align_coordinates,
     get_all_participants,
@@ -139,6 +140,16 @@ class SensorPositionComparison2019Segmentation(_SensorPostionDataset):
 
     """
 
+    @staticmethod
+    def download(base_path: Union[str, Path]) -> Path:
+        """Download the dataset and return the extracted dataset path."""
+        return download_and_extract_zip(
+            base_path,
+            dataset_name=Path(__file__).parent.name,
+            download_url="https://zenodo.org/records/5747173/files/sensorpositoncomparison.zip?download=1",
+            version_identifier="record_5747173",
+        )
+
     @property
     def data(self) -> pd.DataFrame:
         """Get the IMU data of the as pandas Dataframe."""
@@ -193,6 +204,16 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
         `tpcp` internal parameters.
 
     """
+
+    @staticmethod
+    def download(base_path: Union[str, Path]) -> Path:
+        """Download the dataset and return the extracted dataset path."""
+        return download_and_extract_zip(
+            base_path,
+            dataset_name=Path(__file__).parent.name,
+            download_url="https://zenodo.org/records/5747173/files/sensorpositoncomparison.zip?download=1",
+            version_identifier="record_5747173",
+        )
 
     data_padding_s: float
 

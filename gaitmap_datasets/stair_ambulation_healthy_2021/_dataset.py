@@ -9,6 +9,7 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
+from gaitmap_datasets._download import download_and_extract_osf_zip
 from gaitmap_datasets.stair_ambulation_healthy_2021.helper import (
     StrideTypes,
     get_all_data_for_participant,
@@ -209,6 +210,15 @@ class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
 
     """
 
+    @staticmethod
+    def download(base_path: Union[str, Path]) -> Path:
+        """Download the dataset and return the extracted dataset path."""
+        return download_and_extract_osf_zip(
+            base_path,
+            dataset_name=Path(__file__).parent.name,
+            download_url="https://osf.io/download/5ueq6/",
+        )
+
     def _get_participant_and_part(self, error_name: str) -> Tuple[str, Literal["part_1", "part_2"]]:
         self.assert_is_single(None, error_name)
         participant, test = self.group
@@ -286,6 +296,15 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
         Whether to load the raw data recorded by the barometer.
 
     """
+
+    @staticmethod
+    def download(base_path: Union[str, Path]) -> Path:
+        """Download the dataset and return the extracted dataset path."""
+        return download_and_extract_osf_zip(
+            base_path,
+            dataset_name=Path(__file__).parent.name,
+            download_url="https://osf.io/download/5ueq6/",
+        )
 
     def __init__(
         self,

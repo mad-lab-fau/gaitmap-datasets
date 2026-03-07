@@ -8,6 +8,7 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
+from gaitmap_datasets._download import raise_manual_download_error
 from gaitmap_datasets.egait_segmentation_validation_2014.helper import (
     get_all_data_for_participant,
     get_all_participants,
@@ -18,6 +19,17 @@ from gaitmap_datasets.egait_segmentation_validation_2014.helper import (
 
 class EgaitSegmentationValidation2014(Dataset):
     """Egait stride segmentation validation 2014 dataset."""
+
+    @staticmethod
+    def download(_base_path: Union[str, Path]) -> Path:
+        """Raise an error explaining how to obtain the dataset manually."""
+        raise_manual_download_error(
+            "EgaitSegmentationValidation2014",
+            "This dataset is not publicly hosted for direct download.\n"
+            "Please contact the data owner via https://www.mad.tf.fau.de/research/datasets/#collapse_18 and "
+            "download the dataset manually.\n"
+            "After unpacking it, pass the dataset root folder to `EgaitSegmentationValidation2014(...)`.",
+        )
 
     def __init__(
         self,

@@ -75,8 +75,8 @@ MaD-Lab Dataset
      - https://osf.io/sgbw7/
      - https://osf.io/download/5ueq6/
    * - SensorPositionDataset2019
-     - https://zenodo.org/record/5747173
-     - https://zenodo.org/record/5747173
+     - https://zenodo.org/records/5747173
+     - https://zenodo.org/records/5747173/files/sensorpositoncomparison.zip?download=1
    * - EgaitAdidas2014
      - https://osf.io/qjm8y/
      - https://osf.io/download/hfeqn
@@ -114,6 +114,15 @@ There are multiple ways to do this:
     from gaitmap_datasets import EgaitSegmentationValidation2014
 
     dataset = EgaitSegmentationValidation2014("/path/to/dataset")
+
+For the datasets with public direct downloads, you can also let the dataset class download and unpack the data for you:
+
+.. code-block:: python
+
+    from gaitmap_datasets import StairAmbulationHealthy2021PerTest
+
+    dataset_path = StairAmbulationHealthy2021PerTest.download("/path/to/base_folder")
+    dataset = StairAmbulationHealthy2021PerTest(dataset_path)
 
 
 2. Alternatively, you can avoid hard-coding path in one location by creating a json config file:
