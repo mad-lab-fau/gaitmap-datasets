@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   keeping Python 3.9 supported.
 - Updated the `nilspodlib` dependency to `>=4.1.2` and removed the temporary Python-version-specific workaround that
   was only needed before the Python 3.9 compatibility fix in `nilspodlib`.
+- Relaxed the `c3d` dependency cap so the resolver can use `c3d>=0.6` and newer NumPy versions where supported.
 - Limited the declared Python support range to `<3.14`, because the current `imucal` release chain does not yet
   support Python 3.14.
 
@@ -20,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Migrated repository development tooling from Poetry to `uv`, including dependency management, lockfile handling,
   task execution, and GitHub Actions publishing/linting workflows.
 - Switched the package build backend from `hatchling` to `uv_build`.
+- Removed upper version bounds from the development dependencies and refreshed the lockfile against current compatible
+  releases.
 - Added a repo-specific Claude release workflow skill for the `uv`-based release process and the manual `gh-pages`
   docs publish step used by this repository.
 
