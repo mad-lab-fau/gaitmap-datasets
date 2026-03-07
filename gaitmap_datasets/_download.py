@@ -123,7 +123,7 @@ def download_and_extract_zip(
     download_url: str,
     version_identifier: str,
     min_existing_files: int = 5,
-    ) -> Path:
+) -> Path:
     """Download and unpack a zipped dataset with a caller-provided version identifier."""
     return _download_and_extract_zip(
         base_path,
@@ -136,7 +136,4 @@ def download_and_extract_zip(
 
 def raise_manual_download_error(dataset_name: str, instructions: str) -> None:
     """Raise a consistent error for datasets without automatic download support."""
-    raise RuntimeError(
-        f"Automatic download is not supported for {dataset_name}.\n"
-        f"{instructions}"
-    )
+    raise RuntimeError(f"Automatic download is not supported for {dataset_name}.\n{instructions}")
