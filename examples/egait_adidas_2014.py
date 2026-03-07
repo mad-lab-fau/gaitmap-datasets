@@ -47,6 +47,9 @@ In the following we will show how to interact with the dataset and how to make s
 # .. warning:: For this example to work, you need to have a global config set containing the path to the dataset.
 #              Check the `README.md` for more information.
 #
+#              If you don't have the dataset yet, you can download it via
+#              `EgaitAdidas2014.download("/path/to/base_folder")`.
+#
 # First we create a simple instance of the dataset class.
 from gaitmap_datasets import EgaitAdidas2014
 from gaitmap_datasets.utils import convert_segmented_stride_list

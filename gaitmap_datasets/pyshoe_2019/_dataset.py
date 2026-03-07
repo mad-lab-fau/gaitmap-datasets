@@ -7,6 +7,7 @@ import pandas as pd
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
+from gaitmap_datasets._download import raise_manual_download_error
 from gaitmap_datasets.pyshoe_2019.helper import (
     get_all_hallway_trials,
     get_all_stairs_trials,
@@ -32,6 +33,18 @@ class PyShoe2019Vicon(Dataset):
         `tpcp` internal parameters.
 
     """
+
+    @staticmethod
+    def download(_base_path: Union[str, Path]) -> Path:
+        """Raise an error explaining how to obtain the dataset manually."""
+        raise_manual_download_error(
+            "PyShoe2019Vicon",
+            "Automatic download is not implemented yet.\n"
+            "Please obtain the dataset via https://github.com/utiasSTARS/pyshoe (preferred) and run "
+            "`bash download_data.sh` in the repo root, or download it from "
+            "https://ieee-dataport.org/open-access/university-toronto-foot-mounted-inertial-navigation-dataset.\n"
+            "Pass the PyShoe dataset root folder containing the `data` directory to `PyShoe2019Vicon(...)`.",
+        )
 
     data_folder: Optional[Union[str, Path]]
 
@@ -102,6 +115,18 @@ class PyShoe2019Hallway(Dataset):
         `tpcp` internal parameters.
 
     """
+
+    @staticmethod
+    def download(_base_path: Union[str, Path]) -> Path:
+        """Raise an error explaining how to obtain the dataset manually."""
+        raise_manual_download_error(
+            "PyShoe2019Hallway",
+            "Automatic download is not implemented yet.\n"
+            "Please obtain the dataset via https://github.com/utiasSTARS/pyshoe (preferred) and run "
+            "`bash download_data.sh` in the repo root, or download it from "
+            "https://ieee-dataport.org/open-access/university-toronto-foot-mounted-inertial-navigation-dataset.\n"
+            "Pass the PyShoe dataset root folder containing the `data` directory to `PyShoe2019Hallway(...)`.",
+        )
 
     data_folder: Optional[Union[str, Path]]
 
@@ -182,6 +207,18 @@ class PyShoe2019Stairs(Dataset):
         `tpcp` internal parameters.
 
     """
+
+    @staticmethod
+    def download(_base_path: Union[str, Path]) -> Path:
+        """Raise an error explaining how to obtain the dataset manually."""
+        raise_manual_download_error(
+            "PyShoe2019Stairs",
+            "Automatic download is not implemented yet.\n"
+            "Please obtain the dataset via https://github.com/utiasSTARS/pyshoe (preferred) and run "
+            "`bash download_data.sh` in the repo root, or download it from "
+            "https://ieee-dataport.org/open-access/university-toronto-foot-mounted-inertial-navigation-dataset.\n"
+            "Pass the PyShoe dataset root folder containing the `data` directory to `PyShoe2019Stairs(...)`.",
+        )
 
     data_folder: Optional[Union[str, Path]]
 

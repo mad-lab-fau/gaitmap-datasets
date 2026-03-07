@@ -8,6 +8,7 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
+from gaitmap_datasets._download import raise_manual_download_error
 from gaitmap_datasets.egait_parameter_validation_2013.helper import (
     get_all_data_for_participant,
     get_all_participants,
@@ -34,6 +35,17 @@ class EgaitParameterValidation2013(Dataset):
         If False, the original calibration files are used (as in the original publication).
 
     """
+
+    @staticmethod
+    def download(_base_path: Union[str, Path]) -> Path:
+        """Raise an error explaining how to obtain the dataset manually."""
+        raise_manual_download_error(
+            "EgaitParameterValidation2013",
+            "This dataset is not publicly hosted for direct download.\n"
+            "Please contact the data owner via https://www.mad.tf.fau.de/research/datasets/#collapse_18 and "
+            "download the dataset manually.\n"
+            "After unpacking it, pass the dataset root folder to `EgaitParameterValidation2013(...)`.",
+        )
 
     def __init__(
         self,
