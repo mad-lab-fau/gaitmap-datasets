@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) (+ the Migration Guide),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Updated the `tpcp` dependency floor to `>=2.0` and aligned the package metadata and CI with Python 3.9+ while
+  keeping Python 3.9 supported.
+
+### Development
+
+- Migrated repository development tooling from Poetry to `uv`, including dependency management, lockfile handling,
+  task execution, and GitHub Actions publishing/linting workflows.
+- Added a repo-specific Claude release workflow skill for the `uv`-based release process and the manual `gh-pages`
+  docs publish step used by this repository.
+
 ## [0.14.0] - 2023-07-21
 
 ### Fixed

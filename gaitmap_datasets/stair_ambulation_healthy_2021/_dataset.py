@@ -1,4 +1,5 @@
 """The core tpcp Dataset class for the Stair Ambulation dataset."""
+
 from itertools import product
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union

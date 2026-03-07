@@ -1,4 +1,5 @@
 """Helpers to load and calibrate the pressure insoles."""
+
 from pathlib import Path
 from typing import Dict
 

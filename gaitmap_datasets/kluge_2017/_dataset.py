@@ -1,4 +1,5 @@
 """Main dataset class to load the Kluge2017 dataset."""
+
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Union
 
@@ -42,7 +43,7 @@ class Kluge2017(Dataset):
         *,
         memory: Memory = Memory(None),
         groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None
+        subset_index: Optional[pd.DataFrame] = None,
     ):
         self.memory = memory
         self.data_folder = data_folder

@@ -1,4 +1,5 @@
 """General event detection helper."""
+
 from typing import Dict, Literal, Tuple, Union
 
 import numpy as np

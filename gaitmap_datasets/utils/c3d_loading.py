@@ -1,4 +1,5 @@
 """Helper to handle c3d files."""
+
 from pathlib import Path
 from typing import Union
 

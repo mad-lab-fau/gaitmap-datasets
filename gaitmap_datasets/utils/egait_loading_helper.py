@@ -1,4 +1,5 @@
 """Helper to load data of the egait system (specifically the shimmer 2R system)."""
+
 import copy
 from collections import namedtuple
 from pathlib import Path
