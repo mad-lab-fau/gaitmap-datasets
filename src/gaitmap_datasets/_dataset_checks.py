@@ -101,9 +101,7 @@ PYSHOE_2019_CHECK = DatasetPathCheck(
         ("data/hallway",),
         ("data/stairs/test",),
     ),
-    expected_root_description=(
-        "the `data` folder with the `vicon/processed`, `hallway`, and `stairs/test` subfolders"
-    ),
+    expected_root_description=("the `data` folder with the `vicon/processed`, `hallway`, and `stairs/test` subfolders"),
     common_fix="Pass the PyShoe dataset root folder, not the nested `data`, `hallway`, `vicon`, or `stairs` folder.",
 )
 
