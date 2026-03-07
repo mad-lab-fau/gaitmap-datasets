@@ -10,7 +10,6 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
-from gaitmap_datasets._dataset_checks import SENSOR_POSITION_COMPARISON_2019_CHECK, validate_dataset_path
 from gaitmap_datasets._download import download_and_extract_zip
 from gaitmap_datasets.sensor_position_comparison_2019.helper import (
     align_coordinates,
@@ -31,6 +30,20 @@ from gaitmap_datasets.utils.event_detection import convert_sampling_rates_event_
 def _get_session_and_align(participant, data_folder):
     session_df = get_session_df(participant, data_folder=data_folder)
     return align_coordinates(session_df)
+
+
+def _validate_dataset_path(path: Path) -> Path:
+    missing = [entry for entry in ("data", "calibrations") if not (path / entry).exists()]
+    if not missing:
+        return path
+
+    raise ValueError(
+        "SensorPositionComparison2019 could not find the expected dataset structure.\n"
+        f"Selected folder: {path.resolve()}\n"
+        "Expected the dataset root folder to contain the `data` and `calibrations` folders.\n"
+        f"Missing from this folder: {', '.join(f'`{entry}`' for entry in missing)}.\n"
+        "Pass the dataset root folder itself, not the nested `data` folder."
+    )
 
 
 class _SensorPostionDataset(Dataset):
@@ -59,10 +72,8 @@ class _SensorPostionDataset(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return validate_dataset_path(
-                get_dataset_path(Path(__file__).parent.name), SENSOR_POSITION_COMPARISON_2019_CHECK
-            )
-        return validate_dataset_path(Path(self.data_folder), SENSOR_POSITION_COMPARISON_2019_CHECK)
+            return _validate_dataset_path(get_dataset_path(Path(__file__).parent.name))
+        return _validate_dataset_path(Path(self.data_folder))
 
     @property
     def sampling_rate_hz(self) -> float:

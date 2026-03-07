@@ -10,7 +10,6 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets import get_dataset_path
-from gaitmap_datasets._dataset_checks import KLUGE_2017_CHECK, validate_dataset_path
 from gaitmap_datasets._download import raise_manual_download_error
 from gaitmap_datasets.kluge_2017.helper import (
     IMU_SAMPLING_RATE_HZ,
@@ -21,6 +20,25 @@ from gaitmap_datasets.kluge_2017.helper import (
     get_meas_id_from_group,
     intersect_strides,
 )
+
+
+def _validate_dataset_path(path: Path) -> Path:
+    missing = [
+        entry
+        for entry in ("raw_data_export.mat", "subjects.csv", "stride_parameters.csv")
+        if not (path / entry).exists()
+    ]
+    if not missing:
+        return path
+
+    raise ValueError(
+        "Kluge2017 could not find the expected dataset structure.\n"
+        f"Selected folder: {path.resolve()}\n"
+        "Expected the dataset root folder to contain the files `raw_data_export.mat`, `subjects.csv`, and "
+        "`stride_parameters.csv`.\n"
+        f"Missing from this folder: {', '.join(f'`{entry}`' for entry in missing)}.\n"
+        "Pass the folder containing the exported MATLAB data files, not a parent or unrelated download folder."
+    )
 
 
 class Kluge2017(Dataset):
@@ -69,8 +87,8 @@ class Kluge2017(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return validate_dataset_path(get_dataset_path(Path(__file__).parent.name), KLUGE_2017_CHECK)
-        return validate_dataset_path(Path(self.data_folder), KLUGE_2017_CHECK)
+            return _validate_dataset_path(get_dataset_path(Path(__file__).parent.name))
+        return _validate_dataset_path(Path(self.data_folder))
 
     def _get_all_data_for_recording_cached(self, participant, repetition) -> AllData:
         return get_all_data_for_recording(participant, repetition, base_dir=self._data_folder_path)

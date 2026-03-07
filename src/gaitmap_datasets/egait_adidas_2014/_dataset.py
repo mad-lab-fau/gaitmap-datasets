@@ -10,7 +10,6 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
-from gaitmap_datasets._dataset_checks import EGAIT_ADIDAS_2014_CHECK, validate_dataset_path
 from gaitmap_datasets._download import download_and_extract_osf_zip
 from gaitmap_datasets.egait_adidas_2014.helper import (
     get_all_data_for_participant_and_test,
@@ -30,6 +29,20 @@ def _apply_to_dict_dfs(dict_of_dfs: DictOfDfs, function: Callable[[str, pd.DataF
     if isinstance(dict_of_dfs, dict):
         return {k: function(k, v) for k, v in dict_of_dfs.items()}
     raise TypeError(f"Expected dict, got {type(dict_of_dfs)}")
+
+
+def _validate_dataset_path(path: Path) -> Path:
+    missing = [entry for entry in ("data", "calibrations") if not (path / entry).exists()]
+    if not missing:
+        return path
+
+    raise ValueError(
+        "EgaitAdidas2014 could not find the expected dataset structure.\n"
+        f"Selected folder: {path.resolve()}\n"
+        "Expected the dataset root folder to contain the `data` and `calibrations` folders.\n"
+        f"Missing from this folder: {', '.join(f'`{entry}`' for entry in missing)}.\n"
+        "Pass the dataset root folder itself, not the nested `data` folder."
+    )
 
 
 class EgaitAdidas2014(Dataset):
@@ -88,8 +101,8 @@ class EgaitAdidas2014(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return validate_dataset_path(get_dataset_path(Path(__file__).parent.name), EGAIT_ADIDAS_2014_CHECK)
-        return validate_dataset_path(Path(self.data_folder), EGAIT_ADIDAS_2014_CHECK)
+            return _validate_dataset_path(get_dataset_path(Path(__file__).parent.name))
+        return _validate_dataset_path(Path(self.data_folder))
 
     @property
     def data(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
