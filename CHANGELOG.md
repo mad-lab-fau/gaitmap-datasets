@@ -29,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `os.path.expandvars`.
   ([#15](https://github.com/mad-lab-fau/gaitmap-datasets/issues/15),
   [#22](https://github.com/mad-lab-fau/gaitmap-datasets/pull/22))
+- The global dataset config now propagates into `tpcp`/`joblib` worker processes when jobs are created with
+  `tpcp.parallel.delayed`, and the README documents the multiprocessing requirement.
+  ([#14](https://github.com/mad-lab-fau/gaitmap-datasets/issues/14),
+  [#23](https://github.com/mad-lab-fau/gaitmap-datasets/pull/23))
 
 ### Development
 

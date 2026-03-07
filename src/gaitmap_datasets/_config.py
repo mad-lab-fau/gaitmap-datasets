@@ -4,16 +4,35 @@ import json
 import os
 from dataclasses import dataclass, fields
 from pathlib import Path
-from typing import Optional, Union
+from typing import Callable, Optional, Union
 
+from tpcp.parallel import register_global_parallel_callback
 from typing_extensions import Self
 
 _GLOBAL_CONFIG: Optional["DatasetsConfig"] = None
 _DEFAULT_CONFIG_FILE = (Path(__file__).parent.parent / ".datasets.dev.json").resolve()
+_PARALLEL_CONFIG_CALLBACK_REGISTERED = False
 
 
 def _expand_path(path: Union[str, Path]) -> Path:
     return Path(os.path.expandvars(str(path))).expanduser()
+
+
+def _set_global_config_for_parallel(config_: Optional["DatasetsConfig"]) -> None:
+    global _GLOBAL_CONFIG  # noqa: PLW0603
+    _GLOBAL_CONFIG = config_
+
+
+def _parallel_config_callback() -> tuple[Optional["DatasetsConfig"], Callable[[Optional["DatasetsConfig"]], None]]:
+    return _GLOBAL_CONFIG, _set_global_config_for_parallel
+
+
+def _register_parallel_config_callback() -> None:
+    global _PARALLEL_CONFIG_CALLBACK_REGISTERED  # noqa: PLW0603
+    if _PARALLEL_CONFIG_CALLBACK_REGISTERED is True:
+        return
+    register_global_parallel_callback(_parallel_config_callback)
+    _PARALLEL_CONFIG_CALLBACK_REGISTERED = True
 
 
 @dataclass(frozen=True)
@@ -127,6 +146,10 @@ def create_config_template(path: Union[str, Path]):
         json.dump({"datasets": {k.name: None for k in fields(DatasetsConfig)}}, f, indent=4, sort_keys=True)
 
     print(f"Created config template at {path.resolve()}.")
+
+
+_register_parallel_config_callback()
+
 
 def get_dataset_path(dataset_name: str) -> Path:
     """Get the path to a dataset be reading the global config.
