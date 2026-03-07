@@ -11,7 +11,6 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
-from gaitmap_datasets._dataset_checks import STAIR_AMBULATION_HEALTHY_2021_CHECK, validate_dataset_path
 from gaitmap_datasets._download import download_and_extract_osf_zip
 from gaitmap_datasets.stair_ambulation_healthy_2021.helper import (
     StrideTypes,
@@ -23,6 +22,20 @@ from gaitmap_datasets.stair_ambulation_healthy_2021.helper import (
     get_segmented_stride_list,
 )
 from gaitmap_datasets.utils.consts import SF_COLS
+
+
+def _validate_dataset_path(path: Path) -> Path:
+    missing = [entry for entry in ("healthy", "calibrations") if not (path / entry).exists()]
+    if not missing:
+        return path
+
+    raise ValueError(
+        "StairAmbulationHealthy2021 could not find the expected dataset structure.\n"
+        f"Selected folder: {path.resolve()}\n"
+        "Expected the dataset root folder to contain the `healthy` and `calibrations` folders.\n"
+        f"Missing from this folder: {', '.join(f'`{entry}`' for entry in missing)}.\n"
+        "Pass the dataset root folder itself, not the nested `healthy` folder."
+    )
 
 
 class _StairAmbulationHealthy2021(Dataset):
@@ -84,10 +97,8 @@ class _StairAmbulationHealthy2021(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return validate_dataset_path(
-                get_dataset_path(Path(__file__).parent.name), STAIR_AMBULATION_HEALTHY_2021_CHECK
-            )
-        return validate_dataset_path(Path(self.data_folder), STAIR_AMBULATION_HEALTHY_2021_CHECK)
+            return _validate_dataset_path(get_dataset_path(Path(__file__).parent.name))
+        return _validate_dataset_path(Path(self.data_folder))
 
     @property
     def data(self) -> pd.DataFrame:

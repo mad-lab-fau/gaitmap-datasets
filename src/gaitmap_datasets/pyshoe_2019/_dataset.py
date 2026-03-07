@@ -8,7 +8,6 @@ import pandas as pd
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
-from gaitmap_datasets._dataset_checks import PYSHOE_2019_CHECK, validate_dataset_path
 from gaitmap_datasets._download import raise_manual_download_error
 from gaitmap_datasets.pyshoe_2019.helper import (
     get_all_hallway_trials,
@@ -18,6 +17,25 @@ from gaitmap_datasets.pyshoe_2019.helper import (
     get_data_stairs,
     get_data_vicon,
 )
+
+
+def _validate_dataset_path(path: Path) -> Path:
+    missing = [
+        entry
+        for entry in ("data", "data/vicon/processed", "data/hallway", "data/stairs/test")
+        if not (path / entry).exists()
+    ]
+    if not missing:
+        return path
+
+    raise ValueError(
+        "PyShoe2019 could not find the expected dataset structure.\n"
+        f"Selected folder: {path.resolve()}\n"
+        "Expected the dataset root folder to contain the `data` folder with the `vicon/processed`, `hallway`, "
+        "and `stairs/test` subfolders.\n"
+        f"Missing from this folder: {', '.join(f'`{entry}`' for entry in missing)}.\n"
+        "Pass the PyShoe dataset root folder, not the nested `data`, `hallway`, `vicon`, or `stairs` folder."
+    )
 
 
 class PyShoe2019Vicon(Dataset):
@@ -74,8 +92,8 @@ class PyShoe2019Vicon(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return validate_dataset_path(get_dataset_path(Path(__file__).parent.name), PYSHOE_2019_CHECK)
-        return validate_dataset_path(Path(self.data_folder), PYSHOE_2019_CHECK)
+            return _validate_dataset_path(get_dataset_path(Path(__file__).parent.name))
+        return _validate_dataset_path(Path(self.data_folder))
 
     @property
     def data(self) -> pd.DataFrame:
@@ -151,8 +169,8 @@ class PyShoe2019Hallway(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return validate_dataset_path(get_dataset_path(Path(__file__).parent.name), PYSHOE_2019_CHECK)
-        return validate_dataset_path(Path(self.data_folder), PYSHOE_2019_CHECK)
+            return _validate_dataset_path(get_dataset_path(Path(__file__).parent.name))
+        return _validate_dataset_path(Path(self.data_folder))
 
     @property
     def data(self) -> pd.DataFrame:
@@ -243,8 +261,8 @@ class PyShoe2019Stairs(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return validate_dataset_path(get_dataset_path(Path(__file__).parent.name), PYSHOE_2019_CHECK)
-        return validate_dataset_path(Path(self.data_folder), PYSHOE_2019_CHECK)
+            return _validate_dataset_path(get_dataset_path(Path(__file__).parent.name))
+        return _validate_dataset_path(Path(self.data_folder))
 
     @property
     def data(self) -> pd.DataFrame:
