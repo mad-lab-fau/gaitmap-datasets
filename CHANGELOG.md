@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-03-07
+
 ### Added
 
 - Dataset classes now expose a `download(...)` entry point. Automatic downloads are available for

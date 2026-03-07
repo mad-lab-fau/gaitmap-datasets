@@ -41,4 +41,4 @@ __all__ = [
     "reset_config",
     "set_config",
 ]
-__version__ = "0.14.0"
+__version__ = "0.15.0"

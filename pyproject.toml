@@ -1,6 +1,6 @@
 [project]
 name = "gaitmap-datasets"
-version = "0.14.0"
+version = "0.15.0"
 description = "Helper to access open-source gait datasets used by MaD-Lab"
 readme = "README.rst"
 requires-python = ">=3.9,<3.14"
