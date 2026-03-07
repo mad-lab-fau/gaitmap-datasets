@@ -75,7 +75,7 @@ def _get_project_version() -> str:
 def update_version(version: str) -> None:
     subprocess.run(["uv", "version", version, "--frozen"], shell=False, check=True, cwd=HERE)
     new_version = _get_project_version()
-    update_version_strings(HERE / "gaitmap_datasets/__init__.py", new_version)
+    update_version_strings(HERE / "src/gaitmap_datasets/__init__.py", new_version)
 
 
 def task_update_version() -> None:

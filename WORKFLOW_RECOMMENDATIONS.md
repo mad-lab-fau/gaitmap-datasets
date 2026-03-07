@@ -57,7 +57,7 @@ annotation refactor into the tooling port.
 
 ### Current ignored cleanup scope
 
-Counts from `ruff check gaitmap_datasets --select UP006,UP035,PD101,RUF005,RUF046 --statistics`:
+Counts from `ruff check src/gaitmap_datasets --select UP006,UP035,PD101,RUF005,RUF046 --statistics`:
 
 - `UP006`: 91 findings
 - `UP035`: 35 findings
@@ -67,7 +67,7 @@ Counts from `ruff check gaitmap_datasets --select UP006,UP035,PD101,RUF005,RUF04
 
 ### What can be autofixed
 
-`ruff check gaitmap_datasets --select UP006,UP035,PD101,RUF005,RUF046 --fix --unsafe-fixes --diff`
+`ruff check src/gaitmap_datasets --select UP006,UP035,PD101,RUF005,RUF046 --fix --unsafe-fixes --diff`
 showed that 95 findings can be autofixed immediately:
 
 - `UP006`: replace `List`/`Dict`/`Tuple` annotations with builtin generics
@@ -77,7 +77,7 @@ showed that 95 findings can be autofixed immediately:
 
 ### What still needs manual work
 
-- `PD101`: 1 manual fix in `gaitmap_datasets/kluge_2017/helper.py`
+- `PD101`: 1 manual fix in `src/gaitmap_datasets/kluge_2017/helper.py`
 
 ### Recommended cleanup plan
 

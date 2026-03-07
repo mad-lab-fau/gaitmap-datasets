@@ -22,7 +22,7 @@ import toml
 HERE = Path(__file__)
 
 sys.path.insert(0, str(HERE.parent))
-sys.path.insert(0, str(HERE.parent.parent))
+sys.path.insert(0, str(HERE.parent.parent / "src"))
 
 
 URL = "https://github.com/mad-lab-fau/gaitmap-datasets"

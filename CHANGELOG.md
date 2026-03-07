@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Migrated repository development tooling from Poetry to `uv`, including dependency management, lockfile handling,
   task execution, and GitHub Actions publishing/linting workflows.
 - Switched the package build backend from `hatchling` to `uv_build`.
+- Moved the package to a `src/` layout to match the `uv_build` configuration and keep import resolution explicit.
 - Removed upper version bounds from the development dependencies and refreshed the lockfile against current compatible
   releases.
 - Added a repo-specific Claude release workflow skill for the `uv`-based release process and the manual `gh-pages`
