@@ -1,6 +1,8 @@
 """General event detection helper."""
 
-from typing import Dict, Literal, Tuple, Union
+from __future__ import annotations
+
+from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -127,8 +129,8 @@ def convert_sampling_rates_event_list(
 
 
 def convert_segmented_stride_list(
-    stride_list: Union[pd.DataFrame, Dict[str, pd.DataFrame]], target_stride_type: Literal["min_vel", "ic"]
-) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
+    stride_list: pd.DataFrame | dict[str, pd.DataFrame], target_stride_type: Literal["min_vel", "ic"]
+) -> pd.DataFrame | dict[str, pd.DataFrame]:
     """Convert a segmented stride list with detected events into other types of stride lists.
 
     During the conversion some strides might be removed.
@@ -157,7 +159,7 @@ def convert_segmented_stride_list(
 
 def _segmented_stride_list_to_min_vel_single_sensor(
     stride_list: pd.DataFrame, target_stride_type: Literal["min_vel", "ic"]
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Convert a segmented stride list with detected events into other types of stride lists.
 
     During the conversion some strides might be removed.

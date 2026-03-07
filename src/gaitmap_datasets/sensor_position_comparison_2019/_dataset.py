@@ -1,7 +1,9 @@
 """The core tpcp Dataset class for the Stair Postion Comparison dataset."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 import pandas as pd
 from joblib import Memory
@@ -31,20 +33,20 @@ def _get_session_and_align(participant, data_folder):
 
 
 class _SensorPostionDataset(Dataset):
-    data_folder: Optional[Union[str, Path]]
+    data_folder: str | Path | None
     include_wrong_recording: bool
     memory: Memory
     align_data: bool
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
         include_wrong_recording: bool = False,
         align_data: bool = True,
         memory: Memory = Memory(None),
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.data_folder = data_folder
         self.include_wrong_recording = include_wrong_recording
@@ -65,7 +67,7 @@ class _SensorPostionDataset(Dataset):
         return 204.8
 
     @property
-    def segmented_stride_list_(self) -> Dict[str, pd.DataFrame]:
+    def segmented_stride_list_(self) -> dict[str, pd.DataFrame]:
         """Get the manual segmented stride list per foot."""
         self.assert_is_single(None, "segmented_stride_list_")
         sl = self._get_segmented_stride_list(self.index)
@@ -89,7 +91,7 @@ class _SensorPostionDataset(Dataset):
         return session_df
 
     @property
-    def metadata(self) -> Dict[str, Any]:
+    def metadata(self) -> dict[str, Any]:
         """Get the metadata for a participant."""
         self.assert_is_single(["participant"], "metadata")
         particpant_id = self.group
@@ -98,7 +100,7 @@ class _SensorPostionDataset(Dataset):
         return get_metadata_participant(particpant_id, data_folder=self._data_folder_path)
 
     @property
-    def segmented_stride_list_per_sensor_(self) -> Dict[str, pd.DataFrame]:
+    def segmented_stride_list_per_sensor_(self) -> dict[str, pd.DataFrame]:
         """Get the segmented stride list per sensor.
 
         Instead of providing the stride list per foot, this ouput has all the sensors as keys and the correct
@@ -141,7 +143,7 @@ class SensorPositionComparison2019Segmentation(_SensorPostionDataset):
     """
 
     @staticmethod
-    def download(base_path: Union[str, Path]) -> Path:
+    def download(base_path: str | Path) -> Path:
         """Download the dataset and return the extracted dataset path."""
         return download_and_extract_zip(
             base_path,
@@ -206,7 +208,7 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
     """
 
     @staticmethod
-    def download(base_path: Union[str, Path]) -> Path:
+    def download(base_path: str | Path) -> Path:
         """Download the dataset and return the extracted dataset path."""
         return download_and_extract_zip(
             base_path,
@@ -219,14 +221,14 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
         include_wrong_recording: bool = False,
         align_data: bool = True,
         data_padding_s: float = 0,
         memory: Memory = Memory(None),
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.data_padding_s = data_padding_s
         super().__init__(
@@ -266,7 +268,7 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
     @property
     def data_padding_imu_samples(self) -> int:
         """Get the actual padding in samples based on `data_padding_s`."""
-        return int(round(self.data_padding_s * self.sampling_rate_hz))
+        return round(self.data_padding_s * self.sampling_rate_hz)
 
     def _get_segmented_stride_list(self, index) -> pd.DataFrame:
         stride_list = get_manual_labels_for_test(
@@ -277,7 +279,7 @@ class SensorPositionComparison2019Mocap(_SensorPostionDataset):
         return stride_list
 
     @property
-    def mocap_events_(self) -> Dict[str, pd.DataFrame]:
+    def mocap_events_(self) -> dict[str, pd.DataFrame]:
         """Get mocap events calculated the Zeni Algorithm.
 
         Note that the events are provided in mocap samples after the start of the test.

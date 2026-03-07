@@ -3,9 +3,11 @@
 These are the logic behind the dataset implementation, but can also be used independently.
 """
 
+from __future__ import annotations
+
 import re
 from pathlib import Path
-from typing import Dict, List, Literal, Optional
+from typing import Literal
 
 import pandas as pd
 from scipy.spatial.transform import Rotation
@@ -63,7 +65,7 @@ def _alternative_calibration_folder(base_dir: Path) -> Path:
     return base_dir / "alternative_calibrations"
 
 
-def get_all_participants(include_bad_data: bool = False, *, base_dir: Optional[Path] = None) -> List[str]:
+def get_all_participants(include_bad_data: bool = False, *, base_dir: Path | None = None) -> list[str]:
     """Get the folder names of all participants."""
     all_participants = [f.name.split("_")[0] for f in _raw_data_folder(base_dir).glob("*_left.dat")]
     if include_bad_data:
@@ -72,8 +74,8 @@ def get_all_participants(include_bad_data: bool = False, *, base_dir: Optional[P
 
 
 def get_all_data_for_participant(
-    participant_id: str, use_alternative_calibrations: bool = True, *, base_dir: Optional[Path] = None
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    participant_id: str, use_alternative_calibrations: bool = True, *, base_dir: Path | None = None
+) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get all data for a participant."""
     all_data = {}
     for foot in ["left", "right"]:
@@ -94,8 +96,8 @@ def get_all_data_for_participant(
 
 
 def get_segmented_stride_list(
-    participant_id: str, *, base_dir: Optional[Path] = None
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    participant_id: str, *, base_dir: Path | None = None
+) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the list of all strides for a participant."""
     stride_borders = {}
     for foot in ["left", "right"]:
@@ -117,8 +119,8 @@ def get_segmented_stride_list(
 
 
 def get_gaitrite_parameters(
-    participant_id: str, *, base_dir: Optional[Path] = None
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    participant_id: str, *, base_dir: Path | None = None
+) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the gaitrite parameters for a participant."""
     parameters = {}
     for foot in ["left", "right"]:

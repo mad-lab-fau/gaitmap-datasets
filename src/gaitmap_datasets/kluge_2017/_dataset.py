@@ -1,7 +1,9 @@
 """Main dataset class to load the Kluge2017 dataset."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Union
+from typing import Literal
 
 import pandas as pd
 from joblib import Memory
@@ -36,7 +38,7 @@ class Kluge2017(Dataset):
     """
 
     @staticmethod
-    def download(_base_path: Union[str, Path]) -> Path:
+    def download(_base_path: str | Path) -> Path:
         """Raise an error explaining how to obtain the dataset manually."""
         raise_manual_download_error(
             "Kluge2017",
@@ -47,16 +49,16 @@ class Kluge2017(Dataset):
             "`stride_parameters.csv`, then pass that folder to `Kluge2017(...)`.",
         )
 
-    data_folder: Optional[Union[str, Path]]
+    data_folder: str | Path | None
     memory: Memory
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
         memory: Memory = Memory(None),
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.memory = memory
         self.data_folder = data_folder
@@ -89,7 +91,7 @@ class Kluge2017(Dataset):
         return get_meas_id_from_group(participant, repetition, base_dir=self._data_folder_path)
 
     @property
-    def data(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def data(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         self.assert_is_single(None, "data")
         _, participant, repetition, test = self.group
         all_data = self._get_all_data_for_recording_cached(participant, repetition)

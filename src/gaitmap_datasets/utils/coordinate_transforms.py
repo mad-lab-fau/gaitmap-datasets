@@ -1,6 +1,8 @@
 """Helper to rotate sensor data."""
 
-from typing import Dict, Literal, Optional, Union
+from __future__ import annotations
+
+from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -16,7 +18,7 @@ from gaitmap_datasets.utils.consts import (
 )
 
 
-def rotation_from_angle(axis: np.ndarray, angle: Union[float, np.ndarray]) -> Rotation:
+def rotation_from_angle(axis: np.ndarray, angle: float | np.ndarray) -> Rotation:
     """Create a rotation based on a rotation axis and a angle.
 
     Parameters
@@ -59,7 +61,7 @@ def rotation_from_angle(axis: np.ndarray, angle: Union[float, np.ndarray]) -> Ro
     return Rotation.from_rotvec(np.squeeze(axis * angle.T))
 
 
-def flip_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: bool = False) -> pd.DataFrame:
+def flip_sensor(data: pd.DataFrame, rotation: Rotation | None, inplace: bool = False) -> pd.DataFrame:
     """Flip (same as rotate, but only 90 deg rots allowed) the data of a single sensor.
 
     Compared to normal rotations, this function can result in massive speedups!
@@ -102,7 +104,7 @@ def flip_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: bool 
     return data
 
 
-def rotate_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: bool = False) -> pd.DataFrame:
+def rotate_sensor(data: pd.DataFrame, rotation: Rotation | None, inplace: bool = False) -> pd.DataFrame:
     """Rotate the data of a single sensor with acc and gyro."""
     if inplace is False:
         data = data.copy()
@@ -113,7 +115,7 @@ def rotate_sensor(data: pd.DataFrame, rotation: Optional[Rotation], inplace: boo
     return data
 
 
-def flip_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Rotation]]) -> pd.DataFrame:
+def flip_dataset(dataset: pd.DataFrame, rotation: Rotation | dict[str, Rotation]) -> pd.DataFrame:
     """Flip datasets (same as rotate, but only 90 deg rots allowed).
 
     Parameters
@@ -147,7 +149,7 @@ def flip_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Rota
     return rotated_dataset
 
 
-def rotate_dataset(dataset: pd.DataFrame, rotation: Union[Rotation, Dict[str, Rotation]]) -> pd.DataFrame:
+def rotate_dataset(dataset: pd.DataFrame, rotation: Rotation | dict[str, Rotation]) -> pd.DataFrame:
     """Apply a rotation to acc and gyro data of a dataset.
 
     Parameters
@@ -229,7 +231,7 @@ def convert_right_foot_to_fbf(data: pd.DataFrame):
     return result
 
 
-def convert_to_fbf(data: Union[pd.DataFrame, Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]]):
+def convert_to_fbf(data: pd.DataFrame | dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]):
     """Convert the axes from the left foot sensor frame to the foot body frame (FBF).
 
     This function assumes that your dataset is already aligned to the FSF.

@@ -22,9 +22,9 @@ jobs:
           cache-dependency-glob: "uv.lock"
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: uv sync --group dev
+        run: uv sync --group dev --frozen
       - name: Testing
-        run: uv run pytest tests/test_config.py
+        run: uv run poe test_ci
 
   lint:
     runs-on: ubuntu-latest
@@ -37,6 +37,6 @@ jobs:
           cache-dependency-glob: "uv.lock"
           python-version: "3.9"
       - name: Install dependencies
-        run: uv sync --group dev
+        run: uv sync --group dev --frozen
       - name: Linting
         run: uv run poe ci_check

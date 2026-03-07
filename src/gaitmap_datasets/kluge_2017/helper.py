@@ -1,10 +1,12 @@
 """A set of helpers to load the dataset."""
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 from functools import lru_cache
 from itertools import product
 from pathlib import Path
-from typing import Dict, Literal, NamedTuple, Tuple, Union
+from typing import Literal, NamedTuple
 
 import pandas as pd
 import scipy.io as sio
@@ -41,7 +43,7 @@ SENSOR_AXIS_RENAMING_DICT = {
 }
 
 
-def _interleave_foot_events(starts: pd.Series, foot_names: Tuple[str, str] = ("L", "R")) -> pd.Series:
+def _interleave_foot_events(starts: pd.Series, foot_names: tuple[str, str] = ("L", "R")) -> pd.Series:
     """Map the hs of the opposite foot to the stride of the other foot it occurred in."""
     opposite_starts = {}
 
@@ -96,10 +98,11 @@ def intersect_strides(strides: pd.DataFrame, interval_starts: Sequence[float], i
         .T
     )
     # Check if all columns are in the same interval
-    return strides[((interval_per_event.nunique() == 1) & ~(interval_per_event.isna().any())).loc[strides.index]]
+    same_interval = interval_per_event.eq(interval_per_event.iloc[0]).all()
+    return strides[(same_interval & ~interval_per_event.isna().any()).loc[strides.index]]
 
 
-def _marker_axis_renaming(marker_axis: str) -> Union[str, Tuple[str, str, str]]:
+def _marker_axis_renaming(marker_axis: str) -> str | tuple[str, str, str]:
     if marker_axis == "Time":
         return "time after start [s]"
 
@@ -124,9 +127,9 @@ def _marker_axis_renaming(marker_axis: str) -> Union[str, Tuple[str, str, str]]:
 class AllData(NamedTuple):
     """Representing all data from a single participant and repetition."""
 
-    imu_data: Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]
+    imu_data: dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]
     marker_positions: pd.DataFrame
-    reference_events: Dict[Literal["left", "right"], pd.DataFrame]
+    reference_events: dict[Literal["left", "right"], pd.DataFrame]
     tests_start_end: pd.DataFrame
 
 

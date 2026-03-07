@@ -1,7 +1,9 @@
 """The core tpcp Dataset class for the Egait Parameter Validation Dataset."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Union
+from typing import Literal
 
 import pandas as pd
 from joblib import Memory
@@ -37,7 +39,7 @@ class EgaitParameterValidation2013(Dataset):
     """
 
     @staticmethod
-    def download(_base_path: Union[str, Path]) -> Path:
+    def download(_base_path: str | Path) -> Path:
         """Raise an error explaining how to obtain the dataset manually."""
         raise_manual_download_error(
             "EgaitParameterValidation2013",
@@ -49,13 +51,13 @@ class EgaitParameterValidation2013(Dataset):
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
         include_bad_data: bool = False,
         use_alternative_calibrations: bool = True,
         memory: Memory = Memory(None),
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.data_folder = data_folder
         self.include_bad_data = include_bad_data
@@ -76,7 +78,7 @@ class EgaitParameterValidation2013(Dataset):
         return Path(self.data_folder)
 
     @property
-    def data(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def data(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the imu data."""
         self.assert_is_single(None, "data")
         data = self.memory.cache(get_all_data_for_participant)(
@@ -90,13 +92,13 @@ class EgaitParameterValidation2013(Dataset):
         return final_data
 
     @property
-    def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def segmented_stride_list_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the segmented stride list."""
         self.assert_is_single(None, "segmented_stride_list_")
         return get_segmented_stride_list(self.group, base_dir=self._data_folder_path)
 
     @property
-    def gaitrite_parameters_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def gaitrite_parameters_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the gaitrite parameters."""
         self.assert_is_single(None, "gaitrite_parameters_")
         return get_gaitrite_parameters(self.group, base_dir=self._data_folder_path)
