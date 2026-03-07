@@ -37,7 +37,7 @@ def rotation_from_angle(axis: np.ndarray, angle: Union[float, np.ndarray]) -> Ro
     >>> rot = rotation_from_angle(np.array([1, 0, 0]), np.deg2rad(180))
     >>> rot.as_quat().round(decimals=3)
     array([1., 0., 0., 0.])
-    >>> rot.apply(np.array([[0, 0, 1.], [0, 1, 0.]])).round()
+    >>> rot.apply(np.array([[0, 0, 1.0], [0, 1, 0.0]])).round()
     array([[ 0., -0., -1.],
            [ 0., -1.,  0.]])
 
@@ -49,7 +49,7 @@ def rotation_from_angle(axis: np.ndarray, angle: Union[float, np.ndarray]) -> Ro
            [1.   , 0.   , 0.   , 0.   ]])
     >>> # In case of multiple rotations, the first rotation is applied to the first vector
     >>> # and the second to the second
-    >>> rot.apply(np.array([[0, 0, 1.], [0, 1, 0.]])).round()
+    >>> rot.apply(np.array([[0, 0, 1.0], [0, 1, 0.0]])).round()
     array([[ 0., -1.,  0.],
            [ 0., -1.,  0.]])
 
