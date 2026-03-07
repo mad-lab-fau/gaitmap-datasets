@@ -10,6 +10,7 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets import get_dataset_path
+from gaitmap_datasets._dataset_checks import KLUGE_2017_CHECK, validate_dataset_path
 from gaitmap_datasets._download import raise_manual_download_error
 from gaitmap_datasets.kluge_2017.helper import (
     IMU_SAMPLING_RATE_HZ,
@@ -68,8 +69,8 @@ class Kluge2017(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return get_dataset_path(Path(__file__).parent.name)
-        return Path(self.data_folder)
+            return validate_dataset_path(get_dataset_path(Path(__file__).parent.name), KLUGE_2017_CHECK)
+        return validate_dataset_path(Path(self.data_folder), KLUGE_2017_CHECK)
 
     def _get_all_data_for_recording_cached(self, participant, repetition) -> AllData:
         return get_all_data_for_recording(participant, repetition, base_dir=self._data_folder_path)

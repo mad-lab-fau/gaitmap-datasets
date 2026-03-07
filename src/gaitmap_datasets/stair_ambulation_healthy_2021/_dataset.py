@@ -11,6 +11,7 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
+from gaitmap_datasets._dataset_checks import STAIR_AMBULATION_HEALTHY_2021_CHECK, validate_dataset_path
 from gaitmap_datasets._download import download_and_extract_osf_zip
 from gaitmap_datasets.stair_ambulation_healthy_2021.helper import (
     StrideTypes,
@@ -83,8 +84,10 @@ class _StairAmbulationHealthy2021(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return get_dataset_path(Path(__file__).parent.name)
-        return Path(self.data_folder)
+            return validate_dataset_path(
+                get_dataset_path(Path(__file__).parent.name), STAIR_AMBULATION_HEALTHY_2021_CHECK
+            )
+        return validate_dataset_path(Path(self.data_folder), STAIR_AMBULATION_HEALTHY_2021_CHECK)
 
     @property
     def data(self) -> pd.DataFrame:

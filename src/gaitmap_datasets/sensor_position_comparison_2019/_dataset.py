@@ -10,6 +10,7 @@ from joblib import Memory
 from tpcp import Dataset
 
 from gaitmap_datasets._config import get_dataset_path
+from gaitmap_datasets._dataset_checks import SENSOR_POSITION_COMPARISON_2019_CHECK, validate_dataset_path
 from gaitmap_datasets._download import download_and_extract_zip
 from gaitmap_datasets.sensor_position_comparison_2019.helper import (
     align_coordinates,
@@ -58,8 +59,10 @@ class _SensorPostionDataset(Dataset):
     def _data_folder_path(self) -> Path:
         """Get the path to the data folder as Path object."""
         if self.data_folder is None:
-            return get_dataset_path(Path(__file__).parent.name)
-        return Path(self.data_folder)
+            return validate_dataset_path(
+                get_dataset_path(Path(__file__).parent.name), SENSOR_POSITION_COMPARISON_2019_CHECK
+            )
+        return validate_dataset_path(Path(self.data_folder), SENSOR_POSITION_COMPARISON_2019_CHECK)
 
     @property
     def sampling_rate_hz(self) -> float:
