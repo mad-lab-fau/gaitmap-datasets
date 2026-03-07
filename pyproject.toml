@@ -3,7 +3,7 @@ name = "gaitmap-datasets"
 version = "0.14.0"
 description = "Helper to access open-source gait datasets used by MaD-Lab"
 readme = "README.rst"
-requires-python = ">=3.9,<4.0"
+requires-python = ">=3.9,<3.14"
 license = "MIT"
 authors = [
     { name = "Arne Küderle", email = "arne.kuederle@fau.de" },
@@ -15,8 +15,7 @@ dependencies = [
     "pandas>=1.4.2",
     "joblib>=1.2.0",
     "imucal>=2.3.0",
-    "nilspodlib>=3.6.0,<4.1; python_version < '3.10'",
-    "nilspodlib>=3.6.0; python_version >= '3.10'",
+    "nilspodlib>=4.1.2",
     "scipy>=1.8.1",
     "c3d>=0.5.1,<0.6",
     "h5py>=3.8.0",
@@ -141,5 +140,8 @@ prepare_release = { script = "_tasks:task_prepare_release()", help = "Build docs
 create_dev_config = { script = "gaitmap_datasets:create_config_template('.datasets.dev.json')", help = "Create a local dataset config template for development." }
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.10.4,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
