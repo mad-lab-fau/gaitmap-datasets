@@ -1,8 +1,9 @@
 """Dataset-specific path validation helpers."""
 
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, Optional, Sequence
+from typing import Optional
 
 
 @dataclass(frozen=True)
