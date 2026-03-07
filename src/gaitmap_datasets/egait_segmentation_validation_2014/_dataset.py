@@ -1,7 +1,9 @@
 """The core tpcp Dataset class for the Egait Stride Segementation Validation Dataset."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Union
+from typing import Literal
 
 import pandas as pd
 from joblib import Memory
@@ -21,7 +23,7 @@ class EgaitSegmentationValidation2014(Dataset):
     """Egait stride segmentation validation 2014 dataset."""
 
     @staticmethod
-    def download(_base_path: Union[str, Path]) -> Path:
+    def download(_base_path: str | Path) -> Path:
         """Raise an error explaining how to obtain the dataset manually."""
         raise_manual_download_error(
             "EgaitSegmentationValidation2014",
@@ -33,12 +35,12 @@ class EgaitSegmentationValidation2014(Dataset):
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
         exclude_incomplete_participants: bool = False,
         memory: Memory = Memory(None),
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.exclude_incomplete_participants = exclude_incomplete_participants
         self.data_folder = data_folder
@@ -58,7 +60,7 @@ class EgaitSegmentationValidation2014(Dataset):
         return Path(self.data_folder)
 
     @property
-    def data(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def data(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the imu data."""
         self.assert_is_single(None, "data")
         cohort, test, participant = self.group
@@ -77,7 +79,7 @@ class EgaitSegmentationValidation2014(Dataset):
         return final_data
 
     @property
-    def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def segmented_stride_list_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the segmented stride list with all strides labeled (straight, stairs, turns).
 
         This stride list differes from the stride list originally distributed with the dataset.
@@ -92,7 +94,7 @@ class EgaitSegmentationValidation2014(Dataset):
         return get_segmented_stride_list(participant, cohort, test, base_dir=self._data_folder_path)
 
     @property
-    def segmented_stride_list_original_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def segmented_stride_list_original_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the original segmented stride list provided with the dataset."""
         self.assert_is_single(None, "segmented_stride_list_original_")
         (

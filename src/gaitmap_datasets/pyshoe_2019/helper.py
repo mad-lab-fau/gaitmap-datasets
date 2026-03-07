@@ -1,8 +1,9 @@
 """Helper to load the pyshoe data."""
 
+from __future__ import annotations
+
 from functools import lru_cache
 from pathlib import Path
-from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -30,7 +31,7 @@ def _transform_imu_data(data: pd.DataFrame) -> pd.DataFrame:
 
 
 @lru_cache(maxsize=1)
-def get_data_vicon(trial: str, *, base_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_data_vicon(trial: str, *, base_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Get the data from the vicon portion of the trial."""
     data_path = Path(base_dir) / VICON_SUBFOLDER
     data = sio.loadmat(str(data_path / f"{trial}.mat"))
@@ -42,7 +43,7 @@ def get_data_vicon(trial: str, *, base_dir: Path) -> Tuple[pd.DataFrame, pd.Data
 
 
 @lru_cache(maxsize=1)
-def get_data_hallway(trial: Tuple[str, str, str], *, base_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
+def get_data_hallway(trial: tuple[str, str, str], *, base_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
     """Get the data from the hallway dataset."""
     data_path = Path(base_dir) / HALLWAY_SUBFOLDER / trial[1] / trial[0][1] / trial[2]
 
@@ -56,7 +57,7 @@ def get_data_hallway(trial: Tuple[str, str, str], *, base_dir: Path) -> Tuple[pd
 
 
 @lru_cache(maxsize=1)
-def get_data_stairs(trial: Tuple[str, str, str], *, base_dir: Path) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
+def get_data_stairs(trial: tuple[str, str, str], *, base_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
     """Get the data from the test part of the stairs dataset."""
     data_path = Path(base_dir) / STAIRS_SUBFOLDER / trial[-1]
 

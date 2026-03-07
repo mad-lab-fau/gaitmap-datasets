@@ -1,7 +1,8 @@
 """Helpers to load and calibrate the pressure insoles."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Dict
 
 import numpy as np
 import pandas as pd
@@ -147,8 +148,9 @@ def _stride_list_to_min_vel_list(dataset_bf, segmented_stride_list, min_vel_sear
     min_vel_stride_list = pd.DataFrame()
 
     for i in np.arange(len(stride_ids_with_no_prev_stride) - 1):
-        sl = [pre_min_vel_list[i]] + min_vel_list[
-            stride_ids_with_no_prev_stride[i] : stride_ids_with_no_prev_stride[i + 1]
+        sl = [
+            pre_min_vel_list[i],
+            *min_vel_list[stride_ids_with_no_prev_stride[i] : stride_ids_with_no_prev_stride[i + 1]],
         ]
 
         min_vel_stride_list = (
@@ -191,7 +193,7 @@ class PressureEventDetection:
     threshold_increment_kg: float
     min_pressure_search_window_s: float
 
-    min_vel_event_list_: Dict[str, pd.DataFrame]
+    min_vel_event_list_: dict[str, pd.DataFrame]
     sampling_rate_hz: float
     stride_list: pd.DataFrame
 
@@ -203,7 +205,7 @@ class PressureEventDetection:
         self.max_threshold_kg = max_threshold_kg
         self.threshold_increment_kg = threshold_increment_kg
 
-    def detect(self, dataset: pd.DataFrame, stride_list: Dict[str, pd.DataFrame], threshold_kg: float):
+    def detect(self, dataset: pd.DataFrame, stride_list: dict[str, pd.DataFrame], threshold_kg: float):
         """Detect gait events from FSR sensor pressure data."""
         self.min_vel_event_list_ = {}
         for sensor in ["left_sensor", "right_sensor"]:

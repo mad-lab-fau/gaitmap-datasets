@@ -1,9 +1,11 @@
 """A set of helpers to load the dataset."""
 
+from __future__ import annotations
+
 import json
 import warnings
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
@@ -160,7 +162,7 @@ def get_session_df(participant_id: str, data_folder=None) -> pd.DataFrame:
 def get_imu_test(
     participant: str,
     test_name: str,
-    session_df: Optional[pd.DataFrame] = None,
+    session_df: pd.DataFrame | None = None,
     padding_samples: int = 0,
     data_folder=None,
 ) -> pd.DataFrame:
@@ -234,13 +236,13 @@ def get_mocap_test(participant: str, test_name: str, data_folder=None) -> pd.Dat
         raise FileNotFoundError(f"No Mocap data exists for participant {participant} and test {test_name}") from e
 
 
-def get_metadata_participant(participant_id: str, data_folder=None) -> Dict[str, Any]:
+def get_metadata_participant(participant_id: str, data_folder=None) -> dict[str, Any]:
     """Get the content of the meta data file."""
     folder = get_data_folder(data_folder) / participant_id
     return json.load((folder / "meta_data.json").open("r"))
 
 
-def update_metadata_participant(participant_id: str, new_metadata: Dict[str, Any], data_folder=None):
+def update_metadata_participant(participant_id: str, new_metadata: dict[str, Any], data_folder=None):
     """Update the metadata for a participant."""
     folder = get_data_folder(data_folder) / participant_id
     json.dump(new_metadata, (folder / "meta_data.json").open("w"), indent=4, sort_keys=True)
@@ -261,7 +263,7 @@ def get_sensor_file(participant_id: str, sensor_name: str, data_folder=None) -> 
     raise FileNotFoundError(f"No sensor file found for {sensor_name} of {participant_id}")
 
 
-def get_foot_sensor(foot: Literal["left", "right"], include_insole: bool = True) -> List[str]:
+def get_foot_sensor(foot: Literal["left", "right"], include_insole: bool = True) -> list[str]:
     """Get the names of all sensors that are attached to a foot (left or right)."""
     sensors = ["{}_cavity", "{}_heel", "{}_lateral", "{}_medial", "{}_instep"]
     if include_insole is True:
@@ -269,7 +271,7 @@ def get_foot_sensor(foot: Literal["left", "right"], include_insole: bool = True)
     return [s.format(foot[0]) for s in sensors]
 
 
-def get_foot_marker(foot: Literal["left", "right"]) -> List[str]:
+def get_foot_marker(foot: Literal["left", "right"]) -> list[str]:
     """Get the names of all markers that are attached ot a foot (left or right)."""
     sensors = ["{}_fcc", "{}_toe", "{}_fm5", "{}_fm1"]
     return [s.format(foot[0]) for s in sensors]

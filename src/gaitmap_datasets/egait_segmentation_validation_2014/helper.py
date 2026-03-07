@@ -3,8 +3,10 @@
 These are the logic behind the dataset implementation, but can also be used independently.
 """
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Tuple
+from typing import Literal
 
 import pandas as pd
 from scipy.spatial.transform import Rotation
@@ -66,7 +68,7 @@ def _extract_participant_id(file_name: str, test: Tests) -> str:
 
 def _find_files_for_participant(
     directory: Path, participant_id: str
-) -> Dict[Literal["left_sensor", "right_sensor"], Optional[Path]]:
+) -> dict[Literal["left_sensor", "right_sensor"], Path | None]:
     """Find the file for a participant."""
     participant_id = participant_id.lower()
     files = {"left_sensor": None, "right_sensor": None}
@@ -83,7 +85,7 @@ def _find_files_for_participant(
     return files
 
 
-def get_all_participants(*, base_dir: Optional[Path] = None) -> List[Tuple[str, str, str]]:
+def get_all_participants(*, base_dir: Path | None = None) -> list[tuple[str, str, str]]:
     """Get the folder names of all participants."""
     all_participants = []
     for cohort in ["control", "pd", "geriatric"]:
@@ -97,8 +99,8 @@ def get_all_participants(*, base_dir: Optional[Path] = None) -> List[Tuple[str, 
 
 
 def get_all_data_for_participant(
-    participant_id: str, cohort: Cohorts, test: Tests, *, base_dir: Optional[Path] = None
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    participant_id: str, cohort: Cohorts, test: Tests, *, base_dir: Path | None = None
+) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the data for a participant."""
     raw_data_folder = _raw_data_folder(base_dir, cohort, test)
     files = _find_files_for_participant(raw_data_folder, participant_id)
@@ -120,8 +122,8 @@ def get_all_data_for_participant(
 
 
 def get_original_segmented_stride_list(
-    participant_id: str, cohort: Cohorts, test: Tests, *, base_dir: Optional[Path] = None
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    participant_id: str, cohort: Cohorts, test: Tests, *, base_dir: Path | None = None
+) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the list of all strides originally distributed with the dataset for a participant."""
     stride_borders = {}
     stride_segmentation_folder = _reference_stride_borders_folder(base_dir, cohort, test)
@@ -147,8 +149,8 @@ def get_original_segmented_stride_list(
 
 
 def get_segmented_stride_list(
-    participant_id: str, cohort: Cohorts, test: Tests, *, base_dir: Optional[Path] = None
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    participant_id: str, cohort: Cohorts, test: Tests, *, base_dir: Path | None = None
+) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the list of all strides for a participant."""
     stride_segmentation_folder = _new_reference_stride_borders_folder(base_dir)
     segmentation_file = stride_segmentation_folder / f"{cohort}_{test}_{participant_id}_strides.csv"

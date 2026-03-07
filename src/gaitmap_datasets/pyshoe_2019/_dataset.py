@@ -1,7 +1,8 @@
 """The core tpcp dataset classes for the pyshoe dataset."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import List, Optional, Union
 
 import pandas as pd
 from tpcp import Dataset
@@ -35,7 +36,7 @@ class PyShoe2019Vicon(Dataset):
     """
 
     @staticmethod
-    def download(_base_path: Union[str, Path]) -> Path:
+    def download(_base_path: str | Path) -> Path:
         """Raise an error explaining how to obtain the dataset manually."""
         raise_manual_download_error(
             "PyShoe2019Vicon",
@@ -46,14 +47,14 @@ class PyShoe2019Vicon(Dataset):
             "Pass the PyShoe dataset root folder containing the `data` directory to `PyShoe2019Vicon(...)`.",
         )
 
-    data_folder: Optional[Union[str, Path]]
+    data_folder: str | Path | None
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.data_folder = data_folder
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)
@@ -117,7 +118,7 @@ class PyShoe2019Hallway(Dataset):
     """
 
     @staticmethod
-    def download(_base_path: Union[str, Path]) -> Path:
+    def download(_base_path: str | Path) -> Path:
         """Raise an error explaining how to obtain the dataset manually."""
         raise_manual_download_error(
             "PyShoe2019Hallway",
@@ -128,14 +129,14 @@ class PyShoe2019Hallway(Dataset):
             "Pass the PyShoe dataset root folder containing the `data` directory to `PyShoe2019Hallway(...)`.",
         )
 
-    data_folder: Optional[Union[str, Path]]
+    data_folder: str | Path | None
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.data_folder = data_folder
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)
@@ -209,7 +210,7 @@ class PyShoe2019Stairs(Dataset):
     """
 
     @staticmethod
-    def download(_base_path: Union[str, Path]) -> Path:
+    def download(_base_path: str | Path) -> Path:
         """Raise an error explaining how to obtain the dataset manually."""
         raise_manual_download_error(
             "PyShoe2019Stairs",
@@ -220,14 +221,14 @@ class PyShoe2019Stairs(Dataset):
             "Pass the PyShoe dataset root folder containing the `data` directory to `PyShoe2019Stairs(...)`.",
         )
 
-    data_folder: Optional[Union[str, Path]]
+    data_folder: str | Path | None
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.data_folder = data_folder
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)

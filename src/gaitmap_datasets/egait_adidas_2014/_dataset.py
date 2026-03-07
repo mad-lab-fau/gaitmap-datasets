@@ -1,7 +1,9 @@
 """The core tpcp Dataset class for the Egait Parameter Validation Dataset."""
 
+from __future__ import annotations
+
 from pathlib import Path
-from typing import Callable, Dict, List, Literal, Optional, TypeVar, Union
+from typing import Callable, Literal, TypeVar
 
 import pandas as pd
 from joblib import Memory
@@ -20,7 +22,7 @@ from gaitmap_datasets.egait_adidas_2014.helper import (
 )
 from gaitmap_datasets.utils.event_detection import convert_sampling_rates_event_list
 
-DictOfDfs = TypeVar("DictOfDfs", bound=Dict[str, pd.DataFrame])
+DictOfDfs = TypeVar("DictOfDfs", bound=dict[str, pd.DataFrame])
 
 
 def _apply_to_dict_dfs(dict_of_dfs: DictOfDfs, function: Callable[[str, pd.DataFrame], pd.DataFrame]) -> DictOfDfs:
@@ -33,7 +35,7 @@ class EgaitAdidas2014(Dataset):
     """Egait dataset with Mocap reference recorded in 2014."""
 
     @staticmethod
-    def download(base_path: Union[str, Path]) -> Path:
+    def download(base_path: str | Path) -> Path:
         """Download the dataset and return the extracted dataset path."""
         return download_and_extract_osf_zip(
             base_path,
@@ -43,18 +45,18 @@ class EgaitAdidas2014(Dataset):
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
         memory: Memory = Memory(None),
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.data_folder = data_folder
         self.memory = memory
         super().__init__(groupby_cols=groupby_cols, subset_index=subset_index)
 
     @property
-    def mocap_offset_s_(self) -> Dict[Literal["left_sensor", "right_sensor"], float]:
+    def mocap_offset_s_(self) -> dict[Literal["left_sensor", "right_sensor"], float]:
         """Get the offset of the mocap data.
 
         This is the time difference between the start of the IMU data and the start of the Mocap data.
@@ -89,7 +91,7 @@ class EgaitAdidas2014(Dataset):
         return Path(self.data_folder)
 
     @property
-    def data(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def data(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the imu data.
 
         The time axis is synced to the mocap data, so that the start of the mocap data is t=0 s.
@@ -112,7 +114,7 @@ class EgaitAdidas2014(Dataset):
         return self.memory.cache(get_mocap_data_for_participant_and_test)(*self.group, base_dir=self._data_folder_path)
 
     @property
-    def marker_position_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def marker_position_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the marker position.
 
         This provides the marker positions for all marker recorded by the vicon motion capture system.
@@ -131,7 +133,7 @@ class EgaitAdidas2014(Dataset):
         return _apply_to_dict_dfs(marker_position, convert_index)
 
     @property
-    def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def segmented_stride_list_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the segmented stride list in samples relative to the IMU start.
 
         If you need the stride list in seconds, or in mocap samples use the `convert_event_list` method of this class.
@@ -146,23 +148,23 @@ class EgaitAdidas2014(Dataset):
         )
 
     @property
-    def mocap_parameters_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def mocap_parameters_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Stride parameters extracted from the mocap system."""
         self.assert_is_single(None, "mocap_parameters_")
         return get_mocap_parameters(*self.group, base_dir=self._data_folder_path)
 
     @property
-    def mocap_events_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def mocap_events_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Stride events extracted from the mocap system."""
         self.assert_is_single(None, "mocap_events_")
         return get_mocap_events(*self.group, base_dir=self._data_folder_path)
 
     def convert_events(
         self,
-        events: Dict[str, pd.DataFrame],
+        events: dict[str, pd.DataFrame],
         from_time_axis: Literal["mocap", "imu"],
         to_time_axis: Literal["mocap", "imu", "time"],
-    ) -> Dict[str, pd.DataFrame]:
+    ) -> dict[str, pd.DataFrame]:
         """Convert the time/sample values of mocap and IMU events/stride lists into other time domains.
 
         This method will make sure
@@ -187,7 +189,7 @@ class EgaitAdidas2014(Dataset):
                     events,
                     lambda name, df: (
                         convert_sampling_rates_event_list(df, self.mocap_sampling_rate_hz_, self.sampling_rate_hz)
-                        + int(round(self.mocap_offset_s_[name] * self.sampling_rate_hz))
+                        + round(self.mocap_offset_s_[name] * self.sampling_rate_hz)
                     ),
                 )
             if to_time_axis == "time":
@@ -198,7 +200,7 @@ class EgaitAdidas2014(Dataset):
                 return _apply_to_dict_dfs(
                     events,
                     lambda name, df: convert_sampling_rates_event_list(
-                        df - int(round(self.mocap_offset_s_[name] * self.sampling_rate_hz)),
+                        df - round(self.mocap_offset_s_[name] * self.sampling_rate_hz),
                         self.sampling_rate_hz,
                         self.mocap_sampling_rate_hz_,
                     ),

@@ -3,11 +3,13 @@
 These are the logic behind the dataset implementation, but can also be used independently.
 """
 
+from __future__ import annotations
+
 import json
 import warnings
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Literal
 
 import pandas as pd
 from imucal.management import CalibrationWarning
@@ -40,7 +42,7 @@ def _calibration_folder(base_dir: Path) -> Path:
     return base_dir / "calibrations"
 
 
-def get_all_participants(*, base_dir: Path) -> List[str]:
+def get_all_participants(*, base_dir: Path) -> list[str]:
     """Get the folder names of all participants."""
     # TODO: Rename healthy folder
     return [f.name for f in sorted(_participant_subfolder(base_dir).glob("subject_*"))]
@@ -48,8 +50,8 @@ def get_all_participants(*, base_dir: Path) -> List[str]:
 
 @lru_cache(maxsize=1)
 def get_all_participants_and_tests(
-    *, base_dir: Optional[Path] = None
-) -> Dict[str, Dict[str, Dict[str, Union[int, Literal["part_1", "part_2"]]]]]:
+    *, base_dir: Path | None = None
+) -> dict[str, dict[str, dict[str, int | Literal["part_1", "part_2"]]]]:
     """Get a dictionary containing all test information for all participants."""
     all_test_list = sorted(_participant_subfolder(base_dir).rglob("test_list.json"))
     all_test_per_participant = {}
@@ -72,7 +74,7 @@ def get_all_participants_and_tests(
     return all_test_per_participant
 
 
-def get_participant_metadata(participant_folder_name: str, *, base_dir: Optional[Path] = None) -> Dict[str, Any]:
+def get_participant_metadata(participant_folder_name: str, *, base_dir: Path | None = None) -> dict[str, Any]:
     """Get the metadata of a participant."""
     with (_participant_subfolder(base_dir) / participant_folder_name / "metadata.json").open(encoding="utf8") as f:
         metadata = json.load(f)
@@ -86,7 +88,7 @@ def get_all_data_for_participant(
     return_pressure_data: bool = True,
     return_baro_data: bool = True,
     return_hip_sensor: bool = True,
-    base_dir: Optional[Path] = None,
+    base_dir: Path | None = None,
 ) -> pd.DataFrame:
     """Get all the recorded data (imu + baro + pressure) for one of the two sessions of a participant."""
     data_dir = _participant_subfolder(base_dir) / participant_folder_name / part / "imu"
@@ -147,8 +149,8 @@ def get_all_data_for_participant(
 
 
 def get_segmented_stride_list(
-    participant_folder_name: str, part: Literal["part_1", "part_2"], *, base_dir: Optional[Path] = None
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    participant_folder_name: str, part: Literal["part_1", "part_2"], *, base_dir: Path | None = None
+) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the manual stride borders for a participant."""
     path = _participant_subfolder(base_dir) / participant_folder_name / part / "manual_annotations_z_level.csv"
     manual_annotation = pd.read_csv(path, delimiter=";", index_col=0, header=[0, 1])[["left_sensor", "right_sensor"]]
@@ -169,8 +171,8 @@ def get_segmented_stride_list(
 
 
 def get_pressure_insole_events(
-    participant_folder_name: str, part: Literal["part_1", "part_2"], *, base_dir: Optional[Path] = None
-) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    participant_folder_name: str, part: Literal["part_1", "part_2"], *, base_dir: Path | None = None
+) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
     """Get the pressure insole events for a participant."""
     path = _participant_subfolder(base_dir) / participant_folder_name / part / "pressure_events.csv"
     events = pd.read_csv(path, index_col=[0, 1], header=0)

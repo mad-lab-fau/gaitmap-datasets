@@ -1,8 +1,10 @@
 """The core tpcp Dataset class for the Stair Ambulation dataset."""
 
+from __future__ import annotations
+
 from itertools import product
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union
+from typing import Any, Literal
 
 import pandas as pd
 from joblib import Memory
@@ -27,14 +29,14 @@ class _StairAmbulationHealthy2021(Dataset):
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
         memory: Memory = Memory(None),
         include_pressure_data: bool = False,
         include_hip_sensor: bool = False,
         include_baro_data: bool = False,
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.memory = memory
         self.data_folder = data_folder
@@ -48,7 +50,7 @@ class _StairAmbulationHealthy2021(Dataset):
         """Get the sampling rate of the IMUs."""
         return 204.8
 
-    def _get_participant_and_part(self, error_name: str) -> Tuple[str, Literal["part_1", "part_2"]]:
+    def _get_participant_and_part(self, error_name: str) -> tuple[str, Literal["part_1", "part_2"]]:
         """Get the participant and part of the dataset."""
         raise NotImplementedError
 
@@ -56,7 +58,7 @@ class _StairAmbulationHealthy2021(Dataset):
         """Cut the data to the region of interest."""
         raise NotImplementedError
 
-    def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: List[str]) -> pd.DataFrame:
+    def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: list[str]) -> pd.DataFrame:
         """Cut the events to the region of interest."""
         raise NotImplementedError
 
@@ -72,7 +74,7 @@ class _StairAmbulationHealthy2021(Dataset):
         )
 
     @property
-    def metadata(self) -> Dict[str, Any]:
+    def metadata(self) -> dict[str, Any]:
         """Get the metadata for a participant."""
         self.assert_is_single(["participant"], "metadata")
         return get_participant_metadata(self.group.participant, base_dir=self._data_folder_path)
@@ -125,9 +127,9 @@ class _StairAmbulationHealthy2021(Dataset):
 
     def get_segmented_stride_list_with_type(
         self,
-        stride_type: Optional[List[StrideTypes]] = None,
+        stride_type: list[StrideTypes] | None = None,
         return_z_level: bool = True,
-    ) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    ) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the manual stride borders of the dataset filtered by stride type.
 
         Parameters
@@ -153,7 +155,7 @@ class _StairAmbulationHealthy2021(Dataset):
         return final_stride_borders
 
     @property
-    def segmented_stride_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def segmented_stride_list_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the manual stride borders of the dataset.
 
         This is equivalent to calling `get_segmented_stride_list_with_type(None, return_z_level=False)`.
@@ -162,7 +164,7 @@ class _StairAmbulationHealthy2021(Dataset):
         return self.get_segmented_stride_list_with_type(return_z_level=False)
 
     @property
-    def pressure_insole_event_list_(self) -> Dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
+    def pressure_insole_event_list_(self) -> dict[Literal["left_sensor", "right_sensor"], pd.DataFrame]:
         """Get the event list based on the pressure insole (and the IMU).
 
         This returns all events from the pressure-insoles as a min-vel event list.
@@ -211,7 +213,7 @@ class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
     """
 
     @staticmethod
-    def download(base_path: Union[str, Path]) -> Path:
+    def download(base_path: str | Path) -> Path:
         """Download the dataset and return the extracted dataset path."""
         return download_and_extract_osf_zip(
             base_path,
@@ -219,7 +221,7 @@ class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
             download_url="https://osf.io/download/5ueq6/",
         )
 
-    def _get_participant_and_part(self, error_name: str) -> Tuple[str, Literal["part_1", "part_2"]]:
+    def _get_participant_and_part(self, error_name: str) -> tuple[str, Literal["part_1", "part_2"]]:
         self.assert_is_single(None, error_name)
         participant, test = self.group
         part = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]["part"]
@@ -232,7 +234,7 @@ class StairAmbulationHealthy2021PerTest(_StairAmbulationHealthy2021):
         df = df.iloc[test["start"] : test["end"]]
         return df.reset_index(drop=True)
 
-    def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: List[str]) -> pd.DataFrame:
+    def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: list[str]) -> pd.DataFrame:
         # We assume that the df we get is from the correct participant and part
         participant, test = self.group
         test = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][test]
@@ -298,7 +300,7 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
     """
 
     @staticmethod
-    def download(base_path: Union[str, Path]) -> Path:
+    def download(base_path: str | Path) -> Path:
         """Download the dataset and return the extracted dataset path."""
         return download_and_extract_osf_zip(
             base_path,
@@ -308,15 +310,15 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
 
     def __init__(
         self,
-        data_folder: Optional[Union[str, Path]] = None,
+        data_folder: str | Path | None = None,
         *,
         memory: Memory = Memory(None),
         include_pressure_data: bool = False,
         include_hip_sensor: bool = False,
         include_baro_data: bool = False,
         ignore_manual_session_markers: bool = False,
-        groupby_cols: Optional[Union[List[str], str]] = None,
-        subset_index: Optional[pd.DataFrame] = None,
+        groupby_cols: list[str] | str | None = None,
+        subset_index: pd.DataFrame | None = None,
     ):
         self.ignore_manual_session_markers = ignore_manual_session_markers
         super().__init__(
@@ -329,11 +331,11 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
             include_baro_data=include_baro_data,
         )
 
-    def _get_full_session_start_end(self, participant: str, part: Literal["part_1", "part_2"]) -> Tuple[int, int]:
+    def _get_full_session_start_end(self, participant: str, part: Literal["part_1", "part_2"]) -> tuple[int, int]:
         session = get_all_participants_and_tests(base_dir=self._data_folder_path)[participant][f"full_session_{part}"]
         return int(session["start"]), int(session["end"])
 
-    def _get_participant_and_part(self, error_name: str) -> Tuple[str, Literal["part_1", "part_2"]]:
+    def _get_participant_and_part(self, error_name: str) -> tuple[str, Literal["part_1", "part_2"]]:
         self.assert_is_single(None, error_name)
         participant, part = self.group
         return participant, part
@@ -344,7 +346,7 @@ class StairAmbulationHealthy2021Full(_StairAmbulationHealthy2021):
             df = df.iloc[slice(*self._get_full_session_start_end(participant, part))]
         return df.reset_index(drop=True)
 
-    def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: List[str]) -> pd.DataFrame:
+    def _cut_events_to_region(self, df: pd.DataFrame, numeric_cols: list[str]) -> pd.DataFrame:
         participant, part = self._get_participant_and_part("_cut_events_to_region")
         if self.ignore_manual_session_markers is False:
             session_start, session_end = self._get_full_session_start_end(participant, part)
