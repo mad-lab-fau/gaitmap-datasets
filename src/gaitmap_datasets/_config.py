@@ -1,6 +1,7 @@
 """Utils to manage the configuration of the datasets path."""
 
 import json
+import os
 from dataclasses import dataclass, fields
 from pathlib import Path
 from typing import Optional, Union
@@ -9,6 +10,10 @@ from typing_extensions import Self
 
 _GLOBAL_CONFIG: Optional["DatasetsConfig"] = None
 _DEFAULT_CONFIG_FILE = (Path(__file__).parent.parent / ".datasets.dev.json").resolve()
+
+
+def _expand_path(path: Union[str, Path]) -> Path:
+    return Path(os.path.expandvars(str(path))).expanduser()
 
 
 @dataclass(frozen=True)
@@ -27,7 +32,7 @@ class DatasetsConfig:
         for field in fields(self):
             value = getattr(self, field.name)
             if value is not None:
-                value = Path(value)
+                value = _expand_path(value)
                 if not value.is_dir():
                     raise ValueError(f"Path {value} for {field.name} is not a directory.")
                 object.__setattr__(self, field.name, value)
@@ -35,9 +40,10 @@ class DatasetsConfig:
     @classmethod
     def from_json_file(cls, config_file: Union[Path, str] = _DEFAULT_CONFIG_FILE) -> Self:
         """Get config data from json file."""
+        config_file = _expand_path(config_file)
         using_default = config_file == _DEFAULT_CONFIG_FILE
         try:
-            with Path(config_file).open(encoding="utf8") as f:
+            with config_file.open(encoding="utf8") as f:
                 return cls(**{k: Path(v) if v else v for k, v in json.load(f)["datasets"].items()})
         except FileNotFoundError as e:
             if using_default:
@@ -113,7 +119,7 @@ def create_config_template(path: Union[str, Path]):
         The path to the file where the config should be created.
 
     """
-    path = Path(path)
+    path = _expand_path(path)
     if path.exists():
         raise ValueError(f"Config file {path} already exists.")
 
@@ -121,7 +127,6 @@ def create_config_template(path: Union[str, Path]):
         json.dump({"datasets": {k.name: None for k in fields(DatasetsConfig)}}, f, indent=4, sort_keys=True)
 
     print(f"Created config template at {path.resolve()}.")
-
 
 def get_dataset_path(dataset_name: str) -> Path:
     """Get the path to a dataset be reading the global config.
