@@ -166,6 +166,20 @@ Both the config file path passed to `set_config(...)` and the dataset paths stor
 environment variables via `os.path.expandvars`.
 This is useful on shared systems where dataset locations are provided through variables such as `$DATASET_ROOT`.
 
+Multiprocessing
++++++++++++++++
+
+If you use the global dataset config together with multiprocessing, create your jobs with `tpcp.parallel.delayed`.
+`gaitmap-datasets` automatically restores the config set via `set_config(...)` inside worker processes when `tpcp`
+creates the delayed jobs.
+
+.. code-block:: python
+
+    from joblib import Parallel
+    from tpcp.parallel import delayed
+
+    Parallel(n_jobs=2)(delayed(your_function)() for _ in range(2))
+
 
 
 Dev setup
