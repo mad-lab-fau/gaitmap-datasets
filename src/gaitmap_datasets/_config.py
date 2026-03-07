@@ -128,6 +128,7 @@ def create_config_template(path: Union[str, Path]):
 
     print(f"Created config template at {path.resolve()}.")
 
+
 def get_dataset_path(dataset_name: str) -> Path:
     """Get the path to a dataset be reading the global config.
 
