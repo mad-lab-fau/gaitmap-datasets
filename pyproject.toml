@@ -86,6 +86,10 @@ select = [
     "TRY",
     "PTH",
     "RUF",
+    "NPY",
+    "INP",
+    "TID252",
+    "FLY",
 ]
 ignore = [
     "B006",
@@ -107,12 +111,19 @@ ignore = [
     "PD101",
     "TRY003",
     "PLR0913",
+    "A003",
+    "ISC001",
+    "B028",
+    "PLW2901",
     "RUF005",
     "RUF046",
 ]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [tool.poe.tasks]
 _format = "ruff format ."

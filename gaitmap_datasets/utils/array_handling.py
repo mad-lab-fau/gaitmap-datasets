@@ -19,12 +19,12 @@ def bool_array_to_start_end_array(bool_array: np.ndarray) -> np.ndarray:
 
     Examples
     --------
-    >>> example_array = np.array([0,0,1,1,0,0,1,1,1])
+    >>> example_array = np.array([0, 0, 1, 1, 0, 0, 1, 1, 1])
     >>> start_end_list = bool_array_to_start_end_array(example_array)
     >>> start_end_list
     array([[2, 4],
            [6, 9]])
-    >>> example_array[start_end_list[0, 0]: start_end_list[0, 1]]
+    >>> example_array[start_end_list[0, 0] : start_end_list[0, 1]]
     array([1, 1])
 
     """
