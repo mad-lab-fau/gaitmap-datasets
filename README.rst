@@ -162,6 +162,10 @@ Then you can set the global config for gaitmap-datsets to point to the config fi
     # Now you can load the dataset without providing the path
     dataset = EgaitSegmentationValidation2014()
 
+Both the config file path passed to `set_config(...)` and the dataset paths stored inside the json file support
+environment variables via `os.path.expandvars`.
+This is useful on shared systems where dataset locations are provided through variables such as `$DATASET_ROOT`.
+
 
 
 Dev setup

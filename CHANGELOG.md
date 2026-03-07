@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   selected path does not match the expected folder structure.
   ([#11](https://github.com/mad-lab-fau/gaitmap-datasets/issues/11),
   [#21](https://github.com/mad-lab-fau/gaitmap-datasets/pull/21))
+- Config file paths and dataset paths loaded from config files now expand environment variables via
+  `os.path.expandvars`.
+  ([#15](https://github.com/mad-lab-fau/gaitmap-datasets/issues/15),
+  [#22](https://github.com/mad-lab-fau/gaitmap-datasets/pull/22))
 
 ### Development
 
