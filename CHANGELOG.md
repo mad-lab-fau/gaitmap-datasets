@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Kluge 2017 preprocessing now selects marker columns per foot without the removed pandas ``groupby(axis=1)`` API.
+  Per-foot visibility masking, IMU coordinates, and reference stride selection remain unchanged.
+
 - Egait 2013 loader properties now pass the selected participant identifier to their file helpers, rather than
   the tpcp group-label tuple. This restores IMU, stride-border, and GAITRite reference loading.
 
