@@ -3,9 +3,7 @@
 import json
 from dataclasses import dataclass, fields
 from pathlib import Path
-from typing import Optional, Union
-
-from typing_extensions import Self
+from typing import Optional, Self
 
 _GLOBAL_CONFIG: Optional["DatasetsConfig"] = None
 _DEFAULT_CONFIG_FILE = (Path(__file__).parent.parent / ".datasets.dev.json").resolve()
@@ -15,13 +13,13 @@ _DEFAULT_CONFIG_FILE = (Path(__file__).parent.parent / ".datasets.dev.json").res
 class DatasetsConfig:
     """Configuration class for the dataset paths."""
 
-    egait_parameter_validation_2013: Optional[Path] = None
-    sensor_position_comparison_2019: Optional[Path] = None
-    egait_segmentation_validation_2014: Optional[Path] = None
-    pyshoe_2019: Optional[Path] = None
-    egait_adidas_2014: Optional[Path] = None
-    stair_ambulation_healthy_2021: Optional[Path] = None
-    kluge_2017: Optional[Path] = None
+    egait_parameter_validation_2013: Path | None = None
+    sensor_position_comparison_2019: Path | None = None
+    egait_segmentation_validation_2014: Path | None = None
+    pyshoe_2019: Path | None = None
+    egait_adidas_2014: Path | None = None
+    stair_ambulation_healthy_2021: Path | None = None
+    kluge_2017: Path | None = None
 
     def __post_init__(self):
         for field in fields(self):
@@ -33,7 +31,7 @@ class DatasetsConfig:
                 object.__setattr__(self, field.name, value)
 
     @classmethod
-    def from_json_file(cls, config_file: Union[Path, str] = _DEFAULT_CONFIG_FILE) -> Self:
+    def from_json_file(cls, config_file: Path | str = _DEFAULT_CONFIG_FILE) -> Self:
         """Get config data from json file."""
         using_default = config_file == _DEFAULT_CONFIG_FILE
         try:
@@ -45,7 +43,7 @@ class DatasetsConfig:
             raise ValueError(f"Config file {config_file} not found.") from e
 
 
-def set_config(config_obj_or_path: Union[str, Path, DatasetsConfig] = _DEFAULT_CONFIG_FILE):
+def set_config(config_obj_or_path: str | Path | DatasetsConfig = _DEFAULT_CONFIG_FILE):
     """Set the global config object containing configured paths for the datasets.
 
     This allows you to set a global configuration that is automatically used by the dataset classes.
@@ -99,7 +97,7 @@ def config() -> DatasetsConfig:
     return _GLOBAL_CONFIG
 
 
-def create_config_template(path: Union[str, Path]):
+def create_config_template(path: str | Path):
     """Create a template json file that can be used to configure the datasets paths.
 
     Use that method once to create your local config file.

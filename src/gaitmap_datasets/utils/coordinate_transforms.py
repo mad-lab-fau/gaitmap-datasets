@@ -93,7 +93,7 @@ def flip_sensor(data: pd.DataFrame, rotation: Rotation | None, inplace: bool = F
         mirror = []
         # We basically iterate over the rotation matrix and find which axis is transformed to which other axis.
         # If the entry is -1, we also mirror the axis.
-        for col, row in zip(cols, rot_matrix):
+        for col, row in zip(cols, rot_matrix, strict=False):
             old_index = cols[np.abs(row).astype(bool)][0]
             rename[old_index] = col
             if np.sum(row) == -1:

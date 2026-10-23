@@ -51,7 +51,7 @@ def _interleave_foot_events(starts: pd.Series, foot_names: tuple[str, str] = ("L
     foot_1_starts = starts.loc[foot_names[1]]
 
     for foot_name, foot, opposite_foot in zip(
-        foot_names, (foot_0_starts, foot_1_starts), (foot_1_starts, foot_0_starts)
+        foot_names, (foot_0_starts, foot_1_starts), (foot_1_starts, foot_0_starts), strict=False
     ):
         if not foot.is_monotonic_increasing:
             raise ValueError(f"The {foot_name} foot events are not sorted by value!")

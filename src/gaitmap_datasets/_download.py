@@ -6,7 +6,6 @@ import tempfile
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Union
 from urllib.request import Request, urlopen
 
 
@@ -63,7 +62,7 @@ def _download_url_to_file(download_url: str, destination: Path) -> None:
 
 
 def _download_and_extract_zip(
-    base_path: Union[str, Path],
+    base_path: str | Path,
     *,
     dataset_name: str,
     download_url: str,
@@ -84,7 +83,7 @@ def _download_and_extract_zip(
         shutil.rmtree(version_path)
     version_path.mkdir(parents=True, exist_ok=True)
 
-    temp_file: Optional[Path] = None
+    temp_file: Path | None = None
     try:
         with tempfile.NamedTemporaryFile(suffix=".zip", delete=False, dir=version_path.parent) as tmp:
             temp_file = Path(tmp.name)
@@ -99,7 +98,7 @@ def _download_and_extract_zip(
 
 
 def download_and_extract_osf_zip(
-    base_path: Union[str, Path],
+    base_path: str | Path,
     *,
     dataset_name: str,
     download_url: str,
@@ -117,7 +116,7 @@ def download_and_extract_osf_zip(
 
 
 def download_and_extract_zip(
-    base_path: Union[str, Path],
+    base_path: str | Path,
     *,
     dataset_name: str,
     download_url: str,
