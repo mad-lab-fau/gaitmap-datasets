@@ -127,7 +127,7 @@ lint = { cmd = "ruff check src/gaitmap_datasets", help = "Lint all files with ru
 _lint_ci = "ruff check src/gaitmap_datasets --output-format=github"
 _check_format = "ruff format src/gaitmap_datasets tests _tasks.py docs/__init__.py docs/conf.py docs/sphinxext --check"
 ci_check = { sequence = ["_check_format", "_lint_ci"], help = "Check all potential format and linting issues." }
-test_ci = { cmd = "pytest tests/test_config.py tests/test_download.py tests/test_egait_loading.py", help = "Run dataset-free tests used in CI." }
+test_ci = { cmd = "pytest tests/test_config.py tests/test_download.py tests/test_egait_loading.py tests/test_egait_loader_compatibility.py", help = "Run dataset-free tests used in CI." }
 test = { cmd = "pytest --cov=gaitmap_datasets --cov-report=term-missing --cov-report=xml", help = "Run Pytest with coverage." }
 version = { script = "_tasks:task_update_version()", help = "Bump version in all relevant places." }
 docs = { script = "_tasks:task_docs()", help = "Build the html docs using Sphinx." }

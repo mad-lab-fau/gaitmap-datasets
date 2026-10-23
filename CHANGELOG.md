@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Egait 2013 loader properties now pass the selected participant identifier to their file helpers, rather than
+  the tpcp group-label tuple. This restores IMU, stride-border, and GAITRite reference loading.
+
 ## [0.15.0] - 2026-03-07
 
 ### Added
