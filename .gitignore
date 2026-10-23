@@ -244,3 +244,5 @@ docs/_build/*
 .datasets.dev.json
 
 _debug
+# roborev snapshots
+/.roborev/
