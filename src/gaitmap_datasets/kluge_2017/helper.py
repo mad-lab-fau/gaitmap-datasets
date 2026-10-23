@@ -51,7 +51,7 @@ def _interleave_foot_events(starts: pd.Series, foot_names: tuple[str, str] = ("L
     foot_1_starts = starts.loc[foot_names[1]]
 
     for foot_name, foot, opposite_foot in zip(
-        foot_names, (foot_0_starts, foot_1_starts), (foot_1_starts, foot_0_starts)
+        foot_names, (foot_0_starts, foot_1_starts), (foot_1_starts, foot_0_starts), strict=False
     ):
         if not foot.is_monotonic_increasing:
             raise ValueError(f"The {foot_name} foot events are not sorted by value!")
@@ -212,8 +212,9 @@ def get_all_data_for_recording(
     # Tracking of the trajectories is only avalibale for some regions of the signal.
     # If no tracking information is available, all markers have a velocity of zero.
     # We can use this to detect the regions where tracking is available.
-    camera_visible = marker_positions.groupby("foot", axis=1).apply(
-        lambda df_: (df_.filter(like="vel_") != 0.0).any(axis=1)
+    feet = marker_positions.columns.get_level_values("foot").unique()
+    camera_visible = pd.DataFrame(
+        {foot: (marker_positions[foot].filter(like="vel_") != 0.0).any(axis=1) for foot in feet}
     )
 
     camera_visible_intervals = {}
@@ -233,11 +234,18 @@ def get_all_data_for_recording(
         camera_visible_intervals.eval("end - start") >= camera_visible_minimal_interval_s
     ]
 
-    marker_positions = marker_positions.groupby("foot", axis=1, group_keys=False).apply(
-        lambda df_: intersect_data(
-            df_, camera_visible_intervals.loc[df_.name, "start"], camera_visible_intervals.loc[df_.name, "end"]
-        )
-    )
+    marker_positions = pd.concat(
+        {
+            foot: intersect_data(
+                marker_positions[foot],
+                camera_visible_intervals.loc[foot, "start"],
+                camera_visible_intervals.loc[foot, "end"],
+            )
+            for foot in feet
+        },
+        axis=1,
+        names=["foot"],
+    ).reindex(columns=marker_positions.columns)
 
     # IMU data
     imu_data = {}

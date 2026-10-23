@@ -1,9 +1,9 @@
 [project]
 name = "gaitmap-datasets"
-version = "0.15.0"
+version = "0.16.0"
 description = "Helper to access open-source gait datasets used by MaD-Lab"
 readme = "README.rst"
-requires-python = ">=3.9,<3.14"
+requires-python = ">=3.11,<3.14"
 license = "MIT"
 authors = [
     { name = "Arne Küderle", email = "arne.kuederle@fau.de" },
@@ -11,14 +11,15 @@ authors = [
     { name = "Liv Herzer", email = "liv.herzer@gmx.de" },
 ]
 dependencies = [
-    "tpcp>=2.0",
-    "pandas>=1.4.2",
-    "joblib>=1.2.0",
+    "tpcp>=3.0.0",
+    "pandas>=3,<3.1",
+    "numpy>=2.3.5,<3",
+    "joblib>=1.5.2",
     "imucal>=2.3.0",
     "nilspodlib>=4.1.2",
-    "scipy>=1.8.1",
+    "scipy>=1.16.3",
     "c3d>=0.5.1",
-    "h5py>=3.8.0",
+    "h5py>=3.11.0",
     "pytz>=2024.1",
 ]
 
@@ -28,24 +29,23 @@ Repository = "https://github.com/mad-lab-fau/gaitmap-datasets"
 
 [dependency-groups]
 dev = [
-    "poethepoet>=0.37.0; python_version < '3.10'",
-    "poethepoet>=0.42.1; python_version >= '3.10'",
-    "pytest>=7.2.0",
-    "pytest-cov>=4.0.0",
-    "numpydoc>=1.4.0",
-    "memory-profiler>=0.60.0",
-    "matplotlib>=3.5.2",
-    "toml>=0.10.2",
-    "sphinx-gallery>=0.11.1",
-    "pydata-sphinx-theme>=0.14.0",
+    "poethepoet>=0.42.1",
+    "pytest>=8.4.2,<10",
+    "pytest-cov>=7.0.0,<8",
+    "numpydoc>=1.10.0,<2",
+    "memory-profiler>=0.61.0,<0.62",
+    "matplotlib>=3.9.0",
+    "toml>=0.10.2,<0.11",
+    "sphinx-gallery>=0.20.0,<1",
+    "pydata-sphinx-theme>=0.16.1,<0.17",
     "ruff>=0.15.4",
-    "sphinx>=6.1.3",
-    "myst-parser>=1.0.0",
+    "sphinx>=8.2.3,<9",
+    "myst-parser>=4.0.1,<5",
 ]
 
 [tool.ruff]
 line-length = 120
-target-version = "py39"
+target-version = "py311"
 exclude = [
     "doc/sphinxext/*.py",
     "doc/build/*.py",
@@ -127,7 +127,7 @@ lint = { cmd = "ruff check src/gaitmap_datasets", help = "Lint all files with ru
 _lint_ci = "ruff check src/gaitmap_datasets --output-format=github"
 _check_format = "ruff format src/gaitmap_datasets tests _tasks.py docs/__init__.py docs/conf.py docs/sphinxext --check"
 ci_check = { sequence = ["_check_format", "_lint_ci"], help = "Check all potential format and linting issues." }
-test_ci = { cmd = "pytest tests/test_config.py tests/test_download.py tests/test_egait_loading.py", help = "Run dataset-free tests used in CI." }
+test_ci = { cmd = "pytest tests/test_config.py tests/test_download.py tests/test_egait_loading.py tests/test_egait_loader_compatibility.py tests/test_kluge_loader_compatibility.py", help = "Run dataset-free tests used in CI." }
 test = { cmd = "pytest --cov=gaitmap_datasets --cov-report=term-missing --cov-report=xml", help = "Run Pytest with coverage." }
 version = { script = "_tasks:task_update_version()", help = "Bump version in all relevant places." }
 docs = { script = "_tasks:task_docs()", help = "Build the html docs using Sphinx." }

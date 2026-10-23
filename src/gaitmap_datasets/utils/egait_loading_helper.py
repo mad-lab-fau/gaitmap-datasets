@@ -3,7 +3,6 @@
 import copy
 from collections import namedtuple
 from pathlib import Path
-from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -22,7 +21,7 @@ SHIMMER_DATA_LAYOUT = {
 
 ExtendedCalibFilePath = namedtuple("ExtendedCalibFilePath", ["acc", "gyr"])
 
-CalibFilePath = Union[Path, ExtendedCalibFilePath]
+CalibFilePath = Path | ExtendedCalibFilePath
 
 
 def transform_shimmer2_axes(dataset: pd.DataFrame) -> pd.DataFrame:

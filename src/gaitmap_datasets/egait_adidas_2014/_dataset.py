@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable, Literal, TypeVar
+from typing import Literal, TypeVar
 
 import pandas as pd
 from joblib import Memory

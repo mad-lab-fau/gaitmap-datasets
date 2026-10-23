@@ -6,6 +6,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-10-23
+
+### Changed
+
+- **Python 3.11 is now the minimum supported version; Python 3.9 and 3.10 support has been removed.**
+  Upgrade Python before installing this release, or keep ``gaitmap-datasets<0.16`` in legacy environments.
+  Python 3.14 remains excluded by the current loader dependency chain.
+- Shared runtime dependency minimums now match gaitmap: pandas 3, NumPy 2.3.5, SciPy 1.16.3,
+  joblib 1.5.2, and tpcp 3.0.0. NumPy is now an explicit dependency.
+- Shared development dependency ranges now match gaitmap. CI tests Python 3.11 through 3.13 and
+  the lowest direct dependency versions on Python 3.11.
+- Raised the h5py minimum to 3.11.0 and the development Matplotlib minimum to 3.9.0 for the NumPy 2 stack.
+  h5py documents NumPy 2 support in its [3.11 release notes](https://docs.h5py.org/en/stable/whatsnew/3.11.html).
+
+### Fixed
+
+- Kluge 2017 preprocessing now selects marker columns per foot without the removed pandas ``groupby(axis=1)`` API.
+  Per-foot visibility masking, IMU coordinates, and reference stride selection remain unchanged.
+
+- Egait 2013 loader properties now pass the selected participant identifier to their file helpers, rather than
+  the tpcp group-label tuple. This restores IMU, stride-border, and GAITRite reference loading.
+
 ## [0.15.0] - 2026-03-07
 
 ### Added

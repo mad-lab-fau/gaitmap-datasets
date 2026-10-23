@@ -10,7 +10,7 @@ jobs:
   test:
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.11", "3.12", "3.13"]
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +26,18 @@ jobs:
       - name: Testing
         run: uv run poe test_ci
 
+  minimum-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.11"
+      - name: Install lowest direct dependencies
+        run: uv sync --resolution lowest-direct --upgrade --group dev
+      - name: Test with minimum dependencies
+        run: uv run --frozen poe -e simple test_ci
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +47,7 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
-          python-version: "3.9"
+          python-version: "3.11"
       - name: Install dependencies
         run: uv sync --group dev --frozen
       - name: Linting

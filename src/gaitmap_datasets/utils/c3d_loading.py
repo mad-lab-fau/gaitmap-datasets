@@ -1,14 +1,13 @@
 """Helper to handle c3d files."""
 
 from pathlib import Path
-from typing import Union
 
 import c3d
 import numpy as np
 import pandas as pd
 
 
-def load_c3d_data(path: Union[Path, str], insert_nan: bool = True) -> pd.DataFrame:
+def load_c3d_data(path: Path | str, insert_nan: bool = True) -> pd.DataFrame:
     """Load a c3d file.
 
     Parameters

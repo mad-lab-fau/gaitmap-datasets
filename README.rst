@@ -164,10 +164,20 @@ Then you can set the global config for gaitmap-datsets to point to the config fi
 
 
 
+Supported versions
+------------------
+
+Version 0.16.0 requires Python 3.11 through 3.13. Python 3.9 and 3.10 users should stay on
+``gaitmap-datasets<0.16`` or upgrade their Python environment before updating.
+Python 3.14 remains excluded by the current loader dependency chain.
+
+The shared dependency minimums match gaitmap: pandas 3, NumPy 2.3.5, SciPy 1.16.3,
+joblib 1.5.2, and tpcp 3.0.0.
+
 Dev setup
 ---------
 
-First clone the repo, install Python 3.9 or newer, and install
+First clone the repo, install Python 3.11 through 3.13, and install
 `uv <https://docs.astral.sh/uv/>`_.
 
 .. code-block:: bash

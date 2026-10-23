@@ -1,0 +1,6 @@
+# Project-specific review guidelines
+review_guidelines = """
+Backwards compatibility is mandatory for public interfaces, supported behavior, and persisted data.
+Permit safe internal fixes only when in-repository consumers are updated together.
+Flag public breaks without explicit maintainer approval, migration guidance, and release communication.
+"""
